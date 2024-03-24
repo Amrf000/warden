@@ -1,3 +1,9 @@
+// Copyright (c) 2024. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+// Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+// Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+// Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+// Vestibulum commodo. Ut rhoncus gravida arcu.
+
 //
 // Created by liuyawu on 2019/5/9.
 //
@@ -64,7 +70,7 @@ namespace NTempest {
         {
             *(uint32_t *)a1 = &`vtable for'CLinkedList<NIpse::CRlAgentDef> + 2;
             NIpse::CRlAgentDef::~CRlAgentDef(a1);
-            return HeapRelease((TRefCnt *)a1);
+            return DeallocateMemoryEx((TRefCnt *)a1);
         }
 
         virtual int  sub_2EE1D2(int a1, int a2)

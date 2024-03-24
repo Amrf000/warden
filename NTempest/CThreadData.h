@@ -12,6 +12,7 @@
 #define ENGINE_CTHREADDATA_H
 
 #include <cstdint>
+#include "Storm.h"
 #include "CPresenceReg.h"
 #include "CLinkedNodeCache.h"
 #include "CPresenceTagged.h"
@@ -20,41 +21,42 @@
 #include "CPresenceSysTagged.h"
 
 
-NTempest::CThreadData *unk_D6E440 = nullptr;
-NTempest::CThreadData *dword_D6E460 = nullptr;
 namespace NTempest {
+    class CThreadData;
+
+    CThreadData *unk_D6E440 = nullptr;
+    CThreadData *dword_D6E460 = nullptr;
+
     class CThreadData {
     public:
-        ~CThreadData() {
-        }
-
-        CThreadData *SetT_() {
-            TRefCnt *v1;
-            CThreadData *result;
-
-            v1 = (TRefCnt *) unk_D6E440;
-            if (unk_D6E440) {
-                ~CThreadData(unk_D6E440);
-                HeapRelease(v1);
-            }
-            result = this;
-            unk_D6E440 = this;
-            return result;
-        }
-
         CThreadData() {
             int *result;
             int v2[8];
 
             v2[0] = 0;
             v2[1] = 2048;
-            CPresenceReg::CPresenceReg(this, v2);
-            CLinkedNodeCache<CPresence>::CLinkedNodeCache((char *) this + 92, 64);
-            CLinkedNodeCache<CPresenceSys>::CLinkedNodeCache((char *) this + 124, 64);
-            CLinkedNodeCache<CPresenceTagged>::CLinkedNodeCache((char *) this + 156, 64);
-            CLinkedNodeCache<CPresenceSysTagged>::CLinkedNodeCache((char *) this + 188, 64);
+//            CPresenceReg::CPresenceReg(this, v2);
+//            CLinkedNodeCache<CPresence>::CLinkedNodeCache((char *) this + 92, 64);
+//            CLinkedNodeCache<CPresenceSys>::CLinkedNodeCache((char *) this + 124, 64);
+//            CLinkedNodeCache<CPresenceTagged>::CLinkedNodeCache((char *) this + 156, 64);
+//            CLinkedNodeCache<CPresenceSysTagged>::CLinkedNodeCache((char *) this + 188, 64);
             dword_D6E460 = this;
         }
+
+        ~CThreadData() {
+        }
+
+        CThreadData *SetT_() {
+            TRefCnt *v1;
+            v1 = (TRefCnt *) unk_D6E440;
+            if (unk_D6E440) {
+                unk_D6E440->~CThreadData();
+                DeallocateMemoryEx(v1);
+            }
+            unk_D6E440 = this;
+            return this;
+        }
+
 
         int Checksum() {
             unsigned int i;

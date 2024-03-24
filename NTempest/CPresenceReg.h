@@ -14,68 +14,75 @@
 #include <ntdef.h>
 #include "CDynTable.h"
 #include "CPrRgEntry.h"
+#include "CDynParms.h"
 
 namespace NTempest {
     class CPresenceReg {
     public:
+        CPresenceReg(CDynParms const &params) : m_a1(params, 0, 0, 0), m_a2(params, 0, 0, 0) {
+            this->filed_10 = -1;
+            this->filed_11 = -1;
+            this->filed_12 = 0;
+            this->filed_13 = 0;
+            this->filed_14 = 0;
+            this->filed_15 = 0;
+            this->filed_16 = 0;
+        }
+
         ~CPresenceReg() {
         }
 
-        CPresenceReg(int a2) {
-            CDynTable<CPrRgEntry>::CDynTable(a1, a2, 0, 0, 0);
-            CDynTable<CPrRgEntry>::CDynTable(a1 + 8, a2, 0, 0, 0);
-            a1[16] = -1;
-            a1[17] = -1;
-            a1[18] = 0;
-            a1[19] = 0;
-            a1[20] = 0;
-            a1[21] = 0;
-            a1[22] = 0;
-        }
 
-        bool IsAssociated(unsigned int a2) {
-            CPresenceReg *v2;
+        bool IsAssociated(int a2) {
+            NTempest::CPresenceReg *p_a2;
             unsigned int v3;
 
-            v2 = this;
+            p_a2 = this;
             v3 = a2;
-            if ((a2 & 0x80000000) != 0) {
+            if (a2 < 0) {
                 v3 = a2 & 0x7FFFFFFF;
-                v2 = (CPresenceReg *) ((char *) this + 32);
+                p_a2 = (NTempest::CPresenceReg *) &this->m_a2;
             }
-            return v3 < *((uint32_t *) v2 + 7) && *(uint32_t *) (*((uint32_t *) v2 + 3) + 8 * v3) == -2;
+            return v3 < p_a2->m_a1.filed_28 && *(uintptr_t *) (p_a2->m_a1.a5 + 8 * v3) == -2;
         }
 
-        int Presence(unsigned int a2) {
-            int v2;
+        int Presence(int a2) {
+            int a5;
 
-            if ((a2 & 0x80000000) == 0)
-                v2 = *((uint32_t *) this + 3);
+            if (a2 >= 0)
+                a5 = this->m_a1.a5;
             else
-                v2 = *((uint32_t *) this + 11);
-            return *(uint32_t *) (v2 + 8 * a2 + 4);
+                a5 = this->m_a2.a5;
+            return *(uintptr_t *) (a5 + 8 * a2 + 4);
         }
 
         unsigned int PredictTag(int a2) {
-            int v2;
+            int filed_11;
             unsigned int result;
 
             if (a2) {
-                v2 = *((uint32_t *) this + 17);
-                if (v2 == -1)
-                    v2 = *((uint32_t *) this + 15);
-                result = v2 | 0x80000000;
+                filed_11 = this->filed_11;
+                if (filed_11 == -1)
+                    filed_11 = this->m_a2.filed_28;
+                return filed_11 | 0x80000000;
             } else {
-                result = *((uint32_t *) this + 16);
+                result = this->filed_10;
                 if (result == -1)
-                    result = *((uint32_t *) this + 7);
+                    return this->m_a1.filed_28;
             }
             return result;
         }
 
     public:
-        CDynTable<CPrRgEntry> a1;
-        CDynTable<CPrRgEntry> a2;
+        CDynTable<CPrRgEntry> m_a1;
+        CDynTable<CPrRgEntry> m_a2;
+        int filed_10;
+        int filed_11;
+        int filed_12;
+        int filed_13;
+        int filed_14;
+        int filed_15;
+        int filed_16;
     };
 }
 

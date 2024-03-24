@@ -28,7 +28,7 @@ namespace NTempest {
         }
 
         virtual int Release() {
-            return HeapRelease(this);
+            return DeallocateMemoryEx(this);
         }
 
         virtual int sub_7A2E94() {

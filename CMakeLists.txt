@@ -31,5 +31,6 @@ file(GLOB dir_src
 
 add_executable(warden main.cpp ${dir_src}
         NTempest/C4iRect.h
-        NTempest/CRandSeed.h)
+        NTempest/CRandSeed.h
+        NTempest/CDynParms.h)
 target_include_directories(warden PRIVATE "include/")

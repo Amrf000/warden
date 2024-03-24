@@ -22,7 +22,7 @@ namespace NTempest {
 
         virtual int Release() {
             this->~CEntity();
-            return HeapRelease(this);
+            return DeallocateMemoryEx(this);
         }
     };
 }
