@@ -35,7 +35,7 @@ namespace NTempest {
             return this;
         }
 
-    protected:
+    public:
         float miny;
         float minx;
         float maxy;

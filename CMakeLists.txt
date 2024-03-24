@@ -29,5 +29,7 @@ file(GLOB dir_src
         "Scrn/*.cpp"
 )
 
-add_executable(warden main.cpp ${dir_src})
+add_executable(warden main.cpp ${dir_src}
+        NTempest/C4iRect.h
+        NTempest/CRandSeed.h)
 target_include_directories(warden PRIVATE "include/")

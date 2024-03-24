@@ -17,17 +17,18 @@
 namespace NTempest {
     class CAaSphere {
     public:
-        long double SquaredD(CAaSphere *that) {
-            return (float) ((float) ((float) ((float) (that->a1 - this->a1) * (float) (that->a1 - this->a1))
-                                     + (float) ((float) (that->a2 - this->a2) * (float) (that->a2 - this->a2)))
-                            + (float) ((float) (that->a3 - this->a3) * (float) (that->a3 - this->a3)));
+        long double SquaredD(NTempest::CAaSphere *that) {
+            return (float) ((float) ((float) ((float) (that->position.x - this->position.x)
+                                              * (float) (that->position.x - this->position.x))
+                                     + (float) ((float) (that->position.y - this->position.y)
+                                                * (float) (that->position.y - this->position.y)))
+                            + (float) ((float) (that->position.z - this->position.z) *
+                                       (float) (that->position.z - this->position.z)));
         }
 
-        bool Intersects(CAaSphere *that) {
-            float v3;
-
-            v3 = this->SquaredD(that);
-            return (float) ((float) (this->a4 + that->a4) * (float) (this->a4 + that->a4)) >= v3;
+        bool Intersects(NTempest::CAaSphere *that) {
+            float v3 = SquaredD(that);
+            return (float) ((float) (this->radius + that->radius) * (float) (this->radius + that->radius)) >= v3;
         }
 
     public:
