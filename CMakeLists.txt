@@ -21,9 +21,13 @@ file(GLOB dir_src
         "Storm/*.h"
         "Storm/*.cpp"
         "include/*.h"
+        "Anim/*.h"
+        "Anim/*.cpp"
+        "Services/*.h"
+        "Services/*.cpp"
+        "Scrn/*.h"
+        "Scrn/*.cpp"
 )
 
-add_executable(warden main.cpp ${dir_src}
-        NTempest/C34Matrix.cpp
-        NTempest/C34Matrix.h)
+add_executable(warden main.cpp ${dir_src})
 target_include_directories(warden PRIVATE "include/")

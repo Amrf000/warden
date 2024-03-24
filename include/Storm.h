@@ -14,5 +14,6 @@
 #include "../Storm/DebugUtils.h"
 #include "../Storm/memory.h"
 #include "../Storm/SStr.h"
+#include "../Storm/platform_win.h"
 
 #endif //WARDEN_STORM_H
