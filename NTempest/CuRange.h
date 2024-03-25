@@ -11,13 +11,14 @@
 #ifndef ENGINE_CURANGE_H
 #define ENGINE_CURANGE_H
 
+#include "CRndSeed.h"
 
 namespace NTempest {
     class CuRange {
     public:
-        CuRange(unsigned int *a2, unsigned int *a3) {
-            this->min = *a2;
-            this->max = *a3;
+        CuRange(unsigned int *min, unsigned int *max) {
+            this->min = *min;
+            this->max = *max;
         }
 
         CuRange *ClampClosed(float *a2, float *a3) {
@@ -33,14 +34,14 @@ namespace NTempest {
             return this;
         }
 
-        int Value(int a1, float *a2) {
-            char v3[4];
-            int v4[3];
+        CuRange *Value(CRndSeed *a2) {
+            char v2[4];
+            char v3[12];
 
-            sub_D546C(v4, a2 + 1, a2);
-            sub_5E602C(v3);
-            sub_D560C((unsigned int *) a1, (unsigned int *) a2, (unsigned int *) v3);
-            return a1;
+            sub_D546C(v3);
+            sub_5E602C(v2);
+            sub_D560C(this);
+            return this;
         }
 
         bool InClosedRange(float *a2) {

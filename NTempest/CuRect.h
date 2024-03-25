@@ -93,9 +93,9 @@ namespace NTempest {
         CuRect *Intersect(CuRect *a2) {
             CuRect v4;
 
-            CuRect::Intersection(&v4, a2, a3);
+            Intersection(&v4, a2, a3);
             *a2 = v4;
-            CuRect::CuRect(a2);
+            CuRect(a2);
             return this;
         }
 
@@ -119,7 +119,7 @@ namespace NTempest {
                 p_minx = &rect1->minx;
             if (*(float *) &rect1->miny > *(float *) &rect2->miny)
                 v3 = rect1;
-            CuRect::CuRect((int) this, (int) v3, (int) p_minx, (int) p_maxy, v8);
+            CuRect(this, (int) v3, (int) p_minx, (int) p_maxy, v8);
             return this;
         }
 

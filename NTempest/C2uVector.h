@@ -90,14 +90,13 @@ namespace NTempest {
             return this;
         }
 
-        C2uVector *operator/=() {
-            unsigned int v2;
-            int v3[3];
+        C2uVector *operator/=(const int *a2) {
+            NTempest::C2uVector v3;
 
-            sub_D50B0(&v2);
-            this->x = v2;
-            sub_D50B0(v3);
-            this->y = v3[0];
+            softFloatDiv(&v3.x, this, a2);
+            this->x = v3.x;
+            softFloatDiv(&v3.y, &this->y, a2);
+            this->y = v3.y;
             return this;
         }
 
