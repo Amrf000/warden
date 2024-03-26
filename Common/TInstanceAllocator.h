@@ -11,8 +11,6 @@
 template<typename T>
 class TInstanceAllocator {
 public:
-
-
     TInstanceAllocator(unsigned long elementCount) {
         construct(sizeof(T), elementCount);
     }

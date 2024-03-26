@@ -10,7 +10,7 @@
 
 
 class CGxPushedRenderState {
-
+public:
 };
 
 

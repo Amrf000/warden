@@ -12,7 +12,7 @@
 
 #include "../../Storm/memory.h"
 #include "../../Storm/SStr.h"
-#include "../cgx/CGxTexFlags.h"
+#include "cgx.h"
 
 class HASHKEY_TEXTUREFILE {
 public:

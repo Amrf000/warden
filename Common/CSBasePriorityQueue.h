@@ -9,7 +9,7 @@
 
 
 class CSBasePriorityQueue {
-
+public:
 };
 
 

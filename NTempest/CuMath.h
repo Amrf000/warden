@@ -17,7 +17,6 @@ namespace NTempest {
     public:
         int fuint_n() {
             char v1[8];
-
             sub_D5B9E(v1);
             return sub_D4E04(v1);
         }

@@ -8,7 +8,7 @@
 #ifndef ENGINE_CURANGE_H
 #define ENGINE_CURANGE_H
 
-#include "CRndSeed.h"
+#include "common.h"
 
 namespace NTempest {
     class CuRange {

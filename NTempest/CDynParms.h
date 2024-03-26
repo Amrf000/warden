@@ -12,7 +12,7 @@
 #define WARDEN_CDYNPARMS_H
 namespace NTempest {
     class CDynParms {
-
+    public:
     };
 }
 #endif //WARDEN_CDYNPARMS_H

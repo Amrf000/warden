@@ -8,8 +8,7 @@
 #ifndef ENGINE_CENTITY_H
 #define ENGINE_CENTITY_H
 
-#include <cstdint>
-
+#include "Storm.h"
 
 namespace NTempest {
     class CEntity {
@@ -17,9 +16,9 @@ namespace NTempest {
         virtual ~CEntity() {
         }
 
-        virtual int Release() {
+        virtual void Release() {
             this->~CEntity();
-            return DeallocateMemoryEx(this);
+            DeallocateMemoryEx(this);
         }
     };
 }

@@ -9,7 +9,7 @@
 
 
 class CGxTex {
-
+public:
 };
 
 

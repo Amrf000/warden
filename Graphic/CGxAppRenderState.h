@@ -10,7 +10,7 @@
 
 
 class CGxAppRenderState {
-
+public:
 };
 
 

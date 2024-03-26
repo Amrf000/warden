@@ -29,5 +29,6 @@ file(GLOB_RECURSE dir_src
         "Scrn/*.cpp"
 )
 
-add_executable(warden main.cpp ${dir_src})
+add_executable(warden main.cpp ${dir_src}
+        include/cgx.h)
 target_include_directories(warden PRIVATE "include/")

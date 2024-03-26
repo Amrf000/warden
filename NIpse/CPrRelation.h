@@ -9,7 +9,7 @@
 
 namespace NIpse {
     class CPrRelation {
-
+    public:
     };
 }
 

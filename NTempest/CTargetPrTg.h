@@ -19,17 +19,14 @@ namespace NTempest {
             this->a3 = a3;
         }
 
-        int SetTarget(CPresenceTagged *a2) {
-            int result;
+        void SetTarget(CPresenceTagged *a2) {
             if (a2) {
                 this->a1 = a2->a6;
-                result = a2->a7;
-                this->a2 = result;
+                this->a2 = a2->a7;
             } else {
                 this->a2 = -1;
                 this->a1 = -1;
             }
-            return result;
         }
 
     public:

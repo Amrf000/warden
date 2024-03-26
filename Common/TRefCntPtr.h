@@ -14,7 +14,7 @@
 
 template<typename T>
 class TRefCntPtr {
-
+public:
 };
 
 

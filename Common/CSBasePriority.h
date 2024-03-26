@@ -9,7 +9,7 @@
 
 
 class CSBasePriority {
-
+public:
 };
 
 

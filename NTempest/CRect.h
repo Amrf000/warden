@@ -13,22 +13,22 @@
 namespace NTempest {
     class CRect {
     public:
-        CRect *Clamp(C2Vector *a2) {
+        CRect *Clamp(C2Vector &a2) {
             float y;
-            float miny;
-            float minx;
+            float lminy;
+            float lminx;
 
-            y = a2->y;
+            y = a2.y;
             if (this->miny <= y)
-                miny = fminf(this->maxy, y);
+                lminy = fminf(this->maxy, y);
             else
-                miny = this->miny;
-            a2->y = miny;
-            if (this->minx <= a2->x)
-                minx = fminf(this->maxx, a2->x);
+                lminy = this->miny;
+            a2.y = lminy;
+            if (this->minx <= a2.x)
+                lminx = fminf(this->maxx, a2.x);
             else
-                minx = this->minx;
-            a2->x = minx;
+                lminx = this->minx;
+            a2.x = lminx;
             return this;
         }
 

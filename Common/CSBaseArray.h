@@ -9,7 +9,7 @@
 
 
 class CSBaseArray {
-
+public:
 };
 
 

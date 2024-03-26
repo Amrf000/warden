@@ -11,7 +11,7 @@
 
 namespace NTempest {
     class CPresence : public CLinkedNode<CPresence> {
-
+    public:
     };
 }
 

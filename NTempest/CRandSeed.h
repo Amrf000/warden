@@ -9,7 +9,7 @@
 #define WARDEN_CRANDSEED_H
 namespace NTempest {
     class CRandSeed {
-
+    public:
     };
 }
 #endif //WARDEN_CRANDSEED_H
