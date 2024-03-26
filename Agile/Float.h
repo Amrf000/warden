@@ -4,16 +4,22 @@
 // Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
 // Vestibulum commodo. Ut rhoncus gravida arcu.
 
-//
-// Created by liuyawu on 2019/5/12.
-//
 
 #ifndef ENGINE_FLOAT_H
 #define ENGINE_FLOAT_H
 
 
-class Float {
+#include "CAgentField.h"
 
+class Float : public CAgentField {
+public:
+    Float();
+
+    ~Float();
+
+    Float &operator+=(Float const &);
+
+    Float &operator-=(Float const &);
 };
 
 

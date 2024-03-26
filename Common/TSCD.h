@@ -4,9 +4,6 @@
 // Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
 // Vestibulum commodo. Ut rhoncus gravida arcu.
 
-//
-// Created by liuyawu on 2024/3/16.
-//
 
 #ifndef WARDEN_TSCD_H
 #define WARDEN_TSCD_H

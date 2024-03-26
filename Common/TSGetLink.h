@@ -4,9 +4,6 @@
 // Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
 // Vestibulum commodo. Ut rhoncus gravida arcu.
 
-//
-// Created by liuyawu on 2024/3/17.
-//
 #ifndef WARDEN_TSGETLINK_H
 #define WARDEN_TSGETLINK_H
 

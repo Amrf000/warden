@@ -4,9 +4,6 @@
 // Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
 // Vestibulum commodo. Ut rhoncus gravida arcu.
 
-//
-// Created by liuyawu on 2024/3/24.
-//
 
 #ifndef WARDEN_HASHKEY_4CC_H
 #define WARDEN_HASHKEY_4CC_H

@@ -4,15 +4,14 @@
 // Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
 // Vestibulum commodo. Ut rhoncus gravida arcu.
 
-//
-// Created by liuyawu on 2019/5/12.
-//
 
 #ifndef ENGINE_FLOATLISTENER_H
 #define ENGINE_FLOATLISTENER_H
 
 
-class FloatListener {
+#include "CListener.h"
+
+class FloatListener : public CListener {
 
 };
 

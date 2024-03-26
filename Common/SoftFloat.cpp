@@ -4,14 +4,11 @@
 // Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
 // Vestibulum commodo. Ut rhoncus gravida arcu.
 
-//
-// Created by liuyawu on 2024/3/26.
-//
 
 #include "SoftFloat.h"
 
 
-unsigned int *SoftFloatFromInt(unsigned int *a1, unsigned int a2) {
+unsigned int *SoftFloatFromInt(unsigned int *a1, unsigned int *a2) {
     signed int v2; // edi
     unsigned int v3; // eax
     unsigned int v5; // [esp+4h] [ebp-Ch]

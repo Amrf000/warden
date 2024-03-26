@@ -7,7 +7,7 @@ if (WIN32)
     add_compile_options(/wd4819)
 endif ()
 
-file(GLOB dir_src
+file(GLOB_RECURSE dir_src
         "Agile/*.h"
         "Agile/*.cpp"
         "Common/*.h"
@@ -29,10 +29,5 @@ file(GLOB dir_src
         "Scrn/*.cpp"
 )
 
-add_executable(warden main.cpp ${dir_src}
-        NTempest/C4iRect.h
-        NTempest/CRandSeed.h
-        NTempest/CDynParms.h
-        Common/SoftFloat.cpp
-        Common/SoftFloat.h)
+add_executable(warden main.cpp ${dir_src})
 target_include_directories(warden PRIVATE "include/")

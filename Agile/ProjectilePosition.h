@@ -4,16 +4,15 @@
 // Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
 // Vestibulum commodo. Ut rhoncus gravida arcu.
 
-//
-// Created by liuyawu on 2019/5/12.
-//
 
 #ifndef ENGINE_PROJECTILEPOSITION_H
 #define ENGINE_PROJECTILEPOSITION_H
 
 
-class ProjectilePosition {
+#include "CAgentField.h"
 
+class ProjectilePosition : public CAgentField {
+public:
 };
 
 
