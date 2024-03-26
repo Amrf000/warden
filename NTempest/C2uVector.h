@@ -6,6 +6,7 @@
 #ifndef ENGINE_C2UVECTOR_H
 #define ENGINE_C2UVECTOR_H
 
+#include "common.h"
 #include "C2iVector.h"
 #include "CuMath.h"
 
@@ -13,8 +14,8 @@ namespace NTempest {
     class C2uVector {
     public:
         C2uVector(C2iVector *that) {
-            sub_D5CD6(&this->x, that->x);
-            sub_D5CD6(&this->y, that->y);
+            SoftFloatFromInt(&this->x, that->x);
+            SoftFloatFromInt(&this->y, that->y);
         }
 
         C2uVector(unsigned int *a2, unsigned int *a3) {

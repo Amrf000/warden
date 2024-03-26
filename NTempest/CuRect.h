@@ -43,10 +43,10 @@ namespace NTempest {
         }
 
         CuRect(const CiRect *that) {
-            sub_D5CD6(this);
-            sub_D5CD6(&this->minx);
-            sub_D5CD6(&this->maxy);
-            sub_D5CD6(&this->maxx);
+            SoftFloatFromInt(this);
+            SoftFloatFromInt(&this->minx);
+            SoftFloatFromInt(&this->maxy);
+            SoftFloatFromInt(&this->maxx);
         }
 
         CuRect(const C2uVector *topLeft, const C2uVector *downRight) {

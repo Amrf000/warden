@@ -33,9 +33,9 @@ namespace NTempest {
         }
 
         C3uVector(int *a) {
-            sub_D5CD6(x, *a);
-            sub_D5CD6(y, a[1]);
-            sub_D5CD6(z, a[2]);
+            SoftFloatFromInt(x, *a);
+            SoftFloatFromInt(y, a[1]);
+            SoftFloatFromInt(z, a[2]);
         }
 
         C3uVector *SquaredMag() {
