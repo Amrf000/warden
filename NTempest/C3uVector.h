@@ -44,11 +44,11 @@ namespace NTempest {
             char v4[4];
             char v5[12];
 
-            sub_D4F30(v2);
-            sub_D4F30(v4);
-            sub_D4F30(v5);
-            sub_D560C((unsigned int *) v3, (unsigned int *) v5, (unsigned int *) v4);
-            sub_D560C(&this->x, (unsigned int *) v3, (unsigned int *) v2);
+            softFloatMultiply(v2);
+            softFloatMultiply(v4);
+            softFloatMultiply(v5);
+            softFloatAdd((unsigned int *) v3, (unsigned int *) v5, (unsigned int *) v4);
+            softFloatAdd(&this->x, (unsigned int *) v3, (unsigned int *) v2);
             return this;
         }
 
@@ -91,7 +91,7 @@ namespace NTempest {
         C3uVector *Mag() {
             C3uVector v2;
             v2.SquaredMag();
-            sub_D5144(this, (int *) v2);
+            softFloatSqrt(this, (int *) v2);
             return this;
         }
 
@@ -100,11 +100,11 @@ namespace NTempest {
             unsigned int v4;
             int v5[3];
 
-            sub_D560C(&v3, &this->x, &that->x);
+            softFloatAdd(&v3, &this->x, &that->x);
             this->x = v3;
-            sub_D560C(&v4, &this->y, &that->y);
+            softFloatAdd(&v4, &this->y, &that->y);
             this->y = v4;
-            sub_D560C((unsigned int *) v5, &this->z, &that->z);
+            softFloatAdd((unsigned int *) v5, &this->z, &that->z);
             this->z = v5[0];
             return this;
         }
@@ -118,12 +118,12 @@ namespace NTempest {
             int v6[3];
 
             CuMath::hypotinv_(v3);
-            sub_D4F30(v2);
-            sub_D4F30(&v4);
+            softFloatMultiply(v2);
+            softFloatMultiply(&v4);
             this->x = v4;
-            sub_D4F30(&v5);
+            softFloatMultiply(&v5);
             this->y = v5;
-            sub_D4F30(v6);
+            softFloatMultiply(v6);
             result = v6[0];
             this->z = v6[0];
             return result;
@@ -137,11 +137,11 @@ namespace NTempest {
             int v5[3];
 
             CuMath::hypotinv_(v2);
-            sub_D4F30(&v3);
+            softFloatMultiply(&v3);
             this->x = v3;
-            sub_D4F30(&v4);
+            softFloatMultiply(&v4);
             this->y = v4;
-            sub_D4F30(v5);
+            softFloatMultiply(v5);
             result = v5[0];
             this->z = v5[0];
             return result;
@@ -152,11 +152,11 @@ namespace NTempest {
             unsigned int v3;
             int v4[3];
 
-            sub_D4F30(&v2);
+            softFloatMultiply(&v2);
             this->x = v2;
-            sub_D4F30(&v3);
+            softFloatMultiply(&v3);
             this->y = v3;
-            sub_D4F30(v4);
+            softFloatMultiply(v4);
             this->z = v4[0];
             return this;
         }

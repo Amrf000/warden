@@ -13,5 +13,7 @@
 
 #include "../Common/TSCD.h"
 #include "../Common/TRefCnt.h"
+#include "../Common/SoftFloat.h"
+
 
 #endif //WARDEN_COMMON_H

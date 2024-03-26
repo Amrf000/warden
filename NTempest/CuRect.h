@@ -80,10 +80,10 @@ namespace NTempest {
             char v4[4];
             char v5[28];
 
-            sub_D560C(v3);
-            sub_D4F30(v2);
-            sub_D560C(v5);
-            sub_D4F30(v4);
+            softFloatAdd(v3);
+            softFloatMultiply(v2);
+            softFloatAdd(v5);
+            softFloatMultiply(v4);
             C2uVector *ret = new C2uVector(v4, v2);
             return ret;
         }
@@ -131,13 +131,13 @@ namespace NTempest {
             unsigned int v5;
             unsigned int v6;
 
-            sub_D560C(&v3);
+            softFloatAdd(&v3);
             this->miny = v3;
-            sub_D560C(&v4);
+            softFloatAdd(&v4);
             this->minx = v4;
-            sub_D560C(&v5);
+            softFloatAdd(&v5);
             this->maxy = v5;
-            sub_D560C(&v6);
+            softFloatAdd(&v6);
             this->maxx = v6;
         }
 
@@ -147,13 +147,13 @@ namespace NTempest {
             unsigned int v5;
             unsigned int v6;
 
-            sub_D560C(&v3);
+            softFloatAdd(&v3);
             this->miny = v3;
-            sub_D560C(&v4);
+            softFloatAdd(&v4);
             this->minx = v4;
-            sub_D546C(&v5);
+            softFloatSubtract(&v5);
             this->maxy = v5;
-            sub_D546C(&v6);
+            softFloatSubtract(&v6);
             this->maxx = v6;
         }
 
@@ -163,13 +163,13 @@ namespace NTempest {
             unsigned int v6;
             unsigned int v7;
 
-            sub_D560C(&v4);
+            softFloatAdd(&v4);
             this->miny = v4;
-            sub_D560C(&v5);
+            softFloatAdd(&v5);
             this->minx = v5;
-            sub_D546C(&v6);
+            softFloatSubtract(&v6);
             this->maxy = v6;
-            sub_D546C(&v7);
+            softFloatSubtract(&v7);
             this->maxx = v7;
         }
 
@@ -177,9 +177,9 @@ namespace NTempest {
             char v3[4];
             char v4[12];
 
-            sub_D546C(v4);
+            softFloatSubtract(v4);
             sub_631BF4(v3);
-            sub_D560C(this);
+            softFloatAdd(this);
             return this;
         }
 
@@ -187,9 +187,9 @@ namespace NTempest {
             char v3[4];
             char v4[12];
 
-            sub_D546C(v4);
+            softFloatSubtract(v4);
             sub_631BF4(v3);
-            sub_D560C(this);
+            softFloatAdd(this);
             return this;
         }
 

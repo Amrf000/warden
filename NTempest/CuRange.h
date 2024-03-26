@@ -35,9 +35,9 @@ namespace NTempest {
             char v2[4];
             char v3[12];
 
-            sub_D546C(v3);
+            softFloatSubtract(v3);
             sub_5E602C(v2);
-            sub_D560C(this);
+            softFloatAdd(this);
             return this;
         }
 

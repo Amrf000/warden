@@ -59,9 +59,9 @@ namespace NTempest {
             float v2;
             float v3[3];
 
-            sub_D4F30(&v2);
-            sub_D4F30(v3);
-            this->sub_D546C(v3, &v2);
+            softFloatMultiply(&v2);
+            softFloatMultiply(v3);
+            this->softFloatSubtract(v3, &v2);
             return this;
         }
 
@@ -78,7 +78,7 @@ namespace NTempest {
             this->a9 = *a10;
         }
 
-        C33uMatrix *sub_D546C(float *a2, float *a3) {
+        C33uMatrix *softFloatSubtract(float *a2, float *a3) {
             signed int v3;
             signed int v4;
             int v5;
