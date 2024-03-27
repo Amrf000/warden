@@ -11,7 +11,7 @@
 
 #include <cstdint>
 #include "CGxStateBom.h"
-#include "EGxRenderState.h"
+#include "const/EGxRenderState.h"
 
 class CGxPushedRenderState {
 public:

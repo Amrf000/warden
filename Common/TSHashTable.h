@@ -77,12 +77,12 @@ public:
     }
 
     void Unlink(T *node) {
-        if (node->object.m_key.m_fulllist) {
-            if (node->object.m_key.m_prevlink) {
-                *node->object.m_key.NextLink(-1) = node->object.m_key.m_prevlink;
-                node->object.m_key.m_prevlink->m_fulllist = node->object.m_key.m_fulllist;
-                node->object.m_key.m_prevlink = 0;
-                node->object.m_key.m_fulllist = 0;
+        if (node->object.m_filename.m_fulllist) {
+            if (node->object.m_filename.m_prevlink) {
+                *node->object.m_filename.NextLink(-1) = node->object.m_filename.m_prevlink;
+                node->object.m_filename.m_prevlink->m_fulllist = node->object.m_filename.m_fulllist;
+                node->object.m_filename.m_prevlink = 0;
+                node->object.m_filename.m_fulllist = 0;
             }
             if (node->object.data.m_prevlink) {
                 *node->object.data.NextLink(-1) = node->object.data.m_prevlink;
@@ -179,7 +179,7 @@ public:
         hashVal = SStrHashHT(key);
         InternalLinkNode(ptr, hashVal);
         ptr->m_hashVal = hashVal;
-        ReMem(ptr->m_key, key);
+        ReMem(ptr->m_filename, key);
     }
 
     void Initialize() {

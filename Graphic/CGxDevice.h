@@ -11,10 +11,10 @@
 #include <cstring>
 #include "common.h"
 #include "NTempest.h"
-#include "CGxTex.h"
+#include "texture/CGxTex.h"
 #include "CGxStateBom.h"
 #include "CGxAppRenderState.h"
-#include "EGxRenderState.h"
+#include "const/EGxRenderState.h"
 #include "CGxPushedRenderState.h"
 
 class CGxDevice {

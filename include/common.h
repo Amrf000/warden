@@ -14,6 +14,8 @@
 #include "../Common/TSCD.h"
 #include "../Common/TRefCnt.h"
 #include "../Common/SoftFloat.h"
-
+#include "../Common/HashObject/TSHashObject.h"
+#include "../Common/TSLinkedNode.h"
+#include "../Common/TSGetExplicitLink.h"
 
 #endif //WARDEN_COMMON_H

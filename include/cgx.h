@@ -16,8 +16,8 @@
 #include "../Graphic/CGxDeviceOpenGl.h"
 #include "../Graphic/CGxPushedRenderState.h"
 #include "../Graphic/CGxStateBom.h"
-#include "../Graphic/CGxTex.h"
-#include "../Graphic/CGxTexFlags.h"
-#include "../Graphic/EGxRenderState.h"
+#include "../Graphic/texture/CGxTex.h"
+#include "../Graphic/texture/CGxTexFlags.h"
+#include "../Graphic/const/EGxRenderState.h"
 
 #endif //WARDEN_CGX_H

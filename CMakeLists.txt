@@ -30,5 +30,9 @@ file(GLOB_RECURSE dir_src
 )
 
 add_executable(warden main.cpp ${dir_src}
-        include/cgx.h)
+        include/agile.h
+        Agile/CAsyncObject.cpp
+        Agile/CAsyncObject.h
+        Agile/CAsyncQueue.cpp
+        Agile/CAsyncQueue.h)
 target_include_directories(warden PRIVATE "include/")
