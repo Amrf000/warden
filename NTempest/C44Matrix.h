@@ -22,24 +22,6 @@ namespace NTempest {
         }
 
         long double sub_2E71D6() {
-            float v1;
-            float v2;
-            float v3;
-            float v4;
-            float v5;
-            float v6;
-            float v7;
-            float v8;
-            float v9;
-            float v10;
-            float v12;
-            float v13;
-            float v14;
-            float v15;
-            float v16;
-            float v17;
-            float v18;
-
             v12 = this->a16;
             v13 = this->a15;
             v14 = this->a14;
@@ -115,16 +97,6 @@ namespace NTempest {
         }
 
         C44Matrix *sub_2E8384(C44Matrix *a2, float a3) {
-            C44Matrix *result;
-            float v4;
-            float v5;
-            float v6;
-            float v7;
-            float v8;
-            float v9;
-            float v10;
-
-            result = this;
             this->a16 = a3 * a2->a16;
             this->a15 = a3 * a2->a15;
             this->a14 = a3 * a2->a14;
@@ -148,41 +120,10 @@ namespace NTempest {
             this->a6 = v6;
             this->a7 = v5;
             this->a8 = v4;
-            return result;
+            return this;
         }
 
         C44Matrix *sub_2E90CC(C44Matrix *a2) {
-            C44Matrix *result;
-            float v3;
-            float v4;
-            float v5;
-            float v6;
-            float v7;
-            float v8;
-            float v9;
-            float v10;
-            float v11;
-            float v12;
-            float v13;
-            float v14;
-            float v15;
-            float v16;
-            float v17;
-            float v18;
-            float v19;
-            float v20;
-            float v21;
-            float v22;
-            float v23;
-            float v24;
-            float v25;
-            float v26;
-            float v27;
-            float v28;
-            float v29;
-            float v30;
-
-            result = this;
             v13 = a2->a11;
             v14 = a2->a10;
             v15 = a2->a9;
@@ -303,7 +244,7 @@ namespace NTempest {
                     - (float) (v15 * v18))
                                  - (float) (v13 * (float) (v12 * v5)))
                         - (float) (v14 * v19);
-            return result;
+            return this;
         }
 
     public:

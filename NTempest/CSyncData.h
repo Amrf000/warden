@@ -8,7 +8,7 @@
 #ifndef ENGINE_CSYNCDATA_H
 #define ENGINE_CSYNCDATA_H
 
-
+#include "common.h"
 #include "CEntity.h"
 
 namespace NTempest {

@@ -12,19 +12,6 @@ namespace NTempest {
     class C4Quaternion {
     public:
         C4Quaternion *operator C33Matrix(C33Matrix *that) {
-            float v3;
-            float v4;
-            float v5;
-            float v6;
-            float v7;
-            float v8;
-            float v9;
-            float v10;
-            float v11;
-            float v12;
-            float v13;
-            float v14;
-            float v15;
             v3 = that->a1;
             v4 = that->a2;
             v5 = that->a3;

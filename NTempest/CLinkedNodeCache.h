@@ -11,20 +11,19 @@ namespace NTempest {
     template<typename T>
     class CLinkedNodeCache {
     public:
-        int ~CLinkedNodeCache(int a1) {
+        ~CLinkedNodeCache() {
             TInstanceCache<CPresenceTagged>::Clear(a1);
-            return sub_B808(a1);
+            sub_B808(a1);
         }
 
-        int CLinkedNodeCache(int a1, int a2) {
+        CLinkedNodeCache(int a2) {
             int result;
 
             result = TInstanceCache<CPresenceTagged>::TInstanceCache(a1, a2);
             *(uint32_t *) (a1 + 28) = 0;
-            return result;
         }
 
-        int Dispose(int a1, int a2) {
+        int Dispose(int a2) {
             int v2;
             int v3;
             int result;

@@ -9,8 +9,15 @@
 #define WARDEN_CGXPUSHEDRENDERSTATE_H
 
 
+#include <cstdint>
+#include "CGxStateBom.h"
+#include "EGxRenderState.h"
+
 class CGxPushedRenderState {
 public:
+    EGxRenderState m_which;
+    CGxStateBom m_value;
+    uint32_t m_stackDepth;
 };
 
 

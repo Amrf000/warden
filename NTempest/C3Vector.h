@@ -23,15 +23,6 @@ namespace NTempest {
         }
 
         C3Vector *ProjectionOnPlane(const C3Vector *a2, const C3Vector *a3) {
-            C3Vector *result;
-            float v4;
-            float v5;
-            float v6;
-            float v7;
-            float v8;
-            float v9;
-
-            result = this;
             v4 = a2->x;
             v5 = a3->x;
             v6 = a2->y;
@@ -41,17 +32,10 @@ namespace NTempest {
             this->z = a2->z - (float) (v8 * v9);
             this->y = v6 - (float) (v7 * v9);
             this->x = v4 - (float) (v5 * v9);
-            return result;
+            return this;
         }
 
         C3Vector *NearestOnPlane(const C3Vector *a2, const C3Vector *a3, const C3Vector *a4) {
-            float v4;
-            float v5;
-            float v6;
-            float v7;
-            C3Vector v9[3];
-            C3Vector v10;
-
             v4 = a2->y - a3->y;
             v5 = a2->x - a3->x;
             v10.z = a2->z - a3->z;
@@ -68,17 +52,14 @@ namespace NTempest {
         }
 
         C3Vector *Normalize() {
-            C3Vector *result;
             float v2;
-
-            result = this;
             v2 = 1.0
                  / sqrt((float) ((float) ((float) (this->x * this->x) + (float) (this->y * this->y)) +
                                  (float) (this->z * this->z)));
             this->x = this->x * v2;
             this->y = v2 * this->y;
             this->z = v2 * this->z;
-            return result;
+            return this;
         }
 
         bool IsUnit() {
@@ -89,13 +70,10 @@ namespace NTempest {
         }
 
         C3Vector *operator/=(float a2) {
-            C3Vector *result;
-
-            result = this;
             this->x = this->x / a2;
             this->y = this->y / a2;
             this->z = this->z / a2;
-            return result;
+            return this;
         }
 
     public:

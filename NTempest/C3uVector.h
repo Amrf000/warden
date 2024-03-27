@@ -18,18 +18,11 @@
 namespace NTempest {
     class C3uVector {
     public:
-        C3Vector *asC3Vector(C3Vector *ret) {
-            C3Vector *result;
-            float v3;
-            float v4;
-
-            result = ret;
-            v3 = *(float *) &this->z;
-            v4 = *(float *) &this->y;
-            LODWORD(ret->x) = this->x;
-            ret->y = v4;
-            ret->z = v3;
-            return result;
+        C3Vector *asC3Vector(C3Vector &ret) {
+            ret.x = *(float *) &this->x;
+            ret.y = *(float *) &this->y;
+            ret.z = *(float *) &this->z;
+            return &ret;
         }
 
         C3uVector(int *a) {
@@ -39,11 +32,6 @@ namespace NTempest {
         }
 
         C3uVector *SquaredMag() {
-            char v2[4];
-            char v3[4];
-            char v4[4];
-            char v5[12];
-
             softFloatMultiply(v2);
             softFloatMultiply(v4);
             softFloatMultiply(v5);
@@ -52,54 +40,38 @@ namespace NTempest {
             return this;
         }
 
-        C3uVector(const C3uVector *that) {
-            int result;
-
-            this->x = that->x;
-            this->y = that->y;
-            result = that->z;
-            this->z = result;
+        C3uVector(const C3uVector &that) {
+            this->x = that.x;
+            this->y = that.y;
+            this->z = that.z;
         }
 
-        C3uVector(unsigned int *a2, unsigned int *a3, unsigned int *a4) {
-            unsigned int result;
-
-            this->x = *a2;
-            this->y = *a3;
-            result = *a4;
-            this->z = *a4;
+        C3uVector(unsigned int a2, unsigned int a3, unsigned int a4) {
+            this->x = a2;
+            this->y = a3;
+            this->z = a4;
         }
 
         C3uVector() {
-            C3uVector *result;
-
-            result = this;
             this->z = 0;
             this->y = 0;
             this->x = 0;
         }
 
-        C3uVector(const C2uVector *that) {
-            int result;
-
-            this->x = that->x;
-            result = that->y;
-            this->y = result;
+        C3uVector(const C2uVector &that) {
+            this->x = that.x;
+            this->y = that.y;
             this->z = 0;
         }
 
         C3uVector *Mag() {
             C3uVector v2;
             v2.SquaredMag();
-            softFloatSqrt(this, (int *) v2);
+            softFloatSqrt(this, v2);
             return this;
         }
 
         C3uVector *operator+=(C3uVector *that) {
-            unsigned int v3;
-            unsigned int v4;
-            int v5[3];
-
             softFloatAdd(&v3, &this->x, &that->x);
             this->x = v3;
             softFloatAdd(&v4, &this->y, &that->y);
@@ -109,14 +81,7 @@ namespace NTempest {
             return this;
         }
 
-        int Scale() {
-            int result;
-            char v2[4];
-            char v3[4];
-            unsigned int v4;
-            unsigned int v5;
-            int v6[3];
-
+        C3uVector *Scale() {
             CuMath::hypotinv_(v3);
             softFloatMultiply(v2);
             softFloatMultiply(&v4);
@@ -124,34 +89,22 @@ namespace NTempest {
             softFloatMultiply(&v5);
             this->y = v5;
             softFloatMultiply(v6);
-            result = v6[0];
             this->z = v6[0];
-            return result;
+            return this;
         }
 
-        int Normalize() {
-            int result;
-            char v2[4];
-            unsigned int v3;
-            unsigned int v4;
-            int v5[3];
-
+        C3uVector *Normalize() {
             CuMath::hypotinv_(v2);
             softFloatMultiply(&v3);
             this->x = v3;
             softFloatMultiply(&v4);
             this->y = v4;
             softFloatMultiply(v5);
-            result = v5[0];
             this->z = v5[0];
-            return result;
+            return this;
         }
 
         C3uVector *operator*=() {
-            unsigned int v2;
-            unsigned int v3;
-            int v4[3];
-
             softFloatMultiply(&v2);
             this->x = v2;
             softFloatMultiply(&v3);

@@ -9,7 +9,7 @@
 
 namespace NTempest {
     class CPresenceSysTagged {
-
+    public:
     };
 }
 

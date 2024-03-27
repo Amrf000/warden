@@ -50,18 +50,6 @@ namespace NTempest {
         }
 
         NTempest::C33Matrix *sub_55418C(NTempest::C33Matrix *that) {
-            NTempest::C33Matrix *result;
-            float v3;
-            float v4;
-            float v5;
-            float v6;
-            float v7;
-            float v8;
-            float v9;
-            float v10;
-            float v11;
-
-            result = this;
             v3 = that->a5;
             v9 = that->a4;
             v10 = that->a2;
@@ -80,7 +68,7 @@ namespace NTempest {
             this->a7 = (float) (v9 * v4) - (float) (v3 * v5);
             this->a8 = -(float) ((float) (v4 * v11) - (float) (v5 * v10));
             this->a9 = (float) (v3 * v11) - (float) (v9 * v10);
-            return result;
+            return this;
         }
 
     public:

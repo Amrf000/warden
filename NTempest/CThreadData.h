@@ -32,11 +32,6 @@ namespace NTempest {
 
             v2[0] = 0;
             v2[1] = 2048;
-//            CPresenceReg::CPresenceReg(this, v2);
-//            CLinkedNodeCache<CPresence>::CLinkedNodeCache((char *) this + 92, 64);
-//            CLinkedNodeCache<CPresenceSys>::CLinkedNodeCache((char *) this + 124, 64);
-//            CLinkedNodeCache<CPresenceTagged>::CLinkedNodeCache((char *) this + 156, 64);
-//            CLinkedNodeCache<CPresenceSysTagged>::CLinkedNodeCache((char *) this + 188, 64);
             dword_D6E460 = this;
         }
 

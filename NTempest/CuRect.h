@@ -10,7 +10,6 @@
 #define ENGINE_CURECT_H
 
 #include <cstdint>
-#include <ntdef.h>
 #include "C2uVector.h"
 #include "CRandSeed.h"
 
@@ -126,11 +125,6 @@ namespace NTempest {
         }
 
         int Offset(unsigned int *x, unsigned int *y) {
-            unsigned int v3;
-            unsigned int v4;
-            unsigned int v5;
-            unsigned int v6;
-
             softFloatAdd(&v3);
             this->miny = v3;
             softFloatAdd(&v4);
@@ -142,11 +136,6 @@ namespace NTempest {
         }
 
         void Stretch(C2uVector *size) {
-            unsigned int v3;
-            unsigned int v4;
-            unsigned int v5;
-            unsigned int v6;
-
             softFloatAdd(&v3);
             this->miny = v3;
             softFloatAdd(&v4);
@@ -158,11 +147,6 @@ namespace NTempest {
         }
 
         void Stretch(const int *x, const int *y) {
-            unsigned int v4;
-            unsigned int v5;
-            unsigned int v6;
-            unsigned int v7;
-
             softFloatAdd(&v4);
             this->miny = v4;
             softFloatAdd(&v5);
@@ -174,9 +158,6 @@ namespace NTempest {
         }
 
         CuRect *ValueH(CRandSeed *seed) {
-            char v3[4];
-            char v4[12];
-
             softFloatSubtract(v4);
             sub_631BF4(v3);
             softFloatAdd(this);
@@ -184,9 +165,6 @@ namespace NTempest {
         }
 
         CuRect *ValueV(CRandSeed *seed) {
-            char v3[4];
-            char v4[12];
-
             softFloatSubtract(v4);
             sub_631BF4(v3);
             softFloatAdd(this);

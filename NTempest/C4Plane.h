@@ -15,15 +15,6 @@ namespace NTempest {
     class C4Plane {
     public:
         C3Vector *From3Pos(const C3Vector *a2, const C3Vector *a3, const C3Vector *a4) {
-            float v4;
-            float v5;
-            float v6;
-            float v7;
-            float v8;
-            float v9;
-            float v10;
-            float v11;
-
             v4 = a2->z;
             v5 = a4->z - v4;
             v6 = a2->y;

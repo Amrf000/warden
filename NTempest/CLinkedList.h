@@ -31,17 +31,12 @@ namespace NTempest {
 
         void  ~CLinkedList(NIpse::CRlAgentDef *a1)
         {
-            *(uint32_t *)a1 = &`vtable for'CLinkedList<NIpse::CRlAgentDef> + 2;
             NIpse::CRlAgentDef::~CRlAgentDef(a1);
         }
 
         int * CLinkedList(NIpse::CRlAgentDef *a1)
         {
-            int *result;
-
             NIpse::CRlAgentDef::CRlAgentDef(a1);
-            result = &`vtable for'CLinkedList<NIpse::CRlAgentDef> + 2;
-                                 *(uint32_t *)a1 = &`vtable for'CLinkedList<NIpse::CRlAgentDef> + 2;
             return result;
         }
 
@@ -60,13 +55,11 @@ namespace NTempest {
 
         virtual ~CLinkedList(NIpse::CRlAgentDef *a1)
         {
-            *(uint32_t *)a1 = &`vtable for'CLinkedList<NIpse::CRlAgentDef> + 2;
             NIpse::CRlAgentDef::~CRlAgentDef(a1);
         }
 
         virtual int  sub_840810(NIpse::CRlAgentDef *a1)
         {
-            *(uint32_t *)a1 = &`vtable for'CLinkedList<NIpse::CRlAgentDef> + 2;
             NIpse::CRlAgentDef::~CRlAgentDef(a1);
             return DeallocateMemoryEx((TRefCnt *)a1);
         }

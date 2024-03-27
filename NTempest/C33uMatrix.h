@@ -16,10 +16,6 @@ namespace NTempest {
     class C33uMatrix {
     public:
         C33Matrix *asC33Matrix(C33Matrix *ret) {
-            C3Vector v3;
-            C3Vector v4;
-            C3Vector v5;
-            C3Vector v6;
             C3uVector v7(&this->a7, &this->a8, &this->a9);
             C3Vector v8;
             C3uVector v9(&this->a4, &this->a5, &this->a6);
@@ -56,12 +52,9 @@ namespace NTempest {
         }
 
         C33uMatrix *Det() {
-            float v2;
-            float v3[3];
-
             softFloatMultiply(&v2);
             softFloatMultiply(v3);
-            this->softFloatSubtract(v3, &v2);
+            softFloatSubtract(v3, &v2);
             return this;
         }
 
@@ -79,20 +72,6 @@ namespace NTempest {
         }
 
         C33uMatrix *softFloatSubtract(float *a2, float *a3) {
-            signed int v3;
-            signed int v4;
-            int v5;
-            int v6;
-            int v7;
-            signed int v8;
-            signed int v9;
-            int v10;
-            signed int v11;
-            unsigned int v12;
-            unsigned int v14;
-            int v15;
-            int v16;
-
             v3 = *(uint32_t *) a3 + 0x80000000;
             v4 = *(uint32_t *) a2;
             v15 = *(uint32_t *) a2 & 0x7F800000;

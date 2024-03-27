@@ -20,11 +20,8 @@ namespace NTempest {
         }
 
         int FromAxisAngle(float a2) {
-            int result;
-            float v3;
-
-            sinf(*(float *) &this);
-            v3 = cosf(*(float *) &this);
+            sinf(x);
+            v3 = cosf(x);
             *(float *) &result = a2 * v3;
             return result;
         }
