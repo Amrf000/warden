@@ -27,12 +27,14 @@ file(GLOB_RECURSE dir_src
         "Services/*.cpp"
         "Scrn/*.h"
         "Scrn/*.cpp"
+        "Glue/*.h"
+        "Glue/*.cpp"
+        "Event/*.h"
+        "Event/*.cpp"
 )
 
 add_executable(warden main.cpp ${dir_src}
-        include/agile.h
-        Agile/CAsyncObject.cpp
-        Agile/CAsyncObject.h
-        Agile/CAsyncQueue.cpp
-        Agile/CAsyncQueue.h)
+        Event/Types.h
+        Common/TExtraInstanceRecycler.h
+        Common/TSPriorityQueue.h)
 target_include_directories(warden PRIVATE "include/")

@@ -17,5 +17,8 @@
 #include "../Common/HashObject/TSHashObject.h"
 #include "../Common/TSLinkedNode.h"
 #include "../Common/TSGetExplicitLink.h"
+#include "../Common/TSTimerPriority.h"
+#include "../Common/TExtraInstanceRecycler.h"
+#include "../Common/TSPriorityQueue.h"
 
 #endif //WARDEN_COMMON_H

@@ -4,30 +4,13 @@
 // Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
 // Vestibulum commodo. Ut rhoncus gravida arcu.
 
+#pragma once
 
+#include "CEvent.h"
+#include "Types.h"
 
-#ifndef WARDEN_CEVENT_H
-#define WARDEN_CEVENT_H
-
-
-#include "common.h"
-
-class CEvent : public TRefCnt {
+class CKeyEvent : public CEvent, public EVENT_DATA_KEY {
 public:
-    CEvent(unsigned int eventId, void *eventData);
-
-    CEvent(const CEvent &other);
-
-    CEvent &operator=(const CEvent &other);
-
-    virtual ~CEvent();
-
-    virtual void HeadFree();
-
-private:
-    unsigned int eventId;
-    void *eventData;
+    // Member functions
+    CKeyEvent &operator=(const EVENT_DATA_KEY &data);
 };
-
-
-#endif //WARDEN_CEVENT_H

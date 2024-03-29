@@ -1,16 +1,28 @@
-// Copyright (c) 2024. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-// Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-// Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-// Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-// Vestibulum commodo. Ut rhoncus gravida arcu.
-
-#ifndef WCMINI_CSBASEPRIORITYQUEUE_H
-#define WCMINI_CSBASEPRIORITYQUEUE_H
+#pragma once
 
 
-class CSBasePriorityQueue {
+#include <cstdint>
+#include "TSGrowableArray.h"
+
+class CSBasePriority;
+
+class CSBasePriorityQueue : public TSGrowableArray<void *, TSCD<void *>> {
 public:
+    // Member variables
+    uint32_t m_linkOffset;
+
+    // Member functions
+    void *Dequeue();
+
+    void Enqueue(void *val);
+
+    CSBasePriority *Link(uint32_t index) const;
+
+    void Remove(uint32_t index);
+
+    void SetLink(uint32_t index);
+
+    void *Top();
 };
 
 
-#endif //WCMINI_CSBASEPRIORITYQUEUE_H

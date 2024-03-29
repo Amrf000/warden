@@ -1,25 +1,63 @@
-// Copyright (c) 2024. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-// Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-// Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-// Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-// Vestibulum commodo. Ut rhoncus gravida arcu.
-
-
-#ifndef WARDEN_TSLINK_H
-#define WARDEN_TSLINK_H
+#pragma once
 
 #include <cstdint>
 
 template<typename T>
 class TSLink {
 public:
-    TSLink<T> *NextLink(int linkoffset) {
-        T *nextLinkOffset = this->m_next;
-        if ((nextLinkOffset & 1) != 0 || !nextLinkOffset)
-            return reinterpret_cast<TSLink<T> *>(nextLinkOffset & 0xFFFFFFFE);
-        if (linkoffset < 0)
-            linkoffset = reinterpret_cast<uintptr_t>(this) - reinterpret_cast<uintptr_t>(this->m_prevlink->m_next);
-        return reinterpret_cast<TSLink<T> *>(nextLinkOffset + linkoffset);
+    TSLink() {
+        this->m_prevlink = nullptr;
+        this->m_next = nullptr;
+    }
+
+    ~TSLink() {
+        this->Unlink();
+    }
+
+    bool IsLinked() {
+        return this->m_next != nullptr;
+    }
+
+    T *Next() {
+        // Check for sentinel node (indicates list end)
+        return reinterpret_cast<intptr_t>(this->m_next) <= 0 ? nullptr : this->m_next;
+    }
+
+    TSLink<T> *NextLink(ptrdiff_t linkoffset) {
+        T *next = this->m_next;
+
+        if (reinterpret_cast<intptr_t>(next) <= 0) {
+            // End of list
+            return reinterpret_cast<TSLink<T> *>(~reinterpret_cast<uintptr_t>(next));
+        } else {
+            ptrdiff_t offset;
+
+            if (linkoffset < 0) {
+                offset = reinterpret_cast<uintptr_t>(this) - reinterpret_cast<uintptr_t>(this->m_prevlink->m_next);
+            } else {
+                offset = linkoffset;
+            }
+
+            return reinterpret_cast<TSLink<T> *>(reinterpret_cast<uintptr_t>(this->m_next) + offset);
+        }
+    }
+
+    T *Prev() {
+        return this->m_prevlink->m_prevlink->Next();
+    }
+
+    T *TSLink<T>::RawNext() {
+        return this->m_next;
+    }
+
+    void Unlink() {
+        if (this->m_prevlink) {
+            this->NextLink(-1)->m_prevlink = this->m_prevlink;
+            this->m_prevlink->m_next = this->m_next;
+
+            this->m_prevlink = nullptr;
+            this->m_next = nullptr;
+        }
     }
 
 private:
@@ -27,4 +65,3 @@ private:
     T *m_next;
 };
 
-#endif //WARDEN_TSLINK_H
