@@ -1,3 +1,5 @@
+#pragma once
+
 #include "CSBasePriority.h"
 
 template<class T>

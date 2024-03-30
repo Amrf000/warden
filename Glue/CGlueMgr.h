@@ -1,8 +1,6 @@
-
-
 #pragma once
 
-#include "event.h"
+
 #include "Event/CEvent.h"
 #include "Net/Types.h"
 #include <cstdint>

@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "common.h"
+#include "Common/TRefCnt.h"
 
 class CPresenceRef : public TRefCnt {
 public:

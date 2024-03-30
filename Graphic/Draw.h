@@ -3,10 +3,10 @@
 #include "CGxBatch.h"
 #include "Types.h"
 #include <cstdint>
+#include <NTempest/CImVector.h>
+#include <NTempest/C3Vector.h>
 
-class C3Vector;
-
-class CImVector;
+using namespace NTempest;
 
 void GxDraw(CGxBatch *batch, int32_t indexed);
 

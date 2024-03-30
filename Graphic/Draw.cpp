@@ -1,13 +1,12 @@
-#include "gx/Buffer.h"
-#include "gx/Draw.h"
-#include "gx/Device.h"
-#include <bc/Debug.h>
+#include "Draw.h"
+#include "CGxBatch.h"
+#include "Device.h"
 
-void GxDraw(CGxBatch* batch, int32_t indexed) {
+void GxDraw(CGxBatch *batch, int32_t indexed) {
     g_theGxDevicePtr->Draw(batch, indexed);
 }
 
-void GxDrawLockedElements(EGxPrim primType, uint32_t indexCount, const uint16_t* indices) {
+void GxDrawLockedElements(EGxPrim primType, uint32_t indexCount, const uint16_t *indices) {
     if (Buffer::s_lockVertexCount == 0) {
         return;
     }
@@ -35,12 +34,12 @@ void GxScenePresent(uint32_t a2) {
 }
 
 void GxSub682A00() {
-    C3Vector v2 = { 0.0f, 0.0f, 0.0f };
+    C3Vector v2 = {0.0f, 0.0f, 0.0f};
     GxuFlushDrawList(GxuCat_2, v2);
 
     GxScenePresent(0);
 }
 
-void GxuFlushDrawList(EGxuDrawListCategory a1, const C3Vector& a2) {
+void GxuFlushDrawList(EGxuDrawListCategory a1, const C3Vector &a2) {
     // TODO
 }

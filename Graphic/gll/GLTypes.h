@@ -1,9 +1,10 @@
 #pragma once
 
 #include <cstdint>
-#include <OpenGL/gl.h>
+#include <GL/gl.h>
 
 class GLBuffer;
+
 class GLFramebuffer;
 
 enum GLTextureFormat {
@@ -62,7 +63,7 @@ enum GLBufferType {
 };
 
 struct GLAttachPoint {
-    GLFramebuffer* framebuffer;
+    GLFramebuffer *framebuffer;
     int32_t point; // TODO GLenum?
     int32_t zOffset; // TODO check type
 };
@@ -139,8 +140,11 @@ struct GLTransform {
     bool isIdentity;
 
     bool operator==(const float m[16]) const;
+
     bool operator!=(const float m[16]) const;
+
     void Set(const float m[16]);
+
     void SetIdentity();
 };
 
@@ -339,8 +343,8 @@ struct GLStates {
             int32_t type = GL_FLOAT;
             bool normalized = 0;
             uint32_t stride = 0;
-            void* offset = nullptr;
-            GLBuffer* buffer = nullptr;
+            void *offset = nullptr;
+            GLBuffer *buffer = nullptr;
         };
 
         uint32_t buffers[4] = {};

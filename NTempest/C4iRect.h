@@ -1,6 +1,3 @@
-
-
-
 #pragma once
 namespace NTempest {
     class C4iRect {

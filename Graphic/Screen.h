@@ -3,6 +3,7 @@
 #include <cstdint>
 #include "Agile/CHandleObject.h"
 #include "Common/TSLink.h"
+#include "Storm/Handle.h"
 
 
 typedef HOBJECT HLAYER;
@@ -23,7 +24,7 @@ public:
 
     void (*paintfunc)(void *, const RECTF *, const RECTF *, float);
 
-    TSLink <CILayer> zorderlink;
+    TSLink<CILayer> zorderlink;
 };
 
 class CSRgn {

@@ -4,13 +4,15 @@
 #include "texture/CGxTex.h"
 #include "texture/CTexture.h"
 #include "Storm/Handle.h"
+#include <NTempest/CImVector.h>
+
+using namespace NTempest;
 
 typedef HOBJECT HTEXTURE;
 
 typedef void (TEXTURE_CALLBACK)(EGxTexCommand, uint32_t, uint32_t, uint32_t, uint32_t, void *, uint32_t &,
                                 const void *&);
 
-class CImVector;
 
 void AsyncTextureWait(CTexture *);
 

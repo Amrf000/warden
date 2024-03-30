@@ -5,24 +5,24 @@
 #include "event/Queue.h"
 #include "event/Scheduler.h"
 #include <common/Prop.h>
-#include <common/Time.h>
+
 
 SEvent Event::s_startEvent = SEvent(1, 0);
 SEvent Event::s_shutdownEvent = SEvent(1, 0);
 int32_t Event::s_netServer;
 int32_t Event::s_threadSlotCount;
-SCritSect* Event::s_threadSlotCritsects;
-EvtThread** Event::s_threadSlots;
+SCritSect *Event::s_threadSlotCritsects;
+EvtThread **Event::s_threadSlots;
 uint32_t Event::s_mainThread;
-TSGrowableArray<SThread*> Event::s_schedulerThreads;
-ATOMIC32 Event::s_threadListContention { -1 };
+TSGrowableArray<SThread *> Event::s_schedulerThreads;
+ATOMIC32 Event::s_threadListContention{-1};
 SCritSect Event::s_threadListCritsect;
 TSList<EvtThread, TSGetLink<EvtThread>> Event::s_threadList;
-EvtContext* Event::s_currentEvtContext;
+EvtContext *Event::s_currentEvtContext;
 ATOMIC32 Event::s_interactiveCount;
 
 #if defined(WHOA_SYSTEM_MAC)
-    bool Event::s_shouldLoopTerminate;
+bool Event::s_shouldLoopTerminate;
 #endif
 
 void OsNetPump(uint32_t timeout) {
@@ -61,7 +61,9 @@ int32_t EventIsShiftKeyDown() {
     return EventIsKeyDown(KEY_LSHIFT) || EventIsKeyDown(KEY_RSHIFT);
 }
 
-HEVENTCONTEXT EventCreateContextEx(int32_t interactive, int32_t (*initializeHandler)(const void*, void*), int32_t (*destroyHandler)(const void*, void*), uint32_t idleTime, uint32_t debugFlags) {
+HEVENTCONTEXT EventCreateContextEx(int32_t interactive, int32_t (*initializeHandler)(const void *, void *),
+                                   int32_t (*destroyHandler)(const void *, void *), uint32_t idleTime,
+                                   uint32_t debugFlags) {
     return IEvtSchedulerCreateContext(interactive, initializeHandler, destroyHandler, idleTime, debugFlags);
 }
 
@@ -83,12 +85,12 @@ void EventPostCloseEx(HEVENTCONTEXT contextHandle) {
     }
 
     if (contextHandle) {
-        uint32_t contextId = *reinterpret_cast<uint32_t*>(contextHandle);
+        uint32_t contextId = *reinterpret_cast<uint32_t *>(contextHandle);
         int32_t findMask;
-        EvtContext* context = TSingletonInstanceId<EvtContext, offsetof(EvtContext, m_id)>::s_idTable.Ptr(
-            contextId,
-            0,
-            &findMask
+        EvtContext *context = TSingletonInstanceId<EvtContext, offsetof(EvtContext, m_id)>::s_idTable.Ptr(
+                contextId,
+                0,
+                &findMask
         );
 
         if (context) {
@@ -102,8 +104,8 @@ void EventPostCloseEx(HEVENTCONTEXT contextHandle) {
 
             if (findMask != -1) {
                 TSingletonInstanceId<EvtContext, offsetof(EvtContext, m_id)>::s_idTable.Unlock(
-                    findMask & (INSTANCE_TABLE_SLOT_COUNT - 1),
-                    findMask >= INSTANCE_TABLE_SLOT_COUNT
+                        findMask & (INSTANCE_TABLE_SLOT_COUNT - 1),
+                        findMask >= INSTANCE_TABLE_SLOT_COUNT
                 );
             }
         }
@@ -114,7 +116,7 @@ void EventRegister(EVENTID id, EVENTHANDLERFUNC handler) {
     EventRegisterEx(id, handler, nullptr, 0.0f);
 }
 
-void EventRegisterEx(EVENTID id, EVENTHANDLERFUNC handler, void* param, float priority) {
+void EventRegisterEx(EVENTID id, EVENTHANDLERFUNC handler, void *param, float priority) {
     STORM_ASSERT(id >= 0);
     STORM_VALIDATE(id >= 0, ERROR_INVALID_PARAMETER);
     STORM_ASSERT(id < EVENTIDS);
@@ -124,13 +126,13 @@ void EventRegisterEx(EVENTID id, EVENTHANDLERFUNC handler, void* param, float pr
 
     HEVENTCONTEXT hContext = PropGet(PROP_EVENTCONTEXT);
 
-    uint32_t contextId = *reinterpret_cast<uint32_t*>(hContext);
+    uint32_t contextId = *reinterpret_cast<uint32_t *>(hContext);
     int32_t findMask;
 
-    EvtContext* context = TSingletonInstanceId<EvtContext, offsetof(EvtContext, m_id)>::s_idTable.Ptr(
-        contextId,
-        0,
-        &findMask
+    EvtContext *context = TSingletonInstanceId<EvtContext, offsetof(EvtContext, m_id)>::s_idTable.Ptr(
+            contextId,
+            0,
+            &findMask
     );
 
     if (context) {
@@ -138,8 +140,8 @@ void EventRegisterEx(EVENTID id, EVENTHANDLERFUNC handler, void* param, float pr
 
         if (findMask != -1) {
             TSingletonInstanceId<EvtContext, offsetof(EvtContext, m_id)>::s_idTable.Unlock(
-                findMask & (INSTANCE_TABLE_SLOT_COUNT - 1),
-                findMask >= INSTANCE_TABLE_SLOT_COUNT
+                    findMask & (INSTANCE_TABLE_SLOT_COUNT - 1),
+                    findMask >= INSTANCE_TABLE_SLOT_COUNT
             );
         }
     }

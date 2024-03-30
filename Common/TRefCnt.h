@@ -1,12 +1,11 @@
-#ifndef COMMON_REF_T_REF_CNT_HPP
-#define COMMON_REF_T_REF_CNT_HPP
+#pragma once
 
 #include <cstdint>
 
 class TRefCnt {
-    public:
+public:
     // Member variables
     uint32_t m_refcnt;
 };
 
-#endif
+

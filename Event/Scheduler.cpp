@@ -9,16 +9,12 @@
 #include "event/Timer.h"
 #include <algorithm>
 #include <cstring>
-#include <common/Call.h>
 #include <common/Prop.h>
-#include <common/Time.h>
 #include <storm/Memory.h>
 #include <storm/String.h>
 #include <storm/Thread.h>
 
-#if defined(WHOA_SYSTEM_MAC)
-    #include "event/mac/Event.h"
-#endif
+
 
 void DestroySchedulerThread(uint32_t a1) {
     // TODO

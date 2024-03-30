@@ -147,8 +147,8 @@ public:
         *__x_12 = v3;
         return result;
     }
-}
 };
+}
 
 
 

@@ -1,16 +1,16 @@
 #include "event/Context.h"
 #include "event/Event.h"
 #include "event/EvtThread.h"
-#include <common/Time.h>
+#include "Storm/Time.h"
 #include <storm/Atomic.h>
 
-HEVENTCONTEXT AttachContextToThread(EvtContext* context) {
+HEVENTCONTEXT AttachContextToThread(EvtContext *context) {
     SInterlockedIncrement(&Event::s_threadListContention);
     Event::s_threadListCritsect.Enter();
 
     // Select the thread with the highest weight total
-    EvtThread* thread = nullptr;
-    EvtThread* t = Event::s_threadList.Head();
+    EvtThread *thread = nullptr;
+    EvtThread *t = Event::s_threadList.Head();
 
     while (t) {
         if (!thread || t->m_weightTotal < thread->m_weightTotal) {
@@ -53,12 +53,12 @@ HEVENTCONTEXT AttachContextToThread(EvtContext* context) {
     return context;
 }
 
-void DetachContextFromThread(uint32_t a1, EvtContext* a2) {
+void DetachContextFromThread(uint32_t a1, EvtContext *a2) {
     // TODO
 }
 
-EvtContext* GetNextContext(uint32_t hThread) {
-    EvtContext* context;
+EvtContext *GetNextContext(uint32_t hThread) {
+    EvtContext *context;
 
     Event::s_threadSlotCritsects[hThread].Enter();
 
@@ -73,7 +73,7 @@ EvtContext* GetNextContext(uint32_t hThread) {
     return context;
 }
 
-void PutContext(uint32_t nextWakeTime, uint32_t newSmoothWeight, EvtContext* context, uint32_t hThread) {
+void PutContext(uint32_t nextWakeTime, uint32_t newSmoothWeight, EvtContext *context, uint32_t hThread) {
     if (nextWakeTime != context->m_schedNextWakeTime.m_val) {
         context->m_schedNextWakeTime.m_val = nextWakeTime;
         context->m_schedNextWakeTime.Relink();

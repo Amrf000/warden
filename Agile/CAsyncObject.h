@@ -1,7 +1,8 @@
 #pragma once
 
-#include "common.h"
+
 #include <cstdint>
+#include "Common/TSLink.h"
 
 class CAsyncQueue;
 
