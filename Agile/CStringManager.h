@@ -1,16 +1,27 @@
-// Copyright (c) 2024. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-// Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-// Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-// Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-// Vestibulum commodo. Ut rhoncus gravida arcu.
+#pragma once
 
-#include "TAllocatorHashTable.h"
-#include "CStringRep.h"
-#include "HASHKEY_STR.h"
+#include "CStringMemory.h"
 
-class CStringManager : public TAllocatorHashTable<CStringRep, HASHKEY_STR, 1024> {
+#define C_STRING_MANAGER_BUCKETS 521
+
+struct CStringElement;
+
+class CStringManager {
 public:
+    // Static variables
+    static CStringManager *s_stringManager;
+
+    // Static functions
+    static CStringManager *Get();
+
+    // Member variables
+    CStringElement *m_buckets[C_STRING_MANAGER_BUCKETS];
+    CStringMemory m_memory;
+
+    // Member functions
     CStringManager();
 
-    static CStringManager *getInstance();
+    char *Add(const char *str);
 };
+
+

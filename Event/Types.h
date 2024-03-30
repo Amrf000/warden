@@ -1,55 +1,48 @@
-// Copyright (c) 2024. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-// Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-// Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-// Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-// Vestibulum commodo. Ut rhoncus gravida arcu.
-
 #pragma once
 
 #include <cstdint>
 
-typedef void *HEVENTCONTEXT;
-
-typedef int32_t (*EVENTHANDLERFUNC)(const void *, void *);
+typedef void* HEVENTCONTEXT;
+typedef int32_t (*EVENTHANDLERFUNC)(const void*, void*);
 
 enum EVENTID {
-    EVENT_ID_0 = 0,
-    EVENT_ID_CHAR = 1,
-    EVENT_ID_FOCUS = 2,
-    EVENT_ID_3 = 3,
-    EVENT_ID_DESTROY = 4,
-    EVENT_ID_5 = 5,
-    EVENT_ID_IDLE = 6,
-    EVENT_ID_POLL = 7,
-    EVENT_ID_INITIALIZE = 8,
-    EVENT_ID_KEYDOWN = 9,
-    EVENT_ID_KEYUP = 10,
-    EVENT_ID_KEYDOWN_REPEATING = 11,
-    EVENT_ID_MOUSEDOWN = 12,
-    EVENT_ID_MOUSEMOVE = 13,
+    EVENT_ID_0                  = 0,
+    EVENT_ID_CHAR               = 1,
+    EVENT_ID_FOCUS              = 2,
+    EVENT_ID_3                  = 3,
+    EVENT_ID_DESTROY            = 4,
+    EVENT_ID_5                  = 5,
+    EVENT_ID_IDLE               = 6,
+    EVENT_ID_POLL               = 7,
+    EVENT_ID_INITIALIZE         = 8,
+    EVENT_ID_KEYDOWN            = 9,
+    EVENT_ID_KEYUP              = 10,
+    EVENT_ID_KEYDOWN_REPEATING  = 11,
+    EVENT_ID_MOUSEDOWN          = 12,
+    EVENT_ID_MOUSEMOVE          = 13,
     EVENT_ID_MOUSEMOVE_RELATIVE = 14,
-    EVENT_ID_MOUSEUP = 15,
-    EVENT_ID_MOUSEMODE_CHANGED = 16,
-    EVENT_ID_MOUSEWHEEL = 17,
-    EVENT_ID_18 = 18,
-    EVENT_ID_19 = 19,
-    EVENT_ID_20 = 20,
-    EVENT_ID_21 = 21,
-    EVENT_ID_22 = 22,
-    EVENT_ID_PAINT = 23,
-    EVENT_ID_NET_DATA = 24,
-    EVENT_ID_NET_CONNECT = 25,
-    EVENT_ID_NET_DISCONNECT = 26,
-    EVENT_ID_NET_CANTCONNECT = 27,
-    EVENT_ID_NET_DESTROY = 28,
+    EVENT_ID_MOUSEUP            = 15,
+    EVENT_ID_MOUSEMODE_CHANGED  = 16,
+    EVENT_ID_MOUSEWHEEL         = 17,
+    EVENT_ID_18                 = 18,
+    EVENT_ID_19                 = 19,
+    EVENT_ID_20                 = 20,
+    EVENT_ID_21                 = 21,
+    EVENT_ID_22                 = 22,
+    EVENT_ID_PAINT              = 23,
+    EVENT_ID_NET_DATA           = 24,
+    EVENT_ID_NET_CONNECT        = 25,
+    EVENT_ID_NET_DISCONNECT     = 26,
+    EVENT_ID_NET_CANTCONNECT    = 27,
+    EVENT_ID_NET_DESTROY        = 28,
     EVENT_ID_NET_AUTH_CHALLENGE = 29,
-    EVENT_ID_30 = 30,
-    EVENT_ID_31 = 31,
-    EVENT_ID_32 = 32,
-    EVENT_ID_33 = 33,
-    EVENT_ID_IME = 34,
-    EVENT_ID_SIZE = 35,
-    EVENTIDS = 36
+    EVENT_ID_30                 = 30,
+    EVENT_ID_31                 = 31,
+    EVENT_ID_32                 = 32,
+    EVENT_ID_33                 = 33,
+    EVENT_ID_IME                = 34,
+    EVENT_ID_SIZE               = 35,
+    EVENTIDS                    = 36
 };
 
 enum KEY {
@@ -167,58 +160,58 @@ enum KEY {
 };
 
 enum MOUSEBUTTON {
-    MOUSE_BUTTON_NONE = 0x0,
-    MOUSE_BUTTON_LEFT = 0x1,
-    MOUSE_BUTTON_MIDDLE = 0x2,
-    MOUSE_BUTTON_RIGHT = 0x4,
-    MOUSE_BUTTON_XBUTTON1 = 0x8,
-    MOUSE_BUTTON_XBUTTON2 = 0x10,
-    MOUSE_BUTTON_XBUTTON3 = 0x20,
-    MOUSE_BUTTON_XBUTTON4 = 0x40,
-    MOUSE_BUTTON_XBUTTON5 = 0x80,
-    MOUSE_BUTTON_XBUTTON6 = 0x100,
-    MOUSE_BUTTON_XBUTTON7 = 0x200,
-    MOUSE_BUTTON_XBUTTON8 = 0x400,
-    MOUSE_BUTTON_XBUTTON9 = 0x800,
-    MOUSE_BUTTON_XBUTTON10 = 0x1000,
-    MOUSE_BUTTON_XBUTTON11 = 0x2000,
-    MOUSE_BUTTON_XBUTTON12 = 0x4000,
-    MOUSE_BUTTON_ALL = 0xFFFFFFFF
+    MOUSE_BUTTON_NONE               = 0x0,
+    MOUSE_BUTTON_LEFT               = 0x1,
+    MOUSE_BUTTON_MIDDLE             = 0x2,
+    MOUSE_BUTTON_RIGHT              = 0x4,
+    MOUSE_BUTTON_XBUTTON1           = 0x8,
+    MOUSE_BUTTON_XBUTTON2           = 0x10,
+    MOUSE_BUTTON_XBUTTON3           = 0x20,
+    MOUSE_BUTTON_XBUTTON4           = 0x40,
+    MOUSE_BUTTON_XBUTTON5           = 0x80,
+    MOUSE_BUTTON_XBUTTON6           = 0x100,
+    MOUSE_BUTTON_XBUTTON7           = 0x200,
+    MOUSE_BUTTON_XBUTTON8           = 0x400,
+    MOUSE_BUTTON_XBUTTON9           = 0x800,
+    MOUSE_BUTTON_XBUTTON10          = 0x1000,
+    MOUSE_BUTTON_XBUTTON11          = 0x2000,
+    MOUSE_BUTTON_XBUTTON12          = 0x4000,
+    MOUSE_BUTTON_ALL                = 0xFFFFFFFF
 };
 
 enum MOUSEMODE {
-    MOUSE_MODE_NORMAL = 0x0,
-    MOUSE_MODE_RELATIVE = 0x1,
-    MOUSE_MODES = 0x2
+    MOUSE_MODE_NORMAL               = 0x0,
+    MOUSE_MODE_RELATIVE             = 0x1,
+    MOUSE_MODES                     = 0x2
 };
 
 enum OSINPUT {
-    OS_INPUT_CAPTURE_CHANGED = 0,
-    OS_INPUT_CHAR = 1,
-    OS_INPUT_STRING = 2,
-    OS_INPUT_IME = 3,
-    OS_INPUT_SIZE = 4,
-    OS_INPUT_CLOSE = 5,
-    OS_INPUT_FOCUS = 6,
-    OS_INPUT_KEY_DOWN = 7,
-    OS_INPUT_KEY_UP = 8,
-    OS_INPUT_MOUSE_DOWN = 9,
-    OS_INPUT_MOUSE_MOVE = 10,
-    OS_INPUT_MOUSE_WHEEL = 11,
-    OS_INPUT_MOUSE_MOVE_RELATIVE = 12,
-    OS_INPUT_MOUSE_UP = 13,
-    OS_INPUT_14 = 14,
-    OS_INPUT_15 = 15,
-    OS_INPUT_16 = 16,
-    OS_INPUT_17 = 17,
-    OS_INPUT_18 = 18,
-    OS_INPUT_SHUTDOWN = 19
+    OS_INPUT_CAPTURE_CHANGED        = 0,
+    OS_INPUT_CHAR                   = 1,
+    OS_INPUT_STRING                 = 2,
+    OS_INPUT_IME                    = 3,
+    OS_INPUT_SIZE                   = 4,
+    OS_INPUT_CLOSE                  = 5,
+    OS_INPUT_FOCUS                  = 6,
+    OS_INPUT_KEY_DOWN               = 7,
+    OS_INPUT_KEY_UP                 = 8,
+    OS_INPUT_MOUSE_DOWN             = 9,
+    OS_INPUT_MOUSE_MOVE             = 10,
+    OS_INPUT_MOUSE_WHEEL            = 11,
+    OS_INPUT_MOUSE_MOVE_RELATIVE    = 12,
+    OS_INPUT_MOUSE_UP               = 13,
+    OS_INPUT_14                     = 14,
+    OS_INPUT_15                     = 15,
+    OS_INPUT_16                     = 16,
+    OS_INPUT_17                     = 17,
+    OS_INPUT_18                     = 18,
+    OS_INPUT_SHUTDOWN               = 19
 };
 
 enum OS_MOUSE_MODE {
-    OS_MOUSE_MODE_NORMAL = 0,
-    OS_MOUSE_MODE_RELATIVE = 1,
-    OS_MOUSE_MODES = 2,
+    OS_MOUSE_MODE_NORMAL            = 0,
+    OS_MOUSE_MODE_RELATIVE          = 1,
+    OS_MOUSE_MODES                  = 2,
 };
 
 struct OSEVENT {
@@ -264,3 +257,5 @@ struct EVENT_DATA_SIZE {
     int32_t w;
     int32_t h;
 };
+
+

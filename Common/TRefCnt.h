@@ -1,24 +1,12 @@
-#pragma once
+#ifndef COMMON_REF_T_REF_CNT_HPP
+#define COMMON_REF_T_REF_CNT_HPP
+
+#include <cstdint>
 
 class TRefCnt {
-public:
-    TRefCnt();
-
-//    TRefCnt(const TRefCnt &other);
-//
-//    TRefCnt &operator=(const TRefCnt &other);
-
-    virtual bool SafeRelease();
-
-    virtual ~TRefCnt();
-
-    virtual void HeadFree();
-
-    void DecrRef();
-
-private:
-    int refCount;
+    public:
+    // Member variables
+    uint32_t m_refcnt;
 };
 
-
-
+#endif

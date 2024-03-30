@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <cstdint>
 
 class CSBasePriorityQueue;
@@ -17,8 +16,6 @@ public:
     void Unlink();
 
     void Relink();
-
 };
-
 
 

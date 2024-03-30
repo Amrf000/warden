@@ -1,12 +1,11 @@
 #pragma once
 
-
 #include <cstdint>
 #include "TSGrowableArray.h"
 
 class CSBasePriority;
 
-class CSBasePriorityQueue : public TSGrowableArray<void *, TSCD<void *>> {
+class CSBasePriorityQueue : public TSGrowableArray<void *> {
 public:
     // Member variables
     uint32_t m_linkOffset;

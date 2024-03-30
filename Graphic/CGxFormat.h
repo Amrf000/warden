@@ -1,10 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include "NTempest.h"
-
-
-using namespace NTempest;
+#include <NTempest/Vector.h>
 
 class CGxFormat {
 public:
@@ -33,4 +30,5 @@ public:
     uint32_t vsync;
     C2iVector pos;
 };
+
 

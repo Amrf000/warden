@@ -1,10 +1,5 @@
-// Copyright (c) 2024. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-// Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-// Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-// Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-// Vestibulum commodo. Ut rhoncus gravida arcu.
-
 #include "CSBasePriorityQueue.h"
+#include "CSBasePriority.h"
 
 void *CSBasePriorityQueue::Dequeue() {
     if (this->Count()) {
@@ -47,10 +42,6 @@ CSBasePriority *CSBasePriorityQueue::Link(uint32_t index) const {
             reinterpret_cast<uintptr_t>(this->m_data[index]) + this->m_linkOffset);
 }
 
-void CSBasePriorityQueue::Remove(uint32_t index) {
-    this->Link(index)->Unlink();
-}
-
 void CSBasePriorityQueue::SetLink(uint32_t index) {
     CSBasePriority *link = this->Link(index);
 
@@ -66,4 +57,8 @@ void *CSBasePriorityQueue::Top() {
     } else {
         return nullptr;
     }
+}
+
+void CSBasePriorityQueue::Remove(uint32_t index) {
+    this->Link(index)->Unlink();
 }

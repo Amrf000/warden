@@ -1,33 +1,19 @@
-// Copyright (c) 2024. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-// Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-// Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-// Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-// Vestibulum commodo. Ut rhoncus gravida arcu.
+
 
 //
 // Created by liuyawu on 2024/3/24.
 //
 
-#ifndef WARDEN_COMMON_H
-#define WARDEN_COMMON_H
+#pragma once
 
 #include "../Common/TSCD.h"
 #include "../Common/TRefCnt.h"
 #include "../Common/SoftFloat.h"
-#include "../Common/HashObject/TSHashObject.h"
 #include "../Common/TSLinkedNode.h"
 #include "../Common/TSGetExplicitLink.h"
 #include "../Common/TSTimerPriority.h"
 #include "../Common/TExtraInstanceRecycler.h"
 #include "../Common/TSPriorityQueue.h"
-#include "../Common/HashKey/HASHKEY_4CC.h"
-#include "../Common/HashKey/HASHKEY_CONSTSTR.h"
-#include "../Common/HashKey/HASHKEY_DWORD.h"
-#include "../Common/HashKey/HASHKEY_NONE.h"
-#include "../Common/HashKey/HASHKEY_STR.h"
-#include "../Common/HashKey/HASHKEY_STRI.h"
-#include "../Common/HashKey/HASHKEY_STRIPACKED.h"
-#include "../Common/HashKey/HASHKEY_STRI_P.h"
 #include "../Common/TSHashTable.h"
 
-#endif //WARDEN_COMMON_H
+

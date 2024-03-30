@@ -1,23 +1,38 @@
 #pragma once
 
-#include "common.h"
+#include "event/Types.h"
 #include <cstdint>
+
 
 class CEvent : public TRefCnt {
 public:
-    CEvent(unsigned int eventId, void *eventData);
+    // Member variables
+    uint32_t id;
+    void *param;
+};
 
-    CEvent(const CEvent &other);
+class CCharEvent : public CEvent, public EVENT_DATA_CHAR {
+public:
+    // Member functions
+    CCharEvent &operator=(const EVENT_DATA_CHAR &data);
+};
 
-    CEvent &operator=(const CEvent &other);
+class CKeyEvent : public CEvent, public EVENT_DATA_KEY {
+public:
+    // Member functions
+    CKeyEvent &operator=(const EVENT_DATA_KEY &data);
+};
 
-    virtual ~CEvent();
+class CMouseEvent : public CEvent, public EVENT_DATA_MOUSE {
+public:
+    // Member functions
+    CMouseEvent &operator=(const EVENT_DATA_MOUSE &data);
+};
 
-    virtual void HeadFree();
-
-private:
-    uint32_t eventId;
-    void *eventData;
+class CSizeEvent : public CEvent, public EVENT_DATA_SIZE {
+public:
+    // Member functions
+    CSizeEvent &operator=(const EVENT_DATA_SIZE &data);
 };
 
 

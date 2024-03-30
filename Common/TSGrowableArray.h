@@ -1,85 +1,155 @@
 #pragma once
 
-#include "TSCD.h"
+
+#include <algorithm>
+#include <cstdint>
+#include <cstring>
+#include <new>
 #include "TSFixedArray.h"
 
-template<typename T, typename tscd>
-class TSGrowableArray : public TSFixedArray<T, tscd> {
+template<class T>
+class TSGrowableArray : public TSFixedArray<T> {
 public:
-    TSGrowableArray() : incrementBatchSize(0) {
+    uint32_t m_chunk = 0;
 
-    }
+    uint32_t Add(uint32_t count, const T *data);
 
-    TSGrowableArray(const TSGrowableArray &that) : TSFixedArray<T, tscd>(that),
-                                                   incrementBatchSize(that.incrementBatchSize) {
-    }
+    uint32_t Add(uint32_t count, uint32_t incr, const T *data);
 
-    void Add(unsigned int lengthOfData, T *data) {
-        this->Reserve(lengthOfData, true);
-        for (unsigned int i = 0; i < lengthOfData; ++i)
-            tscd::CopyConstruct(&this->data[this->cnt + i], data++);
-        this->cnt += lengthOfData;
-    }
+    uint32_t CalcChunkSize(uint32_t count);
 
-    void GrowToFit(unsigned int newCnt, bool clean) {
-        unsigned int cnt = this->cnt;
-        if (cnt <= newCnt) {
-            Reserve(newCnt - cnt + 1, 1);
-            if (clean) {
-                if ((sizeof(T) * (newCnt - cnt + 1)) <= 0) {
+    void GrowToFit(uint32_t index, int32_t zero);
 
-                } else {
-                    memset(&this->data[cnt], 0, sizeof(T) * (newCnt - cnt + 1));
-                }
-            }
-            this->cnt = newCnt + 1;
-        }
-    }
+    T *New(void);
 
-    void SetCount(unsigned int newCnt) {
-        unsigned int cnt = this->cnt;
-        if (cnt >= newCnt) {
-        } else {
-            this->Reserve(newCnt - cnt, true);
-        }
-        this->cnt = newCnt;
-    }
+    void Reserve(uint32_t count, int32_t round);
 
-    void Reserve(int addSize, bool positive) {
-        unsigned int newCnt = addSize + this->cnt;
-        if (newCnt > this->capacity) {
-            if (!positive) {
-                this->ReallocData(newCnt);
-                return;
-            }
+    uint32_t Reserved() const;
 
-            unsigned int batchSize = this->incrementBatchSize;
-            if (!batchSize) {
-                if (newCnt > 0x3F) {
-                    this->incrementBatchSize = 64;
-                    newCnt += (64 - (newCnt & 0x3F)) & 0x3F;
-                } else {
-                    while (newCnt & (newCnt - 1))
-                        newCnt &= newCnt - 1;
-                }
-            } else {
-                newCnt += batchSize - (newCnt % batchSize);
-            }
-        }
+    uint32_t RoundToChunk(uint32_t count, uint32_t chunk);
 
-        this->ReallocData(newCnt);
-    }
-
-    T *New() {
-        this->Reserve(1, true);
-        unsigned int cnt = this->cnt;
-        auto ret = &this->data[cnt];
-        this->cnt = cnt + 1;
-        return ret;
-    }
-
-private:
-    int incrementBatchSize;
+    void SetCount(uint32_t count);
 };
+
+template<class T>
+uint32_t TSGrowableArray<T>::Add(uint32_t count, const T *data) {
+    this->Reserve(count, 1);
+
+    for (uint32_t i = 0; i < count; i++) {
+        T *element = &this->m_data[this->m_count + i];
+        *element = data[i];
+    }
+
+    this->m_count += count;
+    return this->m_count - count;
+}
+
+template<class T>
+uint32_t TSGrowableArray<T>::Add(uint32_t count, uint32_t incr, const T *data) {
+    this->Reserve(count, 1);
+
+    const char *dataptr = reinterpret_cast<const char *>(data);
+
+    for (uint32_t i = 0; i < count; i++) {
+        T *element = &this->m_data[this->m_count + i];
+        *element = *reinterpret_cast<const T *>(dataptr);
+        dataptr += incr;
+    }
+
+    this->m_count += count;
+    return this->m_count - count;
+}
+
+template<class T>
+uint32_t TSGrowableArray<T>::CalcChunkSize(uint32_t count) {
+    uint32_t maxChunk = std::max(static_cast<int32_t>(256 / sizeof(T)), 8);
+
+    if (count >= maxChunk) {
+        this->m_chunk = maxChunk;
+        return maxChunk;
+    }
+
+    uint32_t result = count;
+
+    for (uint32_t i = count & (count - 1); i; i &= i - 1) {
+        result = i;
+    }
+
+    if (result < 1) {
+        result = 1;
+    }
+
+    return result;
+}
+
+template<class T>
+void TSGrowableArray<T>::GrowToFit(uint32_t index, int32_t zero) {
+    uint32_t count = this->m_count;
+
+    if (index >= count) {
+        this->Reserve(index - count + 1, 1);
+
+        if (zero) {
+            memset(&this->m_data[count], 0, sizeof(T) * (index - count + 1));
+        }
+
+        this->m_count = index + 1;
+    }
+}
+
+template<class T>
+T *TSGrowableArray<T>::New() {
+    this->Reserve(1, 1);
+    void *element = &this->m_data[this->m_count++];
+    return new(element) T();
+}
+
+template<class T>
+void TSGrowableArray<T>::Reserve(uint32_t count, int32_t round) {
+    if (count + this->m_count > this->m_alloc) {
+        if (round) {
+            uint32_t chunk = this->m_chunk;
+
+            if (!chunk) {
+                chunk = this->CalcChunkSize(count + this->m_count);
+            }
+
+            count = this->RoundToChunk(count, chunk);
+        }
+
+        this->ReallocData(count + this->m_count);
+    }
+}
+
+template<class T>
+uint32_t TSGrowableArray<T>::Reserved() const {
+    return this->m_alloc - this->m_count;
+}
+
+template<class T>
+uint32_t TSGrowableArray<T>::RoundToChunk(uint32_t count, uint32_t chunk) {
+    if (count % chunk) {
+        return chunk - count % chunk + count;
+    } else {
+        return count;
+    }
+}
+
+template<class T>
+void TSGrowableArray<T>::SetCount(uint32_t count) {
+    if (count > this->m_count) {
+        // Expand size
+        this->Reserve(count - this->m_count, 1);
+
+        T *element;
+
+        for (uint32_t i = this->m_count; i < count; ++i) {
+            element = &this->m_data[i];
+            new(element) T();
+        }
+    }
+
+    this->m_count = count;
+}
 
 

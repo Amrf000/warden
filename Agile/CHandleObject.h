@@ -1,25 +1,14 @@
 #pragma once
-#include "HeapManager.h"
 
-class CHandleObject
-{
+
+#include <cstdint>
+
+class CHandleObject {
 public:
-	virtual void Release()
-	{
+    // Member variables
+    int32_t m_refcount = 0;
 
-	}
-	virtual int HeapRelease()
-	{
-		::HeapRelease(this);
-	}
-	virtual void SafeHeapRelease()
-	{
-		if (this)
-			this->HeapRelease();
-	}
-	virtual int ObjectId()
-	{
-		return 0;
-	}
+    // Virtual member functions
+    virtual ~CHandleObject() = default;
 };
 

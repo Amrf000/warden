@@ -4,11 +4,16 @@
 #include <cstddef>
 #include <cstdint>
 
-template<typename T>
+template<class T>
 class TSGetExplicitLink {
-    TSLink<T> *Link(const void *nodeptr, ptrdiff_t linkoffset) {
-        return reinterpret_cast<TSLink<T> *>((reinterpret_cast<uintptr_t>(nodeptr) + linkoffset));
-    }
+public:
+    // Static functions
+    static TSLink<T> *Link(const void *nodeptr, ptrdiff_t linkoffset);
 };
+
+template<class T>
+TSLink<T> *TSGetExplicitLink<T>::Link(const void *nodeptr, ptrdiff_t linkoffset) {
+    return reinterpret_cast<TSLink<T> *>((reinterpret_cast<uintptr_t>(nodeptr) + linkoffset));
+}
 
 

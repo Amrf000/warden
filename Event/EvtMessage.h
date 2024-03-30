@@ -1,17 +1,15 @@
-// Copyright (c) 2024. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-// Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-// Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-// Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-// Vestibulum commodo. Ut rhoncus gravida arcu.
-
 #pragma once
 
-#include "common.h"
+#include "event/Types.h"
+#include <common/Instance.h>
+#include <storm/List.h>
 
-class EvtMessage : public TExtraInstanceRecycler<EvtMessage> {
-public:
-    // Member variables
-    TSLink<EvtMessage> link;
-    EVENTID id;
-    char data[4];
+class EvtMessage : public TExtraInstanceRecyclable<EvtMessage> {
+    public:
+        // Member variables
+        TSLink<EvtMessage> link;
+        EVENTID id;
+        char data[4];
 };
+
+

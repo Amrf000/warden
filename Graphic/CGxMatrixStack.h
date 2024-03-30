@@ -1,9 +1,10 @@
 #pragma once
 
 #include <cstdint>
-#include "NTempest.h"
+#include <NTempest/C44Matrix.h>
 
 using namespace NTempest;
+
 
 class CGxMatrixStack {
 public:
@@ -29,6 +30,5 @@ public:
 
     const C44Matrix &TopConst();
 };
-
 
 

@@ -1,32 +1,40 @@
-// Copyright (c) 2024. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-// Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-// Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-// Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-// Vestibulum commodo. Ut rhoncus gravida arcu.
+#include "event/CEvent.h"
+#include "gx/Coordinate.h"
 
+CCharEvent& CCharEvent::operator=(const EVENT_DATA_CHAR& data) {
+    this->ch = data.ch;
+    this->metaKeyState = data.metaKeyState;
+    this->repeat = data.repeat;
 
-#include "CEvent.h"
-#include "../Storm/memory.h"
-
-CEvent::CEvent(unsigned int eventId, void *eventData) : eventId(eventId), eventData(eventData) {}
-
-CEvent::CEvent(const CEvent &other) : TRefCnt(other), eventId(other.eventId), eventData(other.eventData) {}
-
-CEvent &CEvent::operator=(const CEvent &other) {
-    if (this != &other) {
-        TRefCnt::operator=(other);
-        eventId = other.eventId;
-        eventData = other.eventData;
-    }
     return *this;
 }
 
-CEvent::~CEvent() {
+CKeyEvent& CKeyEvent::operator=(const EVENT_DATA_KEY& data) {
+    this->key = data.key;
+    this->metaKeyState = data.metaKeyState;
+    this->repeat = data.repeat;
+    this->time = data.time;
 
+    return *this;
 }
 
-void CEvent::HeadFree() {
-    if (this) {
-        DeallocateMemory(this);
-    }
+CMouseEvent& CMouseEvent::operator=(const EVENT_DATA_MOUSE& data) {
+    this->mode = data.mode;
+    this->button = data.button;
+    this->buttonState = data.buttonState;
+    this->metaKeyState = data.metaKeyState;
+    this->flags = data.flags;
+    this->time = data.time;
+    this->wheelDistance = data.wheelDistance;
+
+    NDCToDDC(data.x, data.y, &this->x, &this->y);
+
+    return *this;
+}
+
+CSizeEvent& CSizeEvent::operator=(const EVENT_DATA_SIZE& data) {
+    this->w = data.w;
+    this->h = data.h;
+
+    return *this;
 }

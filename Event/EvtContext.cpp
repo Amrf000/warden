@@ -1,11 +1,30 @@
-// Copyright (c) 2024. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-// Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-// Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-// Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-// Vestibulum commodo. Ut rhoncus gravida arcu.
+#include "event/EvtContext.h"
+#include <common/Time.h>
 
-//
-// Created by liuyawu on 2024/3/29.
-//
+EvtContext::EvtContext(uint32_t flags, uint32_t idleTime, uint32_t schedWeight, void* callContext, int32_t startWatchdog) :
+    TSingletonInstanceId<EvtContext, offsetof(TInstanceId<EvtContext>, m_id)>(),
+    m_critsect(),
+    m_schedNextWakeTime(),
+    m_queueHandlerList(),
+    m_queueMessageList(),
+    m_queueSyncKeyDownList()
+    // TODO
+    // m_timerIdTable()
+{
+    this->m_currTime = 0;
+    this->m_schedState = SCHEDSTATE_ACTIVE;
+    this->m_schedLastIdle = OsGetAsyncTimeMs();
+    this->m_schedFlags = flags;
+    this->m_schedIdleTime = idleTime;
+    this->m_schedInitialIdleTime = idleTime;
+    this->m_schedWeight = schedWeight;
+    this->m_schedSmoothWeight = schedWeight;
+    this->m_schedRebalance = 0;
+    this->m_queueSyncButtonState = 0;
+    this->m_propContext = PropCreateContext();
+    this->m_callContext = callContext;
+    this->m_startWatchdog = startWatchdog;
+}
 
-#include "EvtContext.h"
+EvtContextQueue::EvtContextQueue() : TSPriorityQueue<EvtContext>(offsetof(EvtContext, m_schedNextWakeTime)) {
+}

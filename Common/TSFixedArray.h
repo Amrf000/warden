@@ -1,99 +1,128 @@
 #pragma once
 
-#include "TSCD.h"
+#include "Storm/Memory.h"
 #include "TSBaseArray.h"
-#include "../Storm/memory.h"
+#include <cstdint>
 
-template<typename T, typename tscd>
+template<class T>
 class TSFixedArray : public TSBaseArray<T> {
 public:
-    TSFixedArray() {
-        this->capacity = 0;
-        this->cnt = 0;
-        this->data = 0;
-    }
+    TSFixedArray();
 
-    TSFixedArray(const TSFixedArray &that) {
-        this->capacity = 0;
-        this->cnt = 0;
-        this->data = 0;
-        Set(that.cnt, that.Ptr());
-    }
+    ~TSFixedArray();
 
-    ~TSFixedArray() {
-        if (this->data)
-            DeallocateMemory(this->data);
-    }
+    TSFixedArray<T> &operator=(const TSFixedArray<T> &source);
 
-    TSFixedArray &operator=(const TSFixedArray &that) {
-        if (this != &that) {
-            Set(that.cnt, that.Ptr());
-        }
-        return *this;
-    }
+    void Clear();
 
-    void Zero() {
-        if (sizeof(T) * this->cnt > 0) {
-            memset(this->data, 0, sizeof(T) * this->cnt);
-        }
-    }
+    void ReallocAndClearData(uint32_t count);
 
-    virtual void SetCount(unsigned int newCnt) {
-        if (this->cnt != newCnt) {
-            if (newCnt) {
-                ReallocData(newCnt);
-                this->cnt = newCnt;
-            } else {
-                Clear(this);
-            }
-        }
-    }
+    void ReallocData(uint32_t count);
 
-    unsigned int Set(unsigned int lenOfData, T *data) {
-        ReallocAndClearData(lenOfData);
-        for (unsigned int i = 0; i < lenOfData; ++i)
-            tscd::CopyConstruct(&this->data[i], data++);
-        this->cnt = lenOfData;
-    }
+    void Set(uint32_t count, const T *data);
 
-    void ReallocData(unsigned int newCnt) {
-        unsigned int cnt = newCnt;
-        T *data = this->data;
-        this->capacity = newCnt;
-        void *v4 = ReallocMemoryEx(data, sizeof(T) * newCnt, "nothing", -2, 16);
-        this->data = v4;
-        if (!v4) {
-            this->data = SMemAlloc(sizeof(T) * newCnt, "nothing", -2, 0);
-            if (data) {
-                if (newCnt >= this->cnt)
-                    cnt = this->cnt;
-                unsigned int v8 = cnt;
-                unsigned int v5 = 0;
-                int v6 = 0;
-                while (v5 < v8) {
-                    tscd::CopyConstruct(&this->data[v6], &data[v6]);
-                    ++v5;
-                    v6 += sizeof(T);
-                }
-                DeallocateMemory(data);
-            }
-        }
-    }
-
-    void ReallocAndClearData(int elementSize) {
-        this->capacity = elementSize;
-        void *data = this->data;
-        if (data || elementSize) {
-            this->data = ReallocMemoryEx(data, sizeof(T) * elementSize, "nothing", -2, 0);
-        }
-    }
-
-    void Clear() {
-        this->~TSFixedArray();
-        this->capacity = 0;
-        this->cnt = 0;
-        this->data = 0;
-    }
+    void SetCount(uint32_t count);
 };
+
+template<class T>
+TSFixedArray<T>::TSFixedArray() {
+    this->Constructor();
+}
+
+template<class T>
+TSFixedArray<T>::~TSFixedArray() {
+    for (uint32_t i = 0; i < this->Count(); i++) {
+        auto element = &this->operator[](i);
+        element->~T();
+    }
+
+    if (this->Ptr()) {
+        SMemFree(this->Ptr(), this->MemFileName(), this->MemLineNo(), 0x0);
+    }
+}
+
+template<class T>
+TSFixedArray<T> &TSFixedArray<T>::operator=(const TSFixedArray<T> &source) {
+    if (this != &source) {
+        this->Set(source.Count(), source.Ptr());
+    }
+
+    return *this;
+}
+
+template<class T>
+void TSFixedArray<T>::Clear() {
+    this->~TSFixedArray<T>();
+    this->Constructor();
+}
+
+template<class T>
+void TSFixedArray<T>::ReallocAndClearData(uint32_t count) {
+    this->m_alloc = count;
+
+    if (this->m_data || count) {
+        void *m = SMemReAlloc(this->m_data, sizeof(T) * count, this->MemFileName(), this->MemLineNo(), 0x0);
+        this->m_data = static_cast<T *>(m);
+    }
+}
+
+template<class T>
+void TSFixedArray<T>::ReallocData(uint32_t count) {
+    T *oldData = this->m_data;
+
+    if (count < this->m_count) {
+        for (uint32_t i = count; i < this->m_count; i++) {
+            (&this->m_data[i])->~T();
+        }
+    }
+
+    this->m_alloc = count;
+
+    void *v6 = SMemReAlloc(oldData, sizeof(T) * count, nullptr, 0, 0x10);
+    this->m_data = (T *) v6;
+
+    if (!v6) {
+        this->m_data = (T *) SMemAlloc(sizeof(T) * count, nullptr, 0, 0x0);
+
+        if (oldData) {
+            uint32_t smallestCount = count >= this->m_count ? this->m_count : count;
+
+            for (uint32_t i = 0; i < smallestCount; i++) {
+                new(&this->m_data[i]) T(oldData[i]);
+                (&oldData[i])->~T();
+            }
+
+            SMemFree(oldData, nullptr, 0, 0x0);
+        }
+    }
+}
+
+template<class T>
+void TSFixedArray<T>::Set(uint32_t count, const T *data) {
+    this->ReallocAndClearData(count);
+
+    for (uint32_t i = 0; i < count; i++) {
+        new(&this->m_data[i]) T(data[i]);
+    }
+
+    this->m_count = count;
+}
+
+template<class T>
+void TSFixedArray<T>::SetCount(uint32_t count) {
+    if (count != this->m_count) {
+        if (count) {
+            this->ReallocData(count);
+
+            for (uint32_t i = this->m_count; i < count; i++) {
+                new(&this->m_data[i]) T();
+            }
+
+            this->m_count = count;
+        } else {
+            this->Clear();
+        }
+    }
+}
 
 

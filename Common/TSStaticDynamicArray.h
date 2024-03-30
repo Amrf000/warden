@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TSBaseArray.h"
-#include "../Storm/memory.h"
+#include "../Storm/Memory.h"
 
 template<typename T, int N>
 class TSStaticDynamicArray {

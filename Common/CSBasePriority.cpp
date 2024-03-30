@@ -1,11 +1,39 @@
-// Copyright (c) 2024. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-// Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-// Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-// Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-// Vestibulum commodo. Ut rhoncus gravida arcu.
-
 #include "CSBasePriority.h"
 #include "CSBasePriorityQueue.h"
+
+void CSBasePriority::Relink() {
+    CSBasePriorityQueue *queue = this->m_queue;
+
+    if (!queue) {
+        return;
+    }
+
+    void *ptr = queue->operator[](this->m_index);
+
+    this->Unlink();
+
+    int32_t v18 = queue->Count();
+    queue->SetCount(v18 + 1);
+
+    while (v18) {
+        auto v19 = reinterpret_cast<CSBasePriority *>(
+                reinterpret_cast<uintptr_t>(ptr) + queue->m_linkOffset);
+
+        CSBasePriority *v20 = queue->Link((v18 - 1) >> 1);
+
+        if (v20->Compare(v19)) {
+            break;
+        }
+
+        queue->operator[](v18) = queue->operator[]((v18 - 1) >> 1);
+        queue->SetLink(v18);
+
+        v18 = (v18 - 1) >> 1;
+    }
+
+    queue->operator[](v18) = ptr;
+    queue->SetLink(v18);
+}
 
 void CSBasePriority::Unlink() {
     CSBasePriorityQueue *queue = this->m_queue;
@@ -62,38 +90,4 @@ void CSBasePriority::Unlink() {
 
     queue->operator[](index) = top;
     queue->SetLink(index);
-}
-
-void CSBasePriority::Relink() {
-    CSBasePriorityQueue *queue = this->m_queue;
-
-    if (!queue) {
-        return;
-    }
-
-    void *ptr = queue->operator[](this->m_index);
-
-    this->Unlink();
-
-    int32_t v18 = queue->Count();
-    queue->SetCount(v18 + 1);
-
-    while (v18) {
-        auto v19 = reinterpret_cast<CSBasePriority *>(
-                reinterpret_cast<uintptr_t>(ptr) + queue->m_linkOffset);
-
-        CSBasePriority *v20 = queue->Link((v18 - 1) >> 1);
-
-        if (v20->Compare(v19)) {
-            break;
-        }
-
-        queue->operator[](v18) = queue->operator[]((v18 - 1) >> 1);
-        queue->SetLink(v18);
-
-        v18 = (v18 - 1) >> 1;
-    }
-
-    queue->operator[](v18) = ptr;
-    queue->SetLink(v18);
 }

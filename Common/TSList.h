@@ -1,186 +1,247 @@
 #pragma once
 
+#include "storm/Memory.h"
+#include "TSGetLink.h"
+#include "TSLink.h"
 #include <cstddef>
 #include <cstdint>
 #include <typeinfo>
-#include "TSLink.h"
-#include "TSGetLink.h"
-#include "../Storm/memory.h"
-#include "../Storm/DebugUtils.h"
 
-template<typename T, typename TSGetLink>
+#define STORM_LIST(T) TSList<T, TSGetLink<T>>
+
+template<class T, class TGetLink>
 class TSList {
 public:
-    TSList() {
-        this->InitializeTerminator();
-    }
+    // Member variables
+    ptrdiff_t m_linkoffset = 0;
+    TSLink<T> m_terminator;
 
-    TSList(const TSList &that) {
-        this->m_terminator.nextLinkOffset = 0;
-        this->m_linkoffset = that.m_linkoffset;
-        this->m_terminator.prevLink = &this->m_terminator;
-        this->m_terminator.nextLinkOffset = (unsigned int) &this->m_terminator | 1;
-    }
+    // Member functions
+    TSList();
 
-    ~TSList() {
-        this->UnlinkAll();
-    }
+    ~TSList();
 
+    void ChangeLinkOffset(ptrdiff_t linkoffset);
 
-    TSLink<T> *ChangeLinkOffset(ptrdiff_t linkoffset) {
-        TSLink<T> *result;
+    void Clear();
 
-        if (this->m_linkoffset != linkoffset) {
-            this->UnlinkAll();
-            this->m_linkoffset = linkoffset;
-            this->m_terminator.prevLink = &this->m_terminator;
-            result = (TSLink<T> *) ((unsigned int) &this->m_terminator | 1);
-            this->m_terminator.nextLinkOffset = (int) result;
-        }
-        return result;
-    }
+    T *DeleteNode(T *ptr);
 
-    void Clear() {
-        T *node;
+    T *Head();
 
-        while ((node = this->Head())) {
-            this->DeleteNode(node);
-        }
-    }
+    void InitializeTerminator();
 
-    T *DeleteNode(T *ptr) {
-        T *next = this->Next(ptr);
+    bool IsLinked(T *ptr);
 
-        ptr->~T();
-        SMemFree(ptr, __FILE__, __LINE__, 0);
+    TSLink<T> *Link(const T *ptr);
 
-        return next;
-    }
+    void LinkNode(T *ptr, uint32_t linktype, T *existingptr);
 
-    T *Head() {
-        return this->m_terminator.Next();
-    }
+    void LinkToHead(T *ptr);
 
-    void InitializeTerminator() {
-        this->m_terminator.m_prevlink = &this->m_terminator;
+    void LinkToTail(T *ptr);
 
-        // Set sentinel node (indicates list end)
-        this->m_terminator.m_next = reinterpret_cast<T *>(~reinterpret_cast<uintptr_t>(&this->m_terminator));
-    }
+    const char *MemFileName() const;
 
-    bool IsLinked(T *ptr) {
-        return TSGetExplicitLink::Link(ptr, this->m_linkoffset)->IsLinked();
-    }
+    int32_t MemLineNo() const;
 
-    TSLink<T> *Link(const T *ptr) {
-        if (ptr) {
-            return TSGetExplicitLink::Link(ptr, this->m_linkoffset);
-        } else {
-            return &this->m_terminator;
-        }
-    }
+    T *NewNode(uint32_t location, size_t extrabytes, uint32_t flags);
 
-    void LinkNode(T *ptr, uint32_t linktype, T *existingptr) {
-        TSLink<T> *endlink;
-        TSLink<T> *v5;
+    T *Next(const T *ptr);
 
+    T *RawNext(const T *ptr);
 
-        if (ptr)
-            endlink = (TSLink<T> *) ((uintptr_t) ptr + this->m_linkoffset);
-        else
-            endlink = &this->m_terminator;
-        if (endlink->m_prevlink) {
-            *endlink->NextLink(-1) = endlink->m_prevlink;
-            endlink->m_prevlink->m_next = endlink->m_next;
-            endlink->m_prevlink = 0;
-            endlink->m_next = 0;
-        }
-        if (existingptr)
-            v5 = (TSLink<T> *) (this->m_linkoffset + (uintptr_t) existingptr);
-        else
-            v5 = &this->m_terminator;
-        if (linktype == 1) {
-            endlink->m_prevlink = v5;
-            endlink->m_next = v5->m_next;
-            *v5->NextLink(this->m_linkoffset) = endlink;
-            v5->m_next = ptr;
-        } else if (linktype == 2) {
-            TSLink<T> *templink = v5->m_prevlink;
-            endlink->m_prevlink = v5->m_prevlink;
-            endlink->m_next = templink->m_next;
-            templink->m_next = ptr;
-            v5->m_prevlink = endlink;
-        } else {
-            DebugPrint("Invalid case: %s=%u", "linktype", linktype);
-        }
-    }
+    void SetLinkOffset(ptrdiff_t linkoffset);
 
-    void LinkToHead(T *ptr) {
-        this->LinkNode(ptr, 1, nullptr);
-    }
+    T *Tail();
 
-    void LinkToTail(T *ptr) {
-        this->LinkNode(ptr, 2, nullptr);
-    }
+    void UnlinkAll();
 
-    const char *MemFileName() const {
-        return typeid(T).name();
-    }
-
-    int32_t MemLineNo() const {
-        return -2;
-    }
-
-    int NewNode(uint32_t location, size_t extrabytes, uint32_t flags) {
-        void *m = SMemAlloc(extrabytes + sizeof(T), this->MemFileName(), this->MemLineNo(),
-                            flags | 8);
-        T *node;
-        if (m) {
-            node = new(m) T();
-        } else {
-            node = nullptr;
-        }
-        if (location) {
-            this->LinkNode(node, location, nullptr);
-        }
-        return node;
-    }
-
-    T *Next(const T *ptr) {
-        return this->Link(ptr)->Next();
-    }
-
-    T *RawNext(const T *ptr) {
-        TSLink<T> *link = this->Link(ptr);
-        return link->RawNext();
-    }
-
-    void SetLinkOffset(ptrdiff_t linkoffset) {
-        this->m_linkoffset = linkoffset;
-        this->InitializeTerminator();
-    }
-
-    T *Tail() {
-        return this->m_terminator.Prev();
-    }
-
-
-    void UnlinkAll() {
-        T *node;
-
-        while ((node = this->Head())) {
-            this->UnlinkNode(node);
-        }
-    }
-
-    void UnlinkNode(T *node) {
-        TSLink<T> *link = this->Link(node);
-        link->Unlink();
-    }
-
-private:
-    int m_linkoffset;  // 元素数量
-    TSLink<T> m_terminator;  // 第一个链接
+    void UnlinkNode(T *node);
 };
+
+template<class T, class TGetLink>
+TSList<T, TGetLink>::TSList() {
+    this->InitializeTerminator();
+}
+
+template<class T, class TGetLink>
+TSList<T, TGetLink>::~TSList() {
+    this->UnlinkAll();
+}
+
+template<class T, class TGetLink>
+void TSList<T, TGetLink>::ChangeLinkOffset(ptrdiff_t linkoffset) {
+    if (linkoffset != this->m_linkoffset) {
+        this->UnlinkAll();
+        this->SetLinkOffset(linkoffset);
+    }
+}
+
+template<class T, class TGetLink>
+void TSList<T, TGetLink>::Clear() {
+    T *node;
+
+    while ((node = this->Head())) {
+        this->DeleteNode(node);
+    }
+}
+
+template<class T, class TGetLink>
+T *TSList<T, TGetLink>::DeleteNode(T *ptr) {
+    T *next = this->Next(ptr);
+
+    ptr->~T();
+    SMemFree(ptr, __FILE__, __LINE__, 0);
+
+    return next;
+}
+
+template<class T, class TGetLink>
+T *TSList<T, TGetLink>::Head() {
+    return this->m_terminator.Next();
+}
+
+template<class T, class TGetLink>
+void TSList<T, TGetLink>::InitializeTerminator() {
+    this->m_terminator.m_prevlink = &this->m_terminator;
+
+    // Set sentinel node (indicates list end)
+    this->m_terminator.m_next = reinterpret_cast<T *>(~reinterpret_cast<uintptr_t>(&this->m_terminator));
+}
+
+template<class T, class TGetLink>
+bool TSList<T, TGetLink>::IsLinked(T *ptr) {
+    return TGetLink::Link(ptr, this->m_linkoffset)->IsLinked();
+}
+
+template<class T, class TGetLink>
+TSLink<T> *TSList<T, TGetLink>::Link(const T *ptr) {
+    if (ptr) {
+        return TGetLink::Link(ptr, this->m_linkoffset);
+    } else {
+        return &this->m_terminator;
+    }
+}
+
+template<class T, class TGetLink>
+void TSList<T, TGetLink>::LinkNode(T *ptr, uint32_t linktype, T *existingptr) {
+    TSLink<T> *v5 = this->Link(ptr);
+
+    if (v5->m_prevlink) {
+        v5->Unlink();
+    }
+
+    TSLink<T> *v7;
+
+    if (existingptr) {
+        v7 = this->Link(existingptr);
+    } else {
+        v7 = &this->m_terminator;
+    }
+
+    TSLink<T> *v8;
+
+    switch (linktype) {
+        case 1:
+            // After existingptr
+            v5->m_prevlink = v7;
+            v5->m_next = v7->m_next;
+            v7->NextLink(this->m_linkoffset)->m_prevlink = v5;
+            v7->m_next = ptr;
+
+            break;
+
+        case 2:
+            // Before existingptr
+            v8 = v7->m_prevlink;
+            v5->m_prevlink = v7->m_prevlink;
+            v5->m_next = v8->m_next;
+            v8->m_next = ptr;
+            v7->m_prevlink = v5;
+
+            break;
+
+        default:
+            // TODO error
+            break;
+    }
+}
+
+template<class T, class TGetLink>
+void TSList<T, TGetLink>::LinkToHead(T *ptr) {
+    this->LinkNode(ptr, 1, nullptr);
+}
+
+template<class T, class TGetLink>
+void TSList<T, TGetLink>::LinkToTail(T *ptr) {
+    this->LinkNode(ptr, 2, nullptr);
+}
+
+template<class T, class TGetLink>
+const char *TSList<T, TGetLink>::MemFileName() const {
+    return typeid(T).name();
+}
+
+template<class T, class TGetLink>
+int32_t TSList<T, TGetLink>::MemLineNo() const {
+    return -2;
+}
+
+template<class T, class TGetLink>
+T *TSList<T, TGetLink>::NewNode(uint32_t location, size_t extrabytes, uint32_t flags) {
+    void *m = SMemAlloc(sizeof(T) + extrabytes, this->MemFileName(), this->MemLineNo(), flags | 0x8);
+
+    T *node;
+
+    if (m) {
+        node = new(m) T();
+    } else {
+        node = nullptr;
+    }
+
+    if (location) {
+        this->LinkNode(node, location, nullptr);
+    }
+
+    return node;
+}
+
+template<class T, class TGetLink>
+T *TSList<T, TGetLink>::Next(const T *ptr) {
+    return this->Link(ptr)->Next();
+}
+
+template<class T, class TGetLink>
+T *TSList<T, TGetLink>::RawNext(const T *ptr) {
+    TSLink<T> *link = this->Link(ptr);
+    return link->RawNext();
+}
+
+template<class T, class TGetLink>
+void TSList<T, TGetLink>::SetLinkOffset(ptrdiff_t linkoffset) {
+    this->m_linkoffset = linkoffset;
+    this->InitializeTerminator();
+}
+
+template<class T, class TGetLink>
+T *TSList<T, TGetLink>::Tail() {
+    return this->m_terminator.Prev();
+}
+
+template<class T, class TGetLink>
+void TSList<T, TGetLink>::UnlinkAll() {
+    T *node;
+
+    while ((node = this->Head())) {
+        this->UnlinkNode(node);
+    }
+}
+
+template<class T, class TGetLink>
+void TSList<T, TGetLink>::UnlinkNode(T *node) {
+    TSLink<T> *link = this->Link(node);
+    link->Unlink();
+}
 
 

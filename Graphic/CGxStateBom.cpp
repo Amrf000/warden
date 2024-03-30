@@ -1,6 +1,5 @@
 #include "CGxStateBom.h"
 
-
 const CGxStateBom &CGxStateBom::operator=(int32_t value) {
     this->m_data.i[0] = value;
 

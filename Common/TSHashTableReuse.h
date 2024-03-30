@@ -1,35 +1,84 @@
 #pragma once
 
-#include "TSHashTable.h"
 #include "TSHashObjectChunk.h"
+#include "TSHashTable.h"
+#include "storm/Error.h"
+#include <cstddef>
+#include <cstdint>
 
-template<typename T, typename N>
-class TSHashTableReuse : public TSHashTable<T, N> {
-public:
-    TSHashTableReuse() {
-        this->m_chunkSize = 16;
-        this->m_reuseList.ChangeLinkOffset(4);
-    }
+template <class T, class TKey>
+class TSHashTableReuse : public TSHashTable<T, TKey> {
+    public:
+    // Virtual member functions
+    virtual ~TSHashTableReuse();
+    virtual void Destroy();
 
-    ~TSHashTableReuse() {
-        this->Destructor();
-    }
+    private:
+    using object_chunk_t = TSHashObjectChunk<T, TKey>;
 
-    void Destructor() {
-        this->m_chunkList.Clear();
-        this->m_reuseList.Clear();
-        this->m_chunkSize = 16;
-    }
+    // Member variables
+    STORM_EXPLICIT_LIST(T, m_linktoslot) m_reuseList;
+    uint32_t m_chunkSize = 16;
+    STORM_EXPLICIT_LIST(object_chunk_t, m_link) m_chunkList;
 
-    void Destroy() {
-        this->InternalClear(0);
-        this->Destructor();
-    }
+    // Virtual member functions
+    virtual void InternalDelete(T* ptr);
+    virtual T* InternalNew(STORM_EXPLICIT_LIST(T, m_linktoslot)* listptr, size_t extrabytes, uint32_t flags);
 
-protected:
-    TSExplicitList<T, -572662307> m_reuseList;
-    int m_chunkSize;
-    TSExplicitList<TSHashObjectChunk<T, N>, 16> m_chunkList;
+    // Member functions
+    void Destructor();
 };
+
+template <class T, class TKey>
+TSHashTableReuse<T, TKey>::~TSHashTableReuse() {
+    this->Destructor();
+}
+
+template <class T, class TKey>
+void TSHashTableReuse<T, TKey>::Destroy() {
+    this->Clear();
+    this->Destructor();
+}
+
+template <class T, class TKey>
+void TSHashTableReuse<T, TKey>::Destructor() {
+    this->m_chunkList.Clear();
+    this->m_reuseList.Clear();
+    this->m_chunkSize = 16;
+}
+
+template <class T, class TKey>
+void TSHashTableReuse<T, TKey>::InternalDelete(T* ptr) {
+    this->m_fulllist.UnlinkNode(ptr);
+    this->m_reuseList.LinkNode(ptr, 1, nullptr);
+}
+
+template <class T, class TKey>
+T* TSHashTableReuse<T, TKey>::InternalNew(STORM_EXPLICIT_LIST(T, m_linktoslot)* listptr, size_t extrabytes, uint32_t flags) {
+    STORM_ASSERT(!extrabytes);
+
+    auto node = this->m_reuseList.Head();
+
+    if (!node) {
+        object_chunk_t* chunk;
+
+        while (true) {
+            chunk = this->m_chunkList.Head();
+
+            if (chunk && chunk->m_array.Reserved()) {
+                break;
+            }
+
+            chunk = this->m_chunkList.NewNode(1, 0, 0x0);
+            chunk->m_array.Reserve(this->m_chunkSize, 0);
+        }
+
+        node = chunk->m_array.New();
+    }
+
+    listptr->LinkNode(node, 1, nullptr);
+
+    return node;
+}
 
 

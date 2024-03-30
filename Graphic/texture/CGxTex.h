@@ -1,19 +1,46 @@
-// Copyright (c) 2024. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-// Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-// Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-// Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-// Vestibulum commodo. Ut rhoncus gravida arcu.
+#pragma once
 
-#ifndef WARDEN_CGXTEX_H
-#define WARDEN_CGXTEX_H
+#include "gx/Types.h"
+#include <cstdint>
+#include <NTempest/Rect.h>
 
-#include "NTempest.h"
-#include "../const/EGxTexTarget.h"
-#include "../const/EGxTexFormat.h"
-#include "CGxTexFlags.h"
-#include "../const/EGxTexCommand.h"
+class CGxTexFlags {
+public:
+    // Member variables
+    uint32_t m_filter: 3;
+    uint32_t m_wrapU: 1;
+    uint32_t m_wrapV: 1;
+    uint32_t m_forceMipTracking: 1;
+    uint32_t m_generateMipMaps: 1;
+    uint32_t m_renderTarget: 1;
+    uint32_t m_maxAnisotropy: 5;
+    uint32_t m_bit13: 1;
+    uint32_t m_bit14: 1;
+    uint32_t m_bit15: 1;
 
-using namespace NTempest;
+    // Member functions
+    CGxTexFlags()
+            : CGxTexFlags(GxTex_Linear, 0, 0, 0, 0, 0, 1) {};
+
+    CGxTexFlags(EGxTexFilter, uint32_t, uint32_t, uint32_t, uint32_t, uint32_t, uint32_t);
+
+    bool operator==(const CGxTexFlags &texFlags);
+};
+
+class CGxTexParms {
+public:
+    // Member variables
+    EGxTexTarget target;
+    uint32_t width;
+    uint32_t height;
+    uint32_t depth;
+    EGxTexFormat format;
+    EGxTexFormat dataFormat;
+    CGxTexFlags flags = CGxTexFlags(GxTex_Linear, 0, 0, 0, 0, 0, 1);
+    void *userArg;
+
+    void (*userFunc)(EGxTexCommand, uint32_t, uint32_t, uint32_t, uint32_t, void *, uint32_t &, const void *&);
+};
 
 class CGxTex {
 public:
@@ -49,4 +76,3 @@ public:
 };
 
 
-#endif //WARDEN_CGXTEX_H

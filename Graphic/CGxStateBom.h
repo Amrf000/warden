@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include "NTempest.h"
+#include <NTempest/C3Vector.h>
 
 using namespace NTempest;
 
