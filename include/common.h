@@ -20,5 +20,14 @@
 #include "../Common/TSTimerPriority.h"
 #include "../Common/TExtraInstanceRecycler.h"
 #include "../Common/TSPriorityQueue.h"
+#include "../Common/HashKey/HASHKEY_4CC.h"
+#include "../Common/HashKey/HASHKEY_CONSTSTR.h"
+#include "../Common/HashKey/HASHKEY_DWORD.h"
+#include "../Common/HashKey/HASHKEY_NONE.h"
+#include "../Common/HashKey/HASHKEY_STR.h"
+#include "../Common/HashKey/HASHKEY_STRI.h"
+#include "../Common/HashKey/HASHKEY_STRIPACKED.h"
+#include "../Common/HashKey/HASHKEY_STRI_P.h"
+#include "../Common/TSHashTable.h"
 
 #endif //WARDEN_COMMON_H

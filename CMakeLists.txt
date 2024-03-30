@@ -34,7 +34,42 @@ file(GLOB_RECURSE dir_src
 )
 
 add_executable(warden main.cpp ${dir_src}
-        Event/Types.h
-        Common/TExtraInstanceRecycler.h
-        Common/TSPriorityQueue.h)
+        Graphic/CGxFormat.h
+        Graphic/CGxCaps.cpp
+        Graphic/CGxCaps.h
+        Graphic/CGxShader.cpp
+        Graphic/CGxShader.h
+        Graphic/CGxMatrixStack.cpp
+        Graphic/CGxMatrixStack.h
+        Graphic/CGxBuf.h
+        Graphic/CGxPool.h
+        Graphic/const/EGxPoolTarget.h
+        Graphic/CGxVertexAttrib.cpp
+        Graphic/CGxVertexAttrib.h
+        Graphic/const/EGxPoolHintBits.h
+        Graphic/const/EGxVertexBufferFormat.h
+        Graphic/ShaderConstants.h
+        Game/CBoundingBox.h
+        NTempest/CRange.h
+        Graphic/const/EGxPoolUsage.h
+        Graphic/CGxPool.cpp
+        Graphic/CGxString.cpp
+        Graphic/CGxString.h
+        Graphic/TEXTLINETEXTURE.h
+        Graphic/VERT.h
+        Graphic/TEXTLINETEXTURE.cpp
+        Graphic/CGxFont.cpp
+        Graphic/CGxFont.h
+        Graphic/TEXTURECACHE.cpp
+        Graphic/TEXTURECACHE.h
+        Graphic/TEXTURECACHEROW.cpp
+        Graphic/TEXTURECACHEROW.h
+        Graphic/KERNNODE.cpp
+        Graphic/KERNNODE.h
+        Graphic/KERNINGHASHKEY.cpp
+        Graphic/KERNINGHASHKEY.h
+        Graphic/CHARCODEDESC.cpp
+        Graphic/CHARCODEDESC.h
+        Graphic/GLYPHBITMAPDATA.cpp
+        Graphic/GLYPHBITMAPDATA.h)
 target_include_directories(warden PRIVATE "include/")

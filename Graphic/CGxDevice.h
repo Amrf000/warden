@@ -1,12 +1,4 @@
-// Copyright (c) 2024. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-// Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-// Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-// Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-// Vestibulum commodo. Ut rhoncus gravida arcu.
-
-
-#ifndef ENGINE_CGXDEVICE_H
-#define ENGINE_CGXDEVICE_H
+#pragma once
 
 #include <cstring>
 #include "common.h"
@@ -16,10 +8,89 @@
 #include "CGxAppRenderState.h"
 #include "const/EGxRenderState.h"
 #include "CGxPushedRenderState.h"
+#include "CGxFormat.h"
+#include "const/EGxPrim.h"
+#include "const/EGxApi.h"
+#include "CGxCaps.h"
+#include "CGxShader.h"
+#include "CGxMatrixStack.h"
+#include "CGxBuf.h"
+#include "CGxPool.h"
+#include "const/EGxPoolTarget.h"
+#include "const/EGxShTarget.h"
+#include "const/EGxMasterEnables.h"
+#include "CGxVertexAttrib.h"
+#include "const/EGxPoolHintBits.h"
+#include "const/EGxTexWrapMode.h"
+#include "const/EGxVertexBufferFormat.h"
+#include "../Common/TSGetLink.h"
+#include "ShaderConstants.h"
+#include "../Game/CBoundingBox.h"
+#include "const/EGxPoolUsage.h"
+#include "const/EGxXform.h"
 
+using namespace NTempest;
+
+class CGxBatch;
+class CGxTex;
+class CGxTexFlags;
 class CGxDevice {
 public:
-    virtual unsigned int * vfunc_CGxDevice_1(int a1, unsigned int *a2)
+    // Static variables
+    static uint32_t s_alphaRef[];
+    static C3Vector s_pointScaleIdentity;
+    static uint32_t s_primVtxAdjust[];
+    static uint32_t s_primVtxDiv[];
+    static ShaderConstants s_shadowConstants[2];
+    static uint32_t s_streamPoolSize[];
+    static uint32_t s_texFormatBitDepth[];
+    static uint32_t s_texFormatBytesPerBlock[];
+    // Static functions
+    static void Log(const char* format, ...);
+    static void Log(const CGxFormat& format);
+    static CGxDevice* NewOpenGl();
+    static uint32_t PrimCalcCount(EGxPrim primType, uint32_t count);
+    // Member variables
+    TSGrowableArray<CGxPushedRenderState,TSCD<CGxPushedRenderState>> m_pushedStates;
+    TSGrowableArray<size_t,TSCD<size_t>> m_stackOffsets;
+    TSGrowableArray<EGxRenderState,TSCD<EGxRenderState>> m_dirtyStates;
+    CRect m_defWindowRect;
+    CRect m_curWindowRect;
+    EGxApi m_api = GxApis_Last;
+    CGxFormat m_format;
+    CGxCaps m_caps;
+    TSHashTable<CGxShader, HASHKEY_STRI> m_shaderList[GxShTargets_Last];
+    int32_t (*m_windowProc)(void* window, uint32_t message, uintptr_t wparam, intptr_t lparam) = nullptr;
+    int32_t m_context = 0;
+    int32_t intF5C = 0;
+    int32_t m_windowVisible = 0;
+    int32_t intF64 = 0;
+    int32_t intF6C = 1;
+    CBoundingBox m_viewport;
+    C44Matrix m_projection;
+    C44Matrix m_projNative;
+    CGxMatrixStack m_xforms[GxXforms_Last];
+    uint32_t m_appMasterEnables = 0;
+    uint32_t m_hwMasterEnables = 0;
+    TSList<CGxPool, TSGetLink<CGxPool>> m_poolList;
+    CGxBuf* m_bufLocked[GxPoolTargets_Last];
+    CGxPool* m_vertexPool = nullptr;
+    CGxPool* m_indexPool = nullptr;
+    CGxBuf* m_streamBufs[GxPoolTargets_Last];
+    CGxVertexAttrib m_primVertexFormatAttrib[GxVertexBufferFormats_Last];
+    CGxBuf* m_primVertexFormatBuf[GxVertexBufferFormats_Last];
+    uint32_t m_primVertexMask = 0;
+    uint32_t m_primVertexDirty = 0;
+    EGxVertexBufferFormat m_primVertexFormat = GxVertexBufferFormats_Last;
+    CGxBuf* m_primVertexBuf = nullptr;
+    uint32_t m_primVertexSize;
+    CGxBuf* m_primIndexBuf = nullptr;
+    int32_t m_primIndexDirty = 0;
+    TSFixedArray<CGxAppRenderState,TSCD<CGxAppRenderState>> m_appRenderStates;
+    TSFixedArray<CGxStateBom,TSCD<CGxStateBom>> m_hwRenderStates;
+    uint32_t m_baseMipLevel = 0; // TODO placeholder
+public:
+    virtual unsigned int * ITexMarkAsUpdated(int a1, unsigned int *a2)
     {
         unsigned int *result;
 
@@ -35,8 +106,10 @@ public:
         }
         return result;
     }
+    virtual void IRsSendToHw(EGxRenderState) = 0;
 
-    virtual int  vfunc_CGxDevice_3(unsigned int *a1)
+
+    virtual int   ICursorCreate(unsigned int *a1)
     {
         int v1;
         int v2;
@@ -60,7 +133,7 @@ public:
         return TSFixedArray<CGxPushedRenderState,TSCD<CGxPushedRenderState>>::~TSFixedArray(a1 + 1);
     }
 
-    virtual int  vfunc_CGxDevice_4(TRefCnt *a1)
+    virtual int  DeviceCreate(TRefCnt *a1)
     {
         vtable_TRefCnt_struct *v1;
         int v2;
@@ -732,325 +805,56 @@ public:
         *(unsigned int *)(*(unsigned int *)(a1 + 1348) + 4 * a2[6].cnt) = 0;
         return sub_29559C(a2);
     }
+
+
 public:
-    TSGrowableArray<CGxPushedRenderState> field_TSGrowableArray_CGxPushedRenderState;
-    TSGrowableArray<unsigned long> field_TSGrowableArray_unsigned_long_0;
-    TSGrowableArray<EGxRenderState> field_TSGrowableArray_EGxRenderState;
-    int m_data34;
-    int field_38;
-    int field_3c;
-    int field_40;
-    int field_44;
-    int field_48;
-    int field_4c;
-    int field_50;
-    int m_data54;
-    int m_data58;
-    int field_5c;
-    int field_60;
-    int field_64;
-    int field_68;
-    int field_CGxTex_count;
-    int field_70;
-    int field_74;
-    int field_78;
-    TSGrowableArray<unsigned int> field_TSGrowableArray_unsigned_int_0;
-    int field_8C;
-    int field_90;
-    int field_94;
-    int field_98;
-    int field_9C;
-    int field_A0;
-    int field_A4;
-    int field_A8;
-    int field_AC;
-    int field_B0;
-    int field_B4;
-    int field_B8;
-    int field_BC;
-    int field_C0;
-    int field_C4;
-    int field_C8;
-    int field_CC;
-    int field_D0;
-    int field_D4;
-    int m_dataD8;
-    int field_DC;
-    NTempest::CImVector field_CImVector_struc_0;
-    CBoundingBox field_CBoundingBox;
-    NTempest::C44Matrix field_struc_C44Matrix;
-    NTempest::C34Matrix field_C34Matrix_0;
-    NTempest::C34Matrix field_C34Matrix_1;
-    int field_F4;
-    int field_F8;
-    int field_FC;
-    int field_100;
-    int field_104;
-    int field_108;
-    int field_10C;
-    int field_110;
-    int field_114;
-    int field_118;
-    int field_11C;
-    int field_120;
-    int field_124;
-    int field_128;
-    int field_12C;
-    int field_130;
-    int field_134;
-    int field_138;
-    int field_13C;
-    int field_140;
-    int field_144;
-    int field_148;
-    int field_14C;
-    int field_150;
-    int field_154;
-    int field_158;
-    int field_15c;
-    int field_160;
-    int field_164;
-    int field_168;
-    int field_16c;
-    int field_170;
-    int field_174;
-    int field_178;
-    int field_17c;
-    int field_180;
-    int field_184;
-    int field_188;
-    int field_18c;
-    int field_190;
-    int field_194;
-    int field_198;
-    int field_19c;
-    int field_1a0;
-    int field_1a4;
-    int field_1a8;
-    int field_1ac;
-    int field_1b0;
-    int field_1b4;
-    int field_1b8;
-    int field_1bc;
-    int field_1c0;
-    int field_1c4;
-    int field_1c8;
-    int field_1cc;
-    int field_1d0;
-    int field_1d4;
-    int field_1d8;
-    int field_1dc;
-    int field_1e0;
-    int field_1e4;
-    int field_1e8;
-    int field_1ec;
-    int field_1f0;
-    int field_1f4;
-    int field_1f8;
-    int field_1fc;
-    int field_200;
-    int field_204;
-    int field_208;
-    int field_20c;
-    int field_210;
-    int field_214;
-    int field_218;
-    int field_21c;
-    int field_220;
-    int field_224;
-    int field_228;
-    int field_22c;
-    int field_230;
-    int field_234;
-    int field_238;
-    int field_23c;
-    int field_240;
-    int field_244;
-    int field_248;
-    int field_24c;
-    int field_250;
-    int field_254;
-    int field_258;
-    int field_25c;
-    int field_260;
-    int field_264;
-    int field_268;
-    int field_26c;
-    int field_270;
-    int field_274;
-    int field_278;
-    int field_27c;
-    int field_280;
-    int field_284;
-    int field_288;
-    int field_28c;
-    int field_290;
-    int field_294;
-    int field_298;
-    int field_29c;
-    int field_2a0;
-    int field_2a4;
-    int field_2a8;
-    int field_2ac;
-    int field_2b0;
-    int field_2b4;
-    int field_2b8;
-    int field_2bc;
-    int field_2c0;
-    int field_2c4;
-    int field_2c8;
-    int field_2cc;
-    int field_2d0;
-    int field_2d4;
-    int field_2d8;
-    int field_2dc;
-    int field_2e0;
-    int field_2e4;
-    int field_2e8;
-    int field_2ec;
-    int field_2f0;
-    int field_2f4;
-    int field_2f8;
-    int field_2fc;
-    int field_300;
-    int field_304;
-    int field_308;
-    int field_30c;
-    int field_310;
-    int field_314;
-    int field_318;
-    int field_31c;
-    int field_320;
-    int field_324;
-    int field_328;
-    int field_32c;
-    int field_330;
-    int field_334;
-    int field_338;
-    int field_33c;
-    int field_340;
-    int field_344;
-    int field_348;
-    int field_34c;
-    int field_350;
-    int field_354;
-    int field_358;
-    int field_35c;
-    int field_360;
-    int field_364;
-    int field_368;
-    int field_36c;
-    int field_370;
-    int field_374;
-    int field_378;
-    int field_37c;
-    int field_380;
-    NTempest::CImVector field_CImVector_1;
-    int field_388;
-    CGxMat field_struc_CGxMat_0;
-    int field_3a4;
-    int field_3A8;
-    int field_3Ac;
-    int field_3B0;
-    int field_3B4;
-    int field_3b8;
-    int field_3bc;
-    int field_3c0;
-    int field_3c4;
-    int field_3c8;
-    int field_3cc;
-    int field_3d0;
-    int field_3d4;
-    int field_3d8;
-    int field_3dc;
-    int field_3e0;
-    int field_3e4;
-    int field_3e8;
-    int field_3ec;
-    int field_3f0;
-    int field_3f4;
-    int field_3f8;
-    int field_3fc;
-    int field_400;
-    int field_404;
-    int field_408;
-    int field_40c;
-    int field_410;
-    int field_414;
-    int field_418;
-    int field_41c;
-    int field_420;
-    int field_424;
-    int field_428;
-    int field_42c;
-    int field_430;
-    int field_434;
-    int field_438;
-    int field_43c;
-    int field_440;
-    int field_444;
-    int field_448;
-    int field_44c;
-    int field_450;
-    int field_454;
-    int field_458;
-    int field_45c;
-    int field_460;
-    int field_464;
-    int field_468;
-    int field_46c;
-    int field_470;
-    int field_474;
-    int field_478;
-    int field_47c;
-    int field_480;
-    int field_484;
-    int field_488;
-    int field_48c;
-    int field_490;
-    int field_494;
-    int field_498;
-    int field_49c;
-    int field_4a0;
-    int field_4a4;
-    int field_4a8;
-    int field_4ac;
-    int field_4b0;
-    int field_4b4;
-    int field_4b8;
-    int field_4bc;
-    int field_4c0;
-    int field_4c4;
-    int field_4c8;
-    int field_4cc;
-    int field_4d0;
-    int field_4d4;
-    int field_4d8;
-    int field_4dc;
-    int field_4e0;
-    int field_4e4;
-    int field_4e8;
-    int field_4ec;
-    int field_4f0;
-    int field_4f4;
-    int field_4f8;
-    int field_4fc;
-    NTempest::CImVector field_500;
-    int field_504;
-    CGxMat field_struc_CGxMat_1;
-    int field_520;
-    TSFixedArray<CGxAppRenderState> field_TSFixedArray_CGxAppRenderState;
-    TSFixedArray<CGxStateBom> field_TSFixedArray_CGxStateBom;
-    TSGrowableArray<CGxTex *> field_TSGrowableArray_CGxTex_ptr_0;
-    TSGrowableArray<CGxTex *> field_TSGrowableArray_CGxTex_ptr_1;
-    int field_55C;
-    int m_data560;
-    int m_data564;
-    int m_data568;
-    void* m_data347;
-    int field_570;
-    int field_574;
+    // Member functions
+    CGxDevice();
+    const CGxCaps& Caps() const;
+    CGxBuf* BufCreate(CGxPool*, uint32_t, uint32_t, uint32_t);
+    CGxBuf* BufStream(EGxPoolTarget, uint32_t, uint32_t);
+    void DeviceCreatePools(void);
+    void DeviceCreateStreamBufs(void);
+    const CRect& DeviceCurWindow(void);
+    void DeviceSetCurWindow(const CRect&);
+    void DeviceSetDefWindow(CRect const&);
+    const CRect& DeviceDefWindow(void);
+    int32_t IDevIsWindowed();
+    void IRsDirty(EGxRenderState);
+    void IRsForceUpdate(void);
+    void IRsForceUpdate(EGxRenderState);
+    void IRsInit(void);
+    void IRsSync(int32_t);
+    void IShaderBind(void) ;
+    void IShaderLoad(CGxShader*[], EGxShTarget, const char*, const char*, int32_t);
+    void ITexBind(void);
+    void ITexWHDStartEnd(CGxTex*, uint32_t&, uint32_t&, uint32_t&, uint32_t&);
+    int32_t MasterEnable(EGxMasterEnables);
+    CGxPool* PoolCreate(EGxPoolTarget, EGxPoolUsage, uint32_t, EGxPoolHintBits, const char*);
+    void PrimIndexPtr(CGxBuf*);
+    void PrimVertexFormat(CGxBuf*, CGxVertexAttrib*, uint32_t);
+    void PrimVertexMask(uint32_t);
+    void PrimVertexPtr(CGxBuf*, EGxVertexBufferFormat);
+    void RsGet(EGxRenderState, int32_t&);
+    void RsSet(EGxRenderState, int32_t);
+    void RsSet(EGxRenderState, void*);
+    void RsSetAlphaRef(void);
+    void RsPop(void);
+    void RsPush(void);
+    void ShaderConstantsClear(void);
+    char* ShaderConstantsLock(EGxShTarget target);
+    void ShaderConstantsUnlock(EGxShTarget target, uint32_t index, uint32_t count);
+    void TexMarkForUpdate(CGxTex*, const CiRect&, int32_t);
+    void TexSetWrap(CGxTex* texId, EGxTexWrapMode wrapU, EGxTexWrapMode wrapV);
+    void XformPop(EGxXform xf);
+    void XformProjection(C44Matrix&);
+    void XformProjNative(C44Matrix&);
+    void XformPush(EGxXform xf);
+    void XformSet(EGxXform xf, const C44Matrix& matrix);
+    void XformSetViewport(float, float, float, float, float, float);
+    void XformView(C44Matrix&);
+    void XformViewport(float&, float&, float&, float&, float&, float&);
 };
 
 
-#endif //ENGINE_CGXDEVICE_H
+

@@ -60,7 +60,6 @@ public:
         }
     }
 
-private:
     TSLink *m_prevlink;
     T *m_next;
 };

@@ -1,15 +1,6 @@
-// Copyright (c) 2024. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-// Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-// Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-// Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-// Vestibulum commodo. Ut rhoncus gravida arcu.
+#pragma once
 
-//
-// Created by liuyawu on 2024/3/28.
-//
 
-#ifndef WARDEN_EGXTEXFORMAT_H
-#define WARDEN_EGXTEXFORMAT_H
 enum EGxTexFormat {
     GxTex_Unknown = 0x0,
     GxTex_Abgr8888 = 0x1,
@@ -26,4 +17,4 @@ enum EGxTexFormat {
     GxTex_D24X8 = 0xC,
     GxTexFormats_Last = 0xD,
 };
-#endif //WARDEN_EGXTEXFORMAT_H
+

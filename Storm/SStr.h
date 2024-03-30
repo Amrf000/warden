@@ -10,20 +10,41 @@
 
 #ifndef WARDEN_SSTR_H
 #define WARDEN_SSTR_H
+
+#include <cstdint>
+
 #define STORM_MAX_PATH 260
 #define STORM_MAX_STR 0x7FFFFFFF
 
-unsigned int SStrHashHT(const char *str);
+char *SStrChr(char *string, char search);
 
-char *SStrDup(const char *string);
+const char *SStrChr(const char *string, char search);
+
+char *SStrChrR(char *string, char search);
+
+const char *SStrChrR(const char *string, char search);
 
 int SStrCmp(const char *string1, const char *string2, size_t maxchars);
 
 int SStrCmpI(const char *string1, const char *string2, int maxchars);
 
+size_t SStrCopy(char *dest, const char *source, size_t destsize);
+
+char *SStrDupA(const char *string, const char *filename, uint32_t linenumber);
+
+char *SStrDup(const char *string);
+
+unsigned int SStrHashHT(const char *str);
+
 size_t SStrLen(const char *string);
 
-size_t SStrCopy(char *dest, const char *source, size_t destsize);
+void SStrLower(char *string);
+
+uint32_t SStrPack(char *dest, const char *source, uint32_t destsize);
+
+size_t SStrPrintf(char *dest, size_t maxchars, const char *format, ...);
+
+const char *SStrStr(const char *string, const char *search);
 
 void SStrTokenize(
         const char **string,
@@ -32,6 +53,10 @@ void SStrTokenize(
         const char *whitespace,
         int *quoted);
 
-char *SStrChr(const char *string, char search);
+float SStrToFloat(const char *string);
+
+int32_t SStrToInt(const char *string);
+
+void SStrUpper(char *string);
 
 #endif //WARDEN_SSTR_H

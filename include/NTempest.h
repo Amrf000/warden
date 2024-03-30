@@ -50,5 +50,6 @@
 #include "../NTempest/CuRandom.h"
 #include "../NTempest/CuRange.h"
 #include "../NTempest/CuRect.h"
+#include "../NTempest/CRange.h"
 
 #endif //WARDEN_NTEMPEST_H

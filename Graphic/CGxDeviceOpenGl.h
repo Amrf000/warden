@@ -319,7 +319,7 @@ public:
                     v57);
         }
         a1[343] = 0;
-        return vfunc_CGxDevice_1((int)a1, (unsigned int *)a2);
+        return ITexMarkAsUpdated((int)a1, (unsigned int *)a2);
     }
 
     virtual void  vfunc_CGxDeviceOpenGl_2(int a1, int a2)

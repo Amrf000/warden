@@ -7,11 +7,243 @@
 //
 // Created by liuyawu on 2024/3/24.
 //
-
+#include <cctype>
+#include <cmath>
+#include <cstdarg>
+#include <cstdio>
+#include <cstring>
 #include "SStr.h"
 #include "memory.h"
 #include "DebugUtils.h"
 
+
+uint8_t bytesFromUTF8[256] = {
+        0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+        3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+        4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6
+};
+uint32_t offsetsFromUTF8[8] = {
+        0,
+        0,
+        0x3080,
+        0x0E2080,
+        0x3C82080,
+        0x0FA082080,
+        0x82082080,
+        0
+};
+
+int32_t s_initialized;
+double s_realDigit[20][10];
+void GetNextTextUpper(uint32_t* orig, const char** string, uint32_t* upper) {
+    uint8_t byte = **string;
+    int32_t v3 = bytesFromUTF8[byte];
+
+    *orig = 0;
+    *upper = 0;
+
+    switch (v3) {
+        case 6:
+        case 5:
+        case 4:
+        case 3:
+        case 2:
+            *orig += **string;
+            (*string)++;
+
+            if (!**string) {
+                return;
+            }
+
+            *orig <<= 6;
+
+        case 1:
+            *orig += **string;
+            (*string)++;
+
+        default:
+            *orig -= offsetsFromUTF8[v3];
+
+            if (*orig > 0xFFFF) {
+                *orig = 0xFFFF;
+            }
+
+            uint32_t v4 = *orig;
+
+            bool v5, v6;
+
+            if (v3 == 1) {
+                if (v4 < 0x61) {
+                    *upper = v4;
+                    return;
+                }
+
+                v5 = v4 < 0x7A;
+                v6 = v4 == 122;
+
+                if (!v5 && !v6) {
+                    *upper = v4;
+                    return;
+                }
+
+                v4 -= 32;
+                *upper = v4;
+                return;
+            }
+
+            if (v3 != 2) {
+                *upper = v4;
+                return;
+            }
+
+            if (v4 >= 0xE0 && v4 <= 0xFE) {
+                v4 -= 32;
+                *upper = v4;
+                return;
+            }
+
+            if (v4 == 339) {
+                *upper = 338;
+                return;
+            }
+
+            if (v4 == 1105) {
+                *upper = 1025;
+                return;
+            }
+
+            if (v4 >= 0x430) {
+                v5 = v4 < 0x44F;
+                v6 = v4 == 1103;
+
+                if (!v5 && !v6) {
+                    *upper = v4;
+                    return;
+                }
+
+                v4 -= 32;
+                *upper = v4;
+                return;
+            }
+
+            *upper = v4;
+            return;
+    }
+}
+
+void InitializeFloatDigits() {
+    for (int32_t i = -1; i > -21; i--) {
+        for (int32_t j = 0; j < 10; j++) {
+            double v3 = 10.0;
+            int32_t v4 = i < 0 ? -i : i;
+            double v5 = 1.0;
+
+            while (true) {
+                if (v4 & 1) {
+                    v5 *= v3;
+                }
+
+                v4 >>= 1;
+
+                if (!v4) {
+                    break;
+                }
+
+                v3 *= v3;
+            }
+
+            double v6 = i < 0 ? 1.0 / v5 : v5;
+
+            double v7 = v6 * static_cast<double>(j);
+
+            s_realDigit[-i - 1][j] = v7;
+        }
+    }
+}
+
+size_t ISStrVPrintf(const char* format, va_list va, char* dest, size_t maxchars) {
+    if (!maxchars) {
+        return 0;
+    }
+
+    size_t result;
+
+    if (maxchars == STORM_MAX_STR) {
+        // TODO conditional vsoprintf;
+        result = vsprintf(dest, format, va);
+    } else {
+        // TODO conditional vsnoprintf;
+        result = vsnprintf(dest, maxchars, format, va);
+
+        if (result >= maxchars) {
+            result = maxchars - 1;
+            dest[result] = '\0';
+        }
+    }
+
+    return result;
+}
+
+void SStrInitialize() {
+    if (!s_initialized) {
+        InitializeFloatDigits();
+        s_initialized = 1;
+    }
+}
+
+char *SStrChr(char *string, char search)
+{
+    char *result;
+
+    result = (char *)string;
+    if ( string )
+    {
+        while ( *result )
+        {
+            if ( search == *result )
+                return result;
+            ++result;
+        }
+    }
+    else
+    {
+        DebugPrint("string");
+        sub_1CA2E(87);
+    }
+    return 0;
+}
+
+const char *SStrChr(const char *string, char search) {
+    STORM_ASSERT(string);
+    STORM_VALIDATE(string, ERROR_INVALID_PARAMETER, nullptr);
+
+    if (!*string) {
+        return nullptr;
+    }
+
+    while (*string != search) {
+        string++;
+
+        if (!*string) {
+            return nullptr;
+        }
+    }
+
+    return string;
+}
 unsigned int SStrHashHT(const char *str) {
     char transformedStr[1024] = {0}; // 存储转换后的字符串
     unsigned int hashValue = -1640531527; // 初始哈希值
@@ -446,24 +678,258 @@ void SStrTokenize(
 }
 
 
-char *SStrChr(const char *string, char search)
-{
-    char *result; // eax
+int32_t SStrToInt(const char* string) {
+    STORM_ASSERT(string);
 
-    result = (char *)string;
-    if ( string )
-    {
-        while ( *result )
-        {
-            if ( search == *result )
-                return result;
-            ++result;
+    int32_t result = 0;
+    bool negative = false;
+
+    if (*string == '-') {
+        negative = true;
+        string++;
+    }
+
+    uint32_t digit;
+    while ((digit = *string - '0') < 10) {
+        result = digit + (10 * result);
+        string++;
+    }
+
+    if (negative) {
+        result = -result;
+    }
+
+    return result;
+}
+
+float SStrToFloat(const char* string) {
+    STORM_ASSERT(string);
+
+    SStrInitialize();
+
+    double result;
+    bool negative = false;
+
+    if (*string == '-') {
+        negative = true;
+        string++;
+    }
+
+    double v16 = 10.0;
+    double v4 = 0.0;
+    uint32_t v5 = *string - '0';
+    const char* v6 = string;
+
+    if (v5 >= 10) {
+        v5 = 0;
+        result = static_cast<double>(v5);
+    } else {
+        string++;
+
+        uint32_t v8 = *string - '0';
+
+        if (v8 >= 10) {
+            result = static_cast<double>(v5);
+        } else {
+            do {
+                v5 = v8 + 10 * v5;
+                string++;
+
+                if (v5 >= 0x19999999) {
+                    v4 = v4 * pow(10.0, string - v6) + static_cast<double>(v5);
+                    v5 = 0;
+                    v6 = string;
+                }
+
+                v8 = *string - '0';
+            } while (v8 < 10);
+
+            if (v4 == 0.0) {
+                result = static_cast<double>(v5);
+            } else {
+                result = pow(10.0, string - v6) * v4 + static_cast<double>(v5);
+            }
         }
     }
-    else
-    {
-        DebugPrint("string");
-        sub_1CA2E(87);
+
+    if (*string == '.') {
+        string++;
+
+        uint32_t v23 = *string - '0';
+        int32_t v24 = 0;
+
+        if (v23 < 10) {
+            int32_t v25 = 0;
+            int32_t v26 = -1;
+            double v31;
+
+            do {
+                string++;
+
+                if (v24 < 20) {
+                    v31 = s_realDigit[0][v25 + v23];
+                } else {
+                    v31 = pow(v16, v26) * v23;
+                }
+
+                result += v31;
+
+                v23 = *string - '0';
+                v24++;
+                v26--;
+                v25 += 10;
+            } while (v23 < 10);
+        }
     }
-    return 0;
+
+    if (*string == 'e' || *string == 'E') {
+        const char* v32 = string + 1;
+
+        if (*v32 == '+') {
+            v32++;
+        }
+
+        result *= pow(10.0, SStrToInt(v32));
+    }
+
+    if (negative) {
+        result = -result;
+    }
+
+    return static_cast<float>(result);
 }
+
+size_t SStrPrintf(char* dest, size_t maxchars, const char* format, ...) {
+    va_list va;
+    va_start(va, format);
+
+    STORM_ASSERT(dest);
+    STORM_ASSERT(format);
+
+    return ISStrVPrintf(format, va, dest, maxchars);
+}
+
+uint32_t SStrPack(char* dest, const char* source, uint32_t destsize) {
+    STORM_ASSERT(dest);
+    STORM_ASSERT(source);
+
+    if (!destsize) {
+        return 0;
+    }
+
+    char* i;
+    const char* v5;
+    char v6;
+    const char* j;
+
+    for (i = dest; *i; i++)
+        ;
+
+    if (destsize == STORM_MAX_STR) {
+        v6 = *source;
+
+        for (j = source; *j; i++) {
+            j++;
+            *i = v6;
+            v6 = *j;
+        }
+    } else {
+        v5 = source;
+
+        if (*source) {
+            while (i < &dest[destsize - 1]) {
+                *i++ = *v5++;
+
+                if (!*v5) {
+                    *i = '\0';
+                    return static_cast<uint32_t>(i - dest);
+                }
+            }
+        }
+    }
+
+    *i = '\0';
+    return static_cast<uint32_t>(i - dest);
+}
+
+void SStrLower(char* string) {
+    while (*string) {
+        *string = static_cast<char>(tolower(*string));
+        string++;
+    }
+}
+
+
+const char* SStrChrR(const char* string, char search) {
+    STORM_ASSERT(string);
+    STORM_VALIDATE(string, ERROR_INVALID_PARAMETER, nullptr);
+
+    const char* result;
+
+    for (result = nullptr; *string; string++) {
+        if (*string == search) {
+            result = string;
+        }
+    }
+
+    return result;
+}
+
+char* SStrChrR(char* string, char search) {
+    STORM_ASSERT(string);
+    STORM_VALIDATE(string, ERROR_INVALID_PARAMETER, nullptr);
+
+    char* result;
+
+    for (result = nullptr; *string; string++) {
+        if (*string == search) {
+            result = string;
+        }
+    }
+
+    return result;
+}
+
+char* SStrDupA(const char* string, const char* filename, uint32_t linenumber) {
+    size_t len = SStrLen(string) + 1;
+    char* dup = static_cast<char*>(SMemAlloc(len, filename, linenumber, 0x0));
+    memcpy(dup, string, len);
+
+    return dup;
+}
+
+const char* SStrStr(const char* string, const char* search) {
+    STORM_ASSERT(string);
+    STORM_ASSERT(search);
+
+    if (!*string) {
+        return nullptr;
+    }
+
+    auto searchEnd = search;
+    while (*searchEnd) {
+        searchEnd++;
+    }
+    size_t searchLength = searchEnd - search;
+
+    auto substring = string;
+
+    while (SStrCmp(substring, search, searchLength)) {
+        substring++;
+
+        if (!*substring) {
+            return nullptr;
+        }
+    }
+
+    return substring;
+}
+
+void SStrUpper(char* string) {
+    while (*string) {
+        *string = static_cast<char>(toupper(*string));
+        string++;
+    }
+}
+
+
