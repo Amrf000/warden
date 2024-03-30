@@ -1,13 +1,11 @@
-
-
-
+#include <cmath>
 #include "SoftFloat.h"
 
 
 unsigned int *SoftFloatFromInt(unsigned int *a1, unsigned int *a2) {
-    signed int v2; // edi
-    unsigned int v3; // eax
-    unsigned int v5; // [esp+4h] [ebp-Ch]
+    unsigned long v2;
+    unsigned long v3;
+    unsigned int v5;
 
     if (a2) {
         v2 = a2;
@@ -28,19 +26,19 @@ unsigned int *SoftFloatFromInt(unsigned int *a1, unsigned int *a2) {
 }
 
 unsigned int *softFloatSubtract(unsigned int *a1, unsigned int *a2, unsigned int *a3) {
-    signed int v3; // esi
-    int v4; // ecx
-    int v5; // edi
-    int v6; // eax
-    int v7; // edx
-    signed int v8; // eax
-    signed int v9; // esi
-    int v10; // eax
-    signed int v11; // edi
-    unsigned int v12; // eax
-    unsigned int v14; // [esp+4h] [ebp-14h]
-    unsigned int v15; // [esp+8h] [ebp-10h]
-    int v16; // [esp+Ch] [ebp-Ch]
+    signed int v3;
+    int v4;
+    int v5;
+    int v6;
+    int v7;
+    signed int v8;
+    signed int v9;
+    int v10;
+    signed int v11;
+    unsigned int v12;
+    unsigned int v14;
+    unsigned int v15;
+    int v16;
 
     v3 = *a3 + 0x80000000;
     v4 = *a2;
@@ -92,15 +90,15 @@ unsigned int *softFloatSubtract(unsigned int *a1, unsigned int *a2, unsigned int
 }
 
 unsigned int *softFloatSqrt(unsigned int *a1, unsigned int *a2) {
-    signed int v2; // esi
-    unsigned int v3; // ecx
-    unsigned int v4; // edx
-    unsigned int v5; // esi
-    int v6; // edi
-    int v8; // [esp+1Ch] [ebp-1Ch]
-    int v9; // [esp+24h] [ebp-14h] BYREF
-    unsigned int v10; // [esp+28h] [ebp-10h] BYREF
-    int v11[3]; // [esp+2Ch] [ebp-Ch] BYREF
+    signed int v2;
+    unsigned int v3;
+    unsigned int v4;
+    unsigned int v5;
+    int v6;
+    int v8;
+    int v9;
+    unsigned int v10;
+    int v11[3];
 
     v2 = *a2;
     if ((~((int) *a2 >> 31) & (2 * *a2)) != 0) {
@@ -130,8 +128,8 @@ unsigned int *softFloatSqrt(unsigned int *a1, unsigned int *a2) {
 }
 
 unsigned int *softFloatReciprocal(unsigned int *a1, unsigned int *a2) {
-    int v2; // ecx
-    unsigned int v4; // [esp+10h] [ebp-14h]
+    int v2;
+    unsigned int v4;
 
     v4 = *a2;
     v2 = 2122317824
@@ -145,12 +143,12 @@ unsigned int *softFloatReciprocal(unsigned int *a1, unsigned int *a2) {
 }
 
 unsigned int *softFloatMultiply(unsigned int *a1, unsigned int *a2, unsigned int *a3) {
-    unsigned int v3; // esi
-    unsigned int v4; // edi
-    unsigned int v5; // ecx
-    int v6; // eax
-    unsigned int v8; // [esp+8h] [ebp-10h]
-    unsigned int v9; // [esp+Ch] [ebp-Ch]
+    unsigned int v3;
+    unsigned int v4;
+    unsigned int v5;
+    int v6;
+    unsigned int v8;
+    unsigned int v9;
 
     v8 = (*a3 ^ *a2) & 0x80000000;
     v3 = *a2 & 0x7F800000;
@@ -170,7 +168,7 @@ unsigned int *softFloatMultiply(unsigned int *a1, unsigned int *a2, unsigned int
 }
 
 unsigned int *softFloatInverseSqrt(unsigned int *a1, unsigned int *a2) {
-    int v3[3]; // [esp+1Ch] [ebp-Ch] BYREF
+    int v3[3];
 
     softFloatSqrt((unsigned int *) v3, a2);
     softFloatReciprocal(a1, (unsigned int *) v3);
@@ -178,7 +176,7 @@ unsigned int *softFloatInverseSqrt(unsigned int *a1, unsigned int *a2) {
 }
 
 unsigned int *softFloatDiv(unsigned int *a1, unsigned int *a2, unsigned int *a3) {
-    int v4[3]; // [esp+1Ch] [ebp-Ch] BYREF
+    int v4[3];
 
     if (*a2 == *a3) {
         *a1 = 1065353216;
@@ -190,19 +188,19 @@ unsigned int *softFloatDiv(unsigned int *a1, unsigned int *a2, unsigned int *a3)
 }
 
 unsigned int *softFloatAdd(unsigned int *ret, float *value1, float *value2) {
-    signed int v3; // ecx
-    signed int v4; // esi
-    int v5; // edi
-    int v6; // eax
-    int v7; // edx
-    signed int v8; // eax
-    signed int v9; // esi
-    int v10; // eax
-    signed int v11; // edi
-    unsigned int v12; // eax
-    unsigned int v14; // [esp+4h] [ebp-14h]
-    int v15; // [esp+8h] [ebp-10h]
-    int v16; // [esp+Ch] [ebp-Ch]
+    signed int v3;
+    signed int v4;
+    int v5;
+    int v6;
+    int v7;
+    signed int v8;
+    signed int v9;
+    int v10;
+    signed int v11;
+    unsigned int v12;
+    unsigned int v14;
+    int v15;
+    int v16;
 
     v3 = *(_DWORD *) value1;
     v15 = *(_DWORD *) value1 & 0x7F800000;

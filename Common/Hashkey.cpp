@@ -80,7 +80,7 @@ HASHKEY_STRIPACKED::HASHKEY_STRIPACKED(const char *key) {
                 SStrTokenize(v9, source, 0x100u, " ", 0);
             }
         }
-        this->m_str = SStrDupA(v8);
+        this->m_str = SStrDupA(v8, __FILE__, __LINE__);
     } else {
         this->m_str = 0;
     }

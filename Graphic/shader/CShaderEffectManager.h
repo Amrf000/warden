@@ -2,6 +2,7 @@
 
 
 #include "Common/TSHashTable.h"
+#include "Common/Hashkey.h"
 
 class CShaderEffect;
 

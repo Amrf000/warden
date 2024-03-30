@@ -1,9 +1,3 @@
-
-
-//
-// Created by liuyawu on 2019/5/9.
-//
-
 #pragma once
 
 #include "C3Vector.h"

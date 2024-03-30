@@ -1,122 +1,97 @@
-
-
-
 #pragma once
 
 #include <cstdint>
 #include <cstdlib>
+#include "CMath.h"
 
 namespace NTempest {
     class CImVector {
     public:
-        CImVector *Set(const CImVector *that) {
-            NTempest::CImVector *result;
-
-            result = this;
-            *this = *that;
-            return result;
+        static uint32_t MakeARGB(uint8_t a, uint8_t r, uint8_t g, uint8_t b) {
+            return a << 24 | r << 16 | g << 8 | b;
         }
 
-//        unsigned int *operator=(unsigned int *a2) {
-//            unsigned int *result;
-//
-//            result = (unsigned int *) this;
-//            *(unsigned int *) this = *a2;
-//            return result;
-//        }
-
-        NTempest::CImVector *operator=(const NTempest::CImVector *that) {
+        CImVector *Set(const CImVector &that) {
             NTempest::CImVector *result;
-
-            result = this;
-            *this = *that;
-            return result;
-        }
-
-        CImVector *Set(float a2,
-                       float a3,
-                       float a4,
-                       float a5) {
-// Convert float values to [0, 255] range
-            int r = static_cast<int>(fmaxf(a2 * 255.0f + 0.5f, 0.0f));
-            int g = static_cast<int>(fmaxf(a3 * 255.0f + 0.5f, 0.0f));
-            int b = static_cast<int>(fmaxf(a4 * 255.0f + 0.5f, 0.0f));
-            int a = static_cast<int>(fmaxf(a5 * 255.0f + 0.5f, 0.0f));
-
-            // Clamp values
-            r = (r > 255) ? 255 : (r < 0) ? 0 : r;
-            g = (g > 255) ? 255 : (g < 0) ? 0 : g;
-            b = (b > 255) ? 255 : (b < 0) ? 0 : b;
-            a = (a > 255) ? 255 : (a < 0) ? 0 : a;
-
-            // Pack RGBA components into a single integer
-            unsigned int rgba = (a << 24) | (b << 16) | (g << 8) | r;
-
-            // Store the packed value into the CImVector object
-            *this = NTempest::CImVector(rgba);
-
+            *this = that;
             return this;
         }
 
-        int Gray(unsigned int value) {
-            unsigned char red = value & 0xFF;
-            unsigned char green = (value >> 8) & 0xFF;
-            unsigned char blue = (value >> 16) & 0xFF;
+        CImVector *operator=(uint32_t value) {
+            this->value = value;
+            return this;
+        }
+
+        NTempest::CImVector *operator=(const NTempest::CImVector &that) {
+            this->value = that.value;
+            return this;
+        }
+
+        bool operator==(const CImVector &color) {
+            return this->value == color.value;
+        }
+
+        void Set(float a, float r, float g, float b) {
+            uint8_t a_ = CMath::fuint_n(a * 255.0f);
+            uint8_t r_ = CMath::fuint_n(r * 255.0f);
+            uint8_t g_ = CMath::fuint_n(g * 255.0f);
+            uint8_t b_ = CMath::fuint_n(b * 255.0f);
+
+            this->value = CImVector::MakeARGB(a_, r_, g_, b_);
+        }
+
+        int Gray(uint32_t value) {
+            uint8_t red = value & 0xFF;
+            uint8_t green = (value >> 8) & 0xFF;
+            uint8_t blue = (value >> 16) & 0xFF;
 
             return (28 * red + 151 * green + 77 * blue) >> 8;
         }
 
-        unsigned int Desaturate(unsigned int v3) {
-            unsigned char v1 = Gray(v3);
-            return (v1 << 8) | (v1 << 16) | (unsigned int) this & 0xFF000000 | v1;
+        uint32_t Desaturate(uint32_t v3) {
+            uint8_t v1 = Gray(v3);
+            return (v1 << 8) | (v1 << 16) | (uint32_t) this & 0xFF000000 | v1;
         }
 
-        unsigned int Desaturate() {
-            unsigned int result;
-            result = Desaturate(*(unsigned int *) this);
-            *(unsigned int *) this = result;
+        uint32_t Desaturate() {
+            uint32_t result;
+            result = Desaturate(*(uint32_t *) this);
+            *(uint32_t *) this = result;
             return result;
         }
 
         int B_() const {
-            return (unsigned __int8) this->b;
+            return (uint8_t) this->b;
         }
 
         int R_() const {
-            return (unsigned __int8) this->r;
+            return (uint8_t) this->r;
         }
 
         int G_() const {
-            return (unsigned __int8) this->g;
+            return (uint8_t) this->g;
         }
 
-        int MultiplyRGB_(const CImVector *a2) {
-            __int16 v2;
-            __int16 v3;
-            int result;
-            unsigned int v5;
-            __int16 v6;
-            __int16 v7;
-            __int16 v8;
-
-            v5 = *(unsigned int *) this & 0xFF000000;
-            v2 = this->R_();
-            v6 = a2->R_();
-            v7 = this->G_();
-            v8 = a2->G_();
-            v3 = this->B_();
-            result = (unsigned __int8) ((unsigned __int16) (a2->B_() * v3 + 255) >> 8) |
-                     (v8 * v7 + 255) & 0xFF00 | ((unsigned __int8) ((unsigned __int16) (v6 * v2 + 255) >> 8) << 16) |
-                     v5;
-            *this = (NTempest::CImVector) result;
+        int MultiplyRGB_(const CImVector &that) {
+            uint32_t result = (uint8_t) ((uint16_t) (that.B_() * this->B_() + 255) >> 8) |
+                              (that.G_() * this->G_() + 255) & 0xFF00 |
+                              ((uint8_t) ((uint16_t) (that.R_() * this->R_() + 255) >> 8) << 16) |
+                              (*(uint32_t *) this & 0xFF000000);
+            this->value = result;
             return result;
         }
 
     public:
-        unsigned char b;
-        unsigned char g;
-        unsigned char r;
-        unsigned char a;
+        union {
+            struct {
+                uint8_t b;
+                uint8_t g;
+                uint8_t r;
+                uint8_t a;
+            };
+
+            uint32_t value;
+        };
     };
 }
 

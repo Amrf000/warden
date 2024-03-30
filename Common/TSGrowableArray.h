@@ -63,7 +63,7 @@ uint32_t TSGrowableArray<T>::Add(uint32_t count, uint32_t incr, const T *data) {
 
 template<class T>
 uint32_t TSGrowableArray<T>::CalcChunkSize(uint32_t count) {
-    uint32_t maxChunk = std::max(static_cast<int32_t>(256 / sizeof(T)), 8);
+    uint32_t maxChunk = (std::max)(static_cast<int32_t>(256 / sizeof(T)), 8);
 
     if (count >= maxChunk) {
         this->m_chunk = maxChunk;

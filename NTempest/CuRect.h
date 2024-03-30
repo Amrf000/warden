@@ -1,11 +1,10 @@
-
-
-
 #pragma once
 
 #include <cstdint>
 #include "C2uVector.h"
 #include "CRandSeed.h"
+#include "CiRect.h"
+#include "CRect.h"
 
 namespace NTempest {
     class CuRect {

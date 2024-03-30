@@ -3,6 +3,7 @@
 #include "Types.h"
 #include "texture/CGxTex.h"
 #include "texture/CTexture.h"
+#include "Storm/Handle.h"
 
 typedef HOBJECT HTEXTURE;
 

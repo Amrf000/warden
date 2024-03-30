@@ -1,5 +1,3 @@
-
-
 #pragma once
 
 #include "C2uVector.h"

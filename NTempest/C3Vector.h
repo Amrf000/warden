@@ -1,20 +1,63 @@
-
-
-//
-// Created by liuyawu on 2019/5/9.
-//
-
 #pragma once
 
 #include <cmath>
-#include <ntdef.h>
+#include "CImVector.h"
+#include "C44Matrix.h"
+#include "CMath.h"
+
 
 namespace NTempest {
     class C3Vector {
     public:
-        long double Mag() {
-            return sqrtf((float) ((float) (this->x * this->x) + (float) (this->y * this->y)) +
-                         (float) (this->z * this->z));
+        C3Vector() {
+            x = 0.0f;
+            y = 0.0f;
+            z = 0.0f;
+        }
+
+        C3Vector(float x, float y, float z)
+                : x(x), y(y), z(z) {}
+
+        C3Vector(const CImVector &color)
+                : x(color.r / 255.0f), y(color.g / 255.0f), z(color.b / 255.0f) {}
+
+
+        C3Vector operator+(const C3Vector &l, const C3Vector &r) {
+            float x = l.x + r.x;
+            float y = l.y + r.y;
+            float z = l.z + r.z;
+
+            return {x, y, z};
+        }
+
+        C3Vector operator*(const C3Vector &l, const C44Matrix &r) {
+            float x = r.c0 * l.z + r.b0 * l.y + r.a0 * l.x + r.d0;
+            float y = r.c1 * l.z + r.b1 * l.y + r.a1 * l.x + r.d1;
+            float z = r.c2 * l.z + r.b2 * l.y + r.a2 * l.x + r.d2;
+
+            return {x, y, z};
+        }
+
+        bool operator!=(const C3Vector &l, const C3Vector &r) {
+            return l.x != r.x || l.y != r.y || l.z != r.z;
+        }
+
+        C3Vector &operator*=(float a) {
+            this->x *= a;
+            this->y *= a;
+            this->z *= a;
+
+            return *this;
+        }
+
+
+        float SquaredMag() const {
+            return this->x * this->x + this->y * this->y + this->z * this->z;
+        }
+
+
+        float Mag() const {
+            return CMath::sqrt(this->SquaredMag());
         }
 
         C3Vector *ProjectionOnPlane(const C3Vector *a2, const C3Vector *a3) {
@@ -46,15 +89,8 @@ namespace NTempest {
             return this;
         }
 
-        C3Vector *Normalize() {
-            float v2;
-            v2 = 1.0
-                 / sqrt((float) ((float) ((float) (this->x * this->x) + (float) (this->y * this->y)) +
-                                 (float) (this->z * this->z)));
-            this->x = this->x * v2;
-            this->y = v2 * this->y;
-            this->z = v2 * this->z;
-            return this;
+        void Normalize() {
+            this->operator*=(1.0f / this->Mag());
         }
 
         bool IsUnit() {

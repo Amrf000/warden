@@ -36,8 +36,7 @@ file(GLOB_RECURSE dir_src
 )
 
 add_executable(warden main.cpp ${dir_src}
-        Agile/CStringMemory.cpp
-        Agile/CStringMemory.h)
+        NTempest/CRndSeed.h)
 target_include_directories(warden PRIVATE "include/")
 target_include_directories(warden PRIVATE "/")
 target_include_directories(warden PRIVATE "externel/freetype-2.0.9/include")

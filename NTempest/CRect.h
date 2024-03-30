@@ -1,6 +1,3 @@
-
-
-
 #pragma once
 
 #include "C2Vector.h"

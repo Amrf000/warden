@@ -1,6 +1,8 @@
-#include "common/datamgr/CDataMgr.hpp"
+#include <cstdint>
+#include "CDataMgr.h"
+#include "CBaseManaged.h"
 
-void CDataMgr::AddManaged(CBaseManaged* managed, uint32_t fieldId, uint32_t flags, uint32_t dataTypeId) {
+void CDataMgr::AddManaged(CBaseManaged *managed, uint32_t fieldId, uint32_t flags, uint32_t dataTypeId) {
     managed->m_flags = flags;
     managed->m_dataTypeId = dataTypeId;
 
@@ -11,14 +13,14 @@ void CDataMgr::AddManaged(CBaseManaged* managed, uint32_t fieldId, uint32_t flag
     }
 }
 
-void CDataMgr::AddManaged(TManaged<C3Vector>* managed, uint32_t fieldId, uint32_t flags) {
+void CDataMgr::AddManaged(TManaged <C3Vector> *managed, uint32_t fieldId, uint32_t flags) {
     this->AddManaged(managed, fieldId, flags, CBaseManaged::COORD);
 }
 
-void CDataMgr::AddManaged(TManaged<float>* managed, uint32_t fieldId, uint32_t flags) {
+void CDataMgr::AddManaged(TManaged<float> *managed, uint32_t fieldId, uint32_t flags) {
     this->AddManaged(managed, fieldId, flags, CBaseManaged::FLOAT);
 }
 
-void CDataMgr::LinkManaged(CBaseManaged* managed) {
+void CDataMgr::LinkManaged(CBaseManaged *managed) {
     // TODO
 }

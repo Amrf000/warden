@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common.h"
+#include "CRndSeed.h"
 
 namespace NTempest {
     class CuRange {
@@ -44,4 +44,3 @@ namespace NTempest {
 }
 
 
-#endif //ENGINE_CURANGE_H

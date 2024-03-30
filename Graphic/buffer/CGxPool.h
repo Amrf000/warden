@@ -3,6 +3,7 @@
 #include "CGxBuf.h"
 #include "Types.h"
 #include "Common/TSGetLink.h"
+#include "Common/TSList.h"
 #include <cstdint>
 
 
@@ -15,7 +16,7 @@ public:
     void *m_apiSpecific;
     void *m_mem;
     int32_t unk1C; // TODO
-    TSList <CGxBuf, TSGetLink<CGxBuf>> m_bufList;
+    TSList<CGxBuf, TSGetLink<CGxBuf>> m_bufList;
     EGxPoolHintBits m_hint;
     const char *m_name;
 
