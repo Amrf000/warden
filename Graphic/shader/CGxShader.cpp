@@ -1,4 +1,6 @@
 #include "CGxShader.h"
+#include "Graphic/Device.h"
+#include "Storm/SFile.h"
 
 
 void CGxShader::Load(SFile *file) {

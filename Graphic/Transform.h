@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Types.h"
+#include <NTempest/C44Matrix.h>
+#include <NTempest/C3Vector.h>
 
-class C3Vector;
+using namespace NTempest;
 
-class C44Matrix;
 
 void GxXformPop(EGxXform xf);
 

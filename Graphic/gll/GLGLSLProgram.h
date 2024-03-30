@@ -1,13 +1,13 @@
 #pragma once
 
-#include "gx/gll/GLObject.h"
+#include "GLObject.h"
 
 class GLShader;
 
 class GLGLSLProgram : public GLObject {
-    public:
-        // Static functions
-        static GLGLSLProgram* Find(GLShader*, GLShader*);
+public:
+    // Static functions
+    static GLGLSLProgram *Find(GLShader *, GLShader *);
 };
 
 

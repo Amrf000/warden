@@ -5,6 +5,9 @@
 #include "CGxTex.h"
 #include "Agile/CHandleObject.h"
 #include "Common/TSHashObject.h"
+#include "Graphic/Types.h"
+#include "Agile/CAsyncObject.h"
+#include "Agile/CStatus.h"
 
 
 class HASHKEY_TEXTUREFILE {

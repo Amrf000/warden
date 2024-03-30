@@ -1,6 +1,6 @@
-#include "gx/font/CGxFont.h"
-#include "gx/font/FontFace.h"
-#include "gx/Texture.h"
+#include "CGxFont.h"
+#include "FontFace.h"
+#include "Storm/Memory.h"
 #include <cmath>
 #include <cstring>
 #include <storm/Error.h>
@@ -17,7 +17,7 @@ GLYPHBITMAPDATA::~GLYPHBITMAPDATA() {
     this->m_data = nullptr;
 }
 
-void GLYPHBITMAPDATA::CopyFrom(GLYPHBITMAPDATA* data) {
+void GLYPHBITMAPDATA::CopyFrom(GLYPHBITMAPDATA *data) {
     if (this->m_data) {
         SMemFree(this->m_data, __FILE__, __LINE__, 0);
     }
@@ -28,19 +28,19 @@ void GLYPHBITMAPDATA::CopyFrom(GLYPHBITMAPDATA* data) {
 }
 
 uint32_t CHARCODEDESC::GapToNextTexture() {
-    CHARCODEDESC* next = this->textureRowLink.Next();
+    CHARCODEDESC *next = this->textureRowLink.Next();
 
     return next
-        ? next->glyphStartPixel - this->glyphEndPixel - 1
-        : 255 - this->glyphEndPixel;
+           ? next->glyphStartPixel - this->glyphEndPixel - 1
+           : 255 - this->glyphEndPixel;
 }
 
 uint32_t CHARCODEDESC::GapToPreviousTexture() {
-    CHARCODEDESC* previous = this->textureRowLink.Prev();
+    CHARCODEDESC *previous = this->textureRowLink.Prev();
 
     return previous
-        ? this->glyphStartPixel - previous->glyphEndPixel - 1
-        : this->glyphStartPixel;
+           ? this->glyphStartPixel - previous->glyphEndPixel - 1
+           : this->glyphStartPixel;
 }
 
 void CHARCODEDESC::GenerateTextureCoords(uint32_t rowNumber, uint32_t glyphSide) {
@@ -50,7 +50,7 @@ void CHARCODEDESC::GenerateTextureCoords(uint32_t rowNumber, uint32_t glyphSide)
     this->bitmapData.m_textureCoords.maxX = (this->glyphStartPixel + this->bitmapData.m_glyphCellWidth) / 256.0f;
 }
 
-KERNINGHASHKEY& KERNINGHASHKEY::operator=(const KERNINGHASHKEY& rhs) {
+KERNINGHASHKEY &KERNINGHASHKEY::operator=(const KERNINGHASHKEY &rhs) {
     if (this->code != rhs.code) {
         this->code = rhs.code;
     }
@@ -58,11 +58,11 @@ KERNINGHASHKEY& KERNINGHASHKEY::operator=(const KERNINGHASHKEY& rhs) {
     return *this;
 }
 
-bool KERNINGHASHKEY::operator==(const KERNINGHASHKEY& rhs) {
+bool KERNINGHASHKEY::operator==(const KERNINGHASHKEY &rhs) {
     return this->code == rhs.code;
 }
 
-CHARCODEDESC* TEXTURECACHEROW::CreateNewDesc(GLYPHBITMAPDATA* data, uint32_t rowNumber, uint32_t glyphCellHeight) {
+CHARCODEDESC *TEXTURECACHEROW::CreateNewDesc(GLYPHBITMAPDATA *data, uint32_t rowNumber, uint32_t glyphCellHeight) {
     uint32_t glyphWidth = data->m_glyphCellWidth;
 
     if (this->widestFreeSlot < glyphWidth) {
@@ -70,7 +70,7 @@ CHARCODEDESC* TEXTURECACHEROW::CreateNewDesc(GLYPHBITMAPDATA* data, uint32_t row
     }
 
     if (!this->glyphList.Head()) {
-        CHARCODEDESC* newCode = this->glyphList.NewNode(2, 0, 0);
+        CHARCODEDESC * newCode = this->glyphList.NewNode(2, 0, 0);
 
         newCode->glyphStartPixel = 0;
         newCode->glyphEndPixel = glyphWidth - 1;
@@ -88,7 +88,7 @@ CHARCODEDESC* TEXTURECACHEROW::CreateNewDesc(GLYPHBITMAPDATA* data, uint32_t row
 
     if (gapToPrevious >= glyphWidth) {
         auto m = SMemAlloc(sizeof(CHARCODEDESC), __FILE__, __LINE__, 0x0);
-        auto newCode = new (m) CHARCODEDESC();
+        auto newCode = new(m) CHARCODEDESC();
 
         this->glyphList.LinkNode(newCode, 2, this->glyphList.Head());
 
@@ -99,8 +99,8 @@ CHARCODEDESC* TEXTURECACHEROW::CreateNewDesc(GLYPHBITMAPDATA* data, uint32_t row
         newCode->GenerateTextureCoords(rowNumber, glyphCellHeight);
 
         this->widestFreeSlot = this->glyphList.Head()
-            ? this->glyphList.Head()->GapToPreviousTexture()
-            : 0;
+                               ? this->glyphList.Head()->GapToPreviousTexture()
+                               : 0;
 
         for (auto code = this->glyphList.Head(); code; code = this->glyphList.Link(code)->Next()) {
             uint32_t gapToNext = code->GapToNextTexture();
@@ -113,7 +113,7 @@ CHARCODEDESC* TEXTURECACHEROW::CreateNewDesc(GLYPHBITMAPDATA* data, uint32_t row
     }
 
     int32_t inserted = 0;
-    CHARCODEDESC* newCode = nullptr;
+    CHARCODEDESC * newCode = nullptr;
 
     for (auto code = this->glyphList.Head(); code; code = this->glyphList.Link(code)->Next()) {
         uint32_t gapToNext = code->GapToNextTexture();
@@ -128,7 +128,7 @@ CHARCODEDESC* TEXTURECACHEROW::CreateNewDesc(GLYPHBITMAPDATA* data, uint32_t row
 
         if (gapToNext >= glyphWidth) {
             auto m = SMemAlloc(sizeof(CHARCODEDESC), __FILE__, __LINE__, 0x0);
-            newCode = new (m) CHARCODEDESC();
+            newCode = new(m) CHARCODEDESC();
 
             this->glyphList.LinkNode(newCode, 1, code);
 
@@ -145,17 +145,19 @@ CHARCODEDESC* TEXTURECACHEROW::CreateNewDesc(GLYPHBITMAPDATA* data, uint32_t row
     return newCode;
 }
 
-void TEXTURECACHEROW::EvictGlyph(CHARCODEDESC* desc) {
+void TEXTURECACHEROW::EvictGlyph(CHARCODEDESC *desc) {
     // TODO
 }
 
-void TEXTURECACHE::TextureCallback(EGxTexCommand cmd, uint32_t w, uint32_t h, uint32_t d, uint32_t mipLevel, void* userArg, uint32_t& texelStrideInBytes, const void*& texels) {
-    TEXTURECACHE* cache = static_cast<TEXTURECACHE*>(userArg);
+void
+TEXTURECACHE::TextureCallback(EGxTexCommand cmd, uint32_t w, uint32_t h, uint32_t d, uint32_t mipLevel, void *userArg,
+                              uint32_t &texelStrideInBytes, const void *&texels) {
+    TEXTURECACHE *cache = static_cast<TEXTURECACHE *>(userArg);
 
     switch (cmd) {
         case GxTex_Latch: {
             for (int32_t i = cache->m_textureRows.Count() - 1; i >= 0; i--) {
-                auto& cacheRow = cache->m_textureRows[i];
+                auto &cacheRow = cache->m_textureRows[i];
 
                 for (auto glyph = cacheRow.glyphList.Head(); glyph; glyph = cacheRow.glyphList.Next(glyph)) {
                     cache->WriteGlyphToTexture(glyph);
@@ -170,10 +172,10 @@ void TEXTURECACHE::TextureCallback(EGxTexCommand cmd, uint32_t w, uint32_t h, ui
     }
 }
 
-CHARCODEDESC* TEXTURECACHE::AllocateNewGlyph(GLYPHBITMAPDATA* data) {
+CHARCODEDESC *TEXTURECACHE::AllocateNewGlyph(GLYPHBITMAPDATA *data) {
     for (int32_t i = 0; i < this->m_textureRows.Count(); i++) {
-        auto& cacheRow = this->m_textureRows[i];
-        CHARCODEDESC* glyph = cacheRow.CreateNewDesc(data, i, this->m_theFace->m_cellHeight);
+        auto &cacheRow = this->m_textureRows[i];
+        CHARCODEDESC *glyph = cacheRow.CreateNewDesc(data, i, this->m_theFace->m_cellHeight);
 
         if (glyph) {
             return glyph;
@@ -187,21 +189,21 @@ void TEXTURECACHE::CreateTexture(int32_t filter) {
     CGxTexFlags flags = CGxTexFlags(filter ? GxTex_Linear : GxTex_Nearest, 0, 0, 0, 0, 0, 1);
 
     HTEXTURE texture = TextureCreate(
-        256,
-        256,
-        GxTex_Argb4444,
-        GxTex_Argb4444,
-        flags,
-        this,
-        TEXTURECACHE::TextureCallback,
-        "GxuFont",
-        0
+            256,
+            256,
+            GxTex_Argb4444,
+            GxTex_Argb4444,
+            flags,
+            this,
+            TEXTURECACHE::TextureCallback,
+            "GxuFont",
+            0
     );
 
     this->m_texture = texture;
 }
 
-void TEXTURECACHE::Initialize(CGxFont* face, uint32_t pixelSize) {
+void TEXTURECACHE::Initialize(CGxFont *face, uint32_t pixelSize) {
     this->m_theFace = face;
 
     uint32_t rowCount = 256 / pixelSize;
@@ -212,7 +214,7 @@ void TEXTURECACHE::Initialize(CGxFont* face, uint32_t pixelSize) {
     }
 }
 
-void TEXTURECACHE::PasteGlyph(const GLYPHBITMAPDATA& data, uint16_t* dst) {
+void TEXTURECACHE::PasteGlyph(const GLYPHBITMAPDATA &data, uint16_t *dst) {
     if (this->m_theFace->m_flags & FONT_OUTLINE) {
         if (this->m_theFace->m_flags & FONT_MONOCHROME) {
             this->PasteGlyphOutlinedMonochrome(data, dst);
@@ -226,8 +228,8 @@ void TEXTURECACHE::PasteGlyph(const GLYPHBITMAPDATA& data, uint16_t* dst) {
     }
 }
 
-void TEXTURECACHE::PasteGlyphNonOutlinedAA(const GLYPHBITMAPDATA& glyphData, uint16_t* dst) {
-    auto src = reinterpret_cast<uint8_t*>(glyphData.m_data);
+void TEXTURECACHE::PasteGlyphNonOutlinedAA(const GLYPHBITMAPDATA &glyphData, uint16_t *dst) {
+    auto src = reinterpret_cast<uint8_t *>(glyphData.m_data);
     auto pitch = glyphData.m_glyphPitch;
     auto dstCellStride = glyphData.m_glyphCellWidth * 2;
 
@@ -247,7 +249,8 @@ void TEXTURECACHE::PasteGlyphNonOutlinedAA(const GLYPHBITMAPDATA& glyphData, uin
 
     auto glyphHeight = glyphData.m_glyphHeight;
     auto yStart = glyphData.m_yStart;
-    if (this->m_theFace->m_cellHeight - glyphHeight - yStart > 0 && this->m_theFace->m_cellHeight - glyphHeight != yStart) {
+    if (this->m_theFace->m_cellHeight - glyphHeight - yStart > 0 &&
+        this->m_theFace->m_cellHeight - glyphHeight != yStart) {
         for (int32_t y = 0; y < this->m_theFace->m_cellHeight - glyphHeight - yStart; y++) {
             memset(dst, 0, dstCellStride);
             dst += 256;
@@ -255,14 +258,14 @@ void TEXTURECACHE::PasteGlyphNonOutlinedAA(const GLYPHBITMAPDATA& glyphData, uin
     }
 }
 
-void TEXTURECACHE::PasteGlyphNonOutlinedMonochrome(const GLYPHBITMAPDATA& data, uint16_t* dst) {
+void TEXTURECACHE::PasteGlyphNonOutlinedMonochrome(const GLYPHBITMAPDATA &data, uint16_t *dst) {
     // TODO
 }
 
-void TEXTURECACHE::PasteGlyphOutlinedAA(const GLYPHBITMAPDATA& glyphData, uint16_t* dst) {
+void TEXTURECACHE::PasteGlyphOutlinedAA(const GLYPHBITMAPDATA &glyphData, uint16_t *dst) {
     uint32_t v6;
     uint32_t v7;
-    uint16_t* v8;
+    uint16_t *v8;
     int32_t v9;
     int32_t v15;
     int32_t v16;
@@ -297,24 +300,24 @@ void TEXTURECACHE::PasteGlyphOutlinedAA(const GLYPHBITMAPDATA& glyphData, uint16
     uint16_t v45[9216];
     uint16_t v46[9216];
     uint32_t v49;
-    uint16_t* v52;
+    uint16_t *v52;
     uint32_t v52_2;
     uint32_t v52_3;
     int32_t v53;
 
     static uint8_t pixelsLitLevels[] = {
-        0, 1, 1, 3, 5, 7, 9, 0xB, 0xD, 0xF, 0, 0
+            0, 1, 1, 3, 5, 7, 9, 0xB, 0xD, 0xF, 0, 0
     };
 
-    const char* src = reinterpret_cast<char*>(glyphData.m_data);
+    const char *src = reinterpret_cast<char *>(glyphData.m_data);
     uint32_t thick = this->m_theFace->m_flags & 0x8;
 
     memset(v45, 0, sizeof(v45));
     memset(v46, 0, sizeof(v46));
 
     uint32_t ofs = thick
-        ? 256 * glyphData.m_yStart + 258
-        : 256 * glyphData.m_yStart + 257;
+                   ? 256 * glyphData.m_yStart + 258
+                   : 256 * glyphData.m_yStart + 257;
 
     for (int32_t y = 0; y < glyphData.m_glyphHeight; y++) {
         for (int32_t x = 0; x < glyphData.m_glyphWidth; x++) {
@@ -362,20 +365,20 @@ void TEXTURECACHE::PasteGlyphOutlinedAA(const GLYPHBITMAPDATA& glyphData, uint16
                         if (v20) {
                             if (v20 == v18 - 1) {
                                 if (
-                                    v46[v21 - 1] & v16
-                                    || v46[v19 + v20 - 257] & v16
-                                ) {
+                                        v46[v21 - 1] & v16
+                                        || v46[v19 + v20 - 257] & v16
+                                        ) {
                                     goto LABEL_65;
                                 }
 
                                 v22 = v46[v19 + v20 - 256];
                             } else {
                                 if (
-                                    v46[v19 + v20 - 257] & v16
-                                    || v46[v19 + v20 - 256] & v16
-                                    || v46[v19 + v20 - 255] & v16
-                                    || v46[v21 - 1] & v16
-                                ) {
+                                        v46[v19 + v20 - 257] & v16
+                                        || v46[v19 + v20 - 256] & v16
+                                        || v46[v19 + v20 - 255] & v16
+                                        || v46[v21 - 1] & v16
+                                        ) {
                                     goto LABEL_65;
                                 }
 
@@ -383,9 +386,9 @@ void TEXTURECACHE::PasteGlyphOutlinedAA(const GLYPHBITMAPDATA& glyphData, uint16
                             }
                         } else {
                             if (
-                                v46[v19 - 256] & v16
-                                || v46[v19 - 255] & v16
-                            ) {
+                                    v46[v19 - 256] & v16
+                                    || v46[v19 - 255] & v16
+                                    ) {
                                 goto LABEL_65;
                             }
 
@@ -396,25 +399,25 @@ void TEXTURECACHE::PasteGlyphOutlinedAA(const GLYPHBITMAPDATA& glyphData, uint16
 
                         if (v20 == v18 - 1) {
                             if (
-                                v46[v24 - 256] & v16
-                                || v46[v19 + v20 - 257] & v16
-                                || v46[v21 - 1] & v16
-                                || v46[v21 + 255] & v16
-                            ) {
+                                    v46[v24 - 256] & v16
+                                    || v46[v19 + v20 - 257] & v16
+                                    || v46[v21 - 1] & v16
+                                    || v46[v21 + 255] & v16
+                                    ) {
                                 goto LABEL_65;
                             }
 
                             v22 = v46[v21 + 256];
                         } else {
                             if (
-                                v46[v24 - 257] & v16
-                                || v46[v19 + v20 - 256] & v16
-                                || v46[v19 + v20 - 255] & v16
-                                || v46[v21 - 1] & v16
-                                || v46[v21 + 1] & v16
-                                || v46[v21 + 255] & v16
-                                || v46[v21 + 256] & v16
-                            ) {
+                                    v46[v24 - 257] & v16
+                                    || v46[v19 + v20 - 256] & v16
+                                    || v46[v19 + v20 - 255] & v16
+                                    || v46[v21 - 1] & v16
+                                    || v46[v21 + 1] & v16
+                                    || v46[v21 + 255] & v16
+                                    || v46[v21 + 256] & v16
+                                    ) {
                                 goto LABEL_65;
                             }
 
@@ -422,17 +425,17 @@ void TEXTURECACHE::PasteGlyphOutlinedAA(const GLYPHBITMAPDATA& glyphData, uint16
                         }
                     } else {
                         if (
-                            v46[v19 - 256] & v16
-                            || v46[v19 - 255] & v16
-                            || v46[v19 + 1] & v16
-                            || v46[v19 + 257] & v16
-                        ) {
+                                v46[v19 - 256] & v16
+                                || v46[v19 - 255] & v16
+                                || v46[v19 + 1] & v16
+                                || v46[v19 + 257] & v16
+                                ) {
                             goto LABEL_65;
                         }
 
                         v22 = v46[v19 + 256];
                     }
-LABEL_64:
+                    LABEL_64:
                     if (!(v22 & v16)) {
                         goto LABEL_66;
                     }
@@ -448,7 +451,8 @@ LABEL_64:
                             v22 = v46[v20 + 256];
                             goto LABEL_64;
                         }
-                    } else if (!(v23 & v16) && !(v46[v20 + 1] & v16) && !(v46[v20 + 255] & v16) && !(v46[v20 + 256] & v16)) {
+                    } else if (!(v23 & v16) && !(v46[v20 + 1] & v16) && !(v46[v20 + 255] & v16) &&
+                               !(v46[v20 + 256] & v16)) {
                         v22 = v46[v20 + 257];
                         goto LABEL_64;
                     }
@@ -456,14 +460,14 @@ LABEL_64:
                     v22 = v46[256];
                     goto LABEL_64;
                 }
-LABEL_65:
+                LABEL_65:
                 v46[v21] = v49;
-LABEL_66:
+                LABEL_66:
                 ++v20;
             } while (v20 < v18);
 
             v17 = v53;
-LABEL_68:
+            LABEL_68:
             v53 = ++v17;
         } while (v17 < this->m_theFace->m_cellHeight);
     }
@@ -514,11 +518,11 @@ LABEL_68:
                 } else {
                     if (!v25) {
                         v31 = v30
-                            + (v46[v28 + 256] != 0)
-                            + (v46[v28 + 1] != 0)
-                            + (v46[v28 + 257] != 0)
-                            + (v46[v28 - 255] != 0)
-                            + (v46[v28 - 256] != 0);
+                              + (v46[v28 + 256] != 0)
+                              + (v46[v28 + 1] != 0)
+                              + (v46[v28 + 257] != 0)
+                              + (v46[v28 - 255] != 0)
+                              + (v46[v28 - 256] != 0);
 
                         goto LABEL_92;
                     }
@@ -528,11 +532,11 @@ LABEL_68:
 
                     if (v37) {
                         v31 = (v46[v28 + v25 + 256] != 0)
-                            + (v46[v28 + v25 + 255] != 0)
-                            + (v46[v28 + v25 - 256] != 0)
-                            + (v46[v39 - 257] != 0)
-                            + v30
-                            + (*(v52 - 1) != 0);
+                              + (v46[v28 + v25 + 255] != 0)
+                              + (v46[v28 + v25 - 256] != 0)
+                              + (v46[v39 - 257] != 0)
+                              + v30
+                              + (*(v52 - 1) != 0);
 
                         goto LABEL_92;
                     }
@@ -540,10 +544,10 @@ LABEL_68:
                     v37 = v46[v39 - 256] == 0;
                     v38 = v28 + v25;
                     v35 = (v46[v28 + v25 + 256] != 0)
-                        + (v46[v28 + v25 + 255] != 0)
-                        + (v46[v28 + v25 - 255] != 0)
-                        + !v37
-                        + (v46[v28 + v25 - 257] != 0);
+                          + (v46[v28 + v25 + 255] != 0)
+                          + (v46[v28 + v25 - 255] != 0)
+                          + !v37
+                          + (v46[v28 + v25 - 257] != 0);
                     v36 = 0;
                     v37 = v46[v28 + v25 + 257] == 0;
                 }
@@ -556,9 +560,9 @@ LABEL_68:
                     v33 = v29 + (v46[v25 + 256] != 0);
                 } else {
                     v32 = (v46[v25 + 257] != 0)
-                        + (v46[v25 + 256] != 0)
-                        + (v46[v25 + 255] != 0)
-                        + (v46[v25 - 1] != 0);
+                          + (v46[v25 + 256] != 0)
+                          + (v46[v25 + 255] != 0)
+                          + (v46[v25 - 1] != 0);
                     v33 = v29 + (v46[v25 + 1] != 0);
                 }
 
@@ -566,7 +570,7 @@ LABEL_68:
             } else {
                 v31 = v29 + (v46[1] != 0) + (v46[257] != 0) + (v46[256] != 0);
             }
-LABEL_92:
+            LABEL_92:
             v26 = v53;
 
             v44[v28 + v25] = pixelsLitLevels[v31];
@@ -580,7 +584,7 @@ LABEL_92:
             break;
         }
 
-LABEL_94:
+        LABEL_94:
         v53 = ++v26;
 
         if (v26 < this->m_theFace->m_cellHeight) {
@@ -590,7 +594,7 @@ LABEL_94:
         break;
     }
 
-LABEL_95:
+    LABEL_95:
     v40 = 0;
 
     for (int32_t y = 0; y < this->m_theFace->m_cellHeight; y++) {
@@ -611,27 +615,27 @@ LABEL_95:
     }
 }
 
-void TEXTURECACHE::PasteGlyphOutlinedMonochrome(const GLYPHBITMAPDATA& data, uint16_t* dst) {
+void TEXTURECACHE::PasteGlyphOutlinedMonochrome(const GLYPHBITMAPDATA &data, uint16_t *dst) {
     // TODO
 }
 
 void TEXTURECACHE::UpdateDirty() {
     if (this->m_anyDirtyGlyphs && this->m_texture) {
-        CGxTex* gxTex = TextureGetGxTex(this->m_texture, 1, nullptr);
-        CiRect updateRect = { 0, 0, 256, 256 };
+        CGxTex *gxTex = TextureGetGxTex(this->m_texture, 1, nullptr);
+        CiRect updateRect = {0, 0, 256, 256};
         GxTexUpdate(gxTex, updateRect, 1);
 
         this->m_anyDirtyGlyphs = 0;
     }
 }
 
-void TEXTURECACHE::WriteGlyphToTexture(CHARCODEDESC* glyph) {
+void TEXTURECACHE::WriteGlyphToTexture(CHARCODEDESC *glyph) {
     if (!this->m_texture || !this->m_theFace || !this->m_theFace->m_cellHeight) {
         return;
     }
 
     uint32_t ofs = glyph->glyphStartPixel + (glyph->rowNumber * this->m_theFace->m_cellHeight << 8);
-    uint16_t* ptr = &TEXTURECACHE::s_textureData[ofs];
+    uint16_t *ptr = &TEXTURECACHE::s_textureData[ofs];
 
     this->PasteGlyph(glyph->bitmapData, ptr);
 }
@@ -640,14 +644,14 @@ CGxFont::~CGxFont() {
     this->Clear();
 }
 
-int32_t CGxFont::CheckStringGlyphs(const char* string) {
+int32_t CGxFont::CheckStringGlyphs(const char *string) {
     if (!string || !*string) {
         return 1;
     }
 
     while (*string) {
         int32_t advance;
-        auto code = SUniSGetUTF8(reinterpret_cast<const uint8_t*>(string), &advance);
+        auto code = SUniSGetUTF8(reinterpret_cast<const uint8_t *>(string), &advance);
 
         HASHKEY_NONE key = {};
 
@@ -673,7 +677,7 @@ void CGxFont::Clear() {
 
 void CGxFont::ClearGlyphs() {
     for (int32_t i = 0; i < 8; i++) {
-        auto& cache = this->m_textureCache[i];
+        auto &cache = this->m_textureCache[i];
 
         if (cache.m_texture) {
             HandleClose(this->m_textureCache[i].m_texture);
@@ -692,8 +696,8 @@ void CGxFont::ClearGlyphs() {
 }
 
 float CGxFont::ComputeStep(uint32_t currentCode, uint32_t nextCode) {
-    KERNINGHASHKEY kernKey = { nextCode | (currentCode << 16) };
-    KERNNODE* kern = this->m_kernInfo.Ptr(currentCode, kernKey);
+    KERNINGHASHKEY kernKey = {nextCode | (currentCode << 16)};
+    KERNNODE *kern = this->m_kernInfo.Ptr(currentCode, kernKey);
 
     if (kern && kern->flags & 0x02) {
         return kern->proporportionalSpacing;
@@ -718,8 +722,8 @@ float CGxFont::ComputeStep(uint32_t currentCode, uint32_t nextCode) {
 
     if (activeChar) {
         advance = this->m_flags & 0x08
-            ? activeChar->bitmapData.m_glyphAdvance + 1.0f
-            : activeChar->bitmapData.m_glyphAdvance;
+                  ? activeChar->bitmapData.m_glyphAdvance + 1.0f
+                  : activeChar->bitmapData.m_glyphAdvance;
     }
 
     float spacing = (this->m_pixelsPerUnit * vector.x) + advance;
@@ -739,7 +743,7 @@ float CGxFont::ComputeStepFixedWidth(uint32_t currentCode, uint32_t nextCode) {
     return 0.0f;
 }
 
-float CGxFont::GetGlyphBearing(const CHARCODEDESC* glyph, bool billboarded, float height) {
+float CGxFont::GetGlyphBearing(const CHARCODEDESC *glyph, bool billboarded, float height) {
     if (billboarded) {
         float v8 = ScreenToPixelHeight(1, height) / this->GetPixelSize();
         return glyph->bitmapData.m_glyphBearing * v8;
@@ -748,7 +752,7 @@ float CGxFont::GetGlyphBearing(const CHARCODEDESC* glyph, bool billboarded, floa
     return ceil(glyph->bitmapData.m_glyphBearing);
 }
 
-int32_t CGxFont::GetGlyphData(GLYPHBITMAPDATA* glyphData, uint32_t code) {
+int32_t CGxFont::GetGlyphData(GLYPHBITMAPDATA *glyphData, uint32_t code) {
     FT_Face face = FontFaceGetFace(this->m_faceHandle);
     FT_Set_Pixel_Sizes(face, this->m_pixelSize, 0);
 
@@ -761,17 +765,17 @@ int32_t CGxFont::GetGlyphData(GLYPHBITMAPDATA* glyphData, uint32_t code) {
     }
 
     return IGxuFontGlyphRenderGlyph(
-        face,
-        this->m_pixelSize,
-        code,
-        this->m_baseline,
-        glyphData,
-        this->m_flags & FONT_MONOCHROME,
-        v6
+            face,
+            this->m_pixelSize,
+            code,
+            this->m_baseline,
+            glyphData,
+            this->m_flags & FONT_MONOCHROME,
+            v6
     );
 }
 
-const char* CGxFont::GetName(void) const {
+const char *CGxFont::GetName(void) const {
     STORM_ASSERT(this->m_faceHandle);
 
     return FontFaceGetFontName(this->m_faceHandle);
@@ -781,7 +785,7 @@ uint32_t CGxFont::GetPixelSize() {
     return this->m_pixelSize;
 }
 
-int32_t CGxFont::Initialize(const char* name, uint32_t newFlags, float fontHeight) {
+int32_t CGxFont::Initialize(const char *name, uint32_t newFlags, float fontHeight) {
     SStrPrintf(this->m_fontName, 260, "%s", name);
 
     this->m_requestedFontHeight = fontHeight;
@@ -799,9 +803,9 @@ int32_t CGxFont::Initialize(const char* name, uint32_t newFlags, float fontHeigh
     }
 }
 
-const CHARCODEDESC* CGxFont::NewCodeDesc(uint32_t code) {
+const CHARCODEDESC *CGxFont::NewCodeDesc(uint32_t code) {
     HASHKEY_NONE key = {};
-    CHARCODEDESC* charDesc = this->m_activeCharacters.Ptr(code, key);
+    CHARCODEDESC * charDesc = this->m_activeCharacters.Ptr(code, key);
 
     if (charDesc) {
         this->m_activeCharacterCache.LinkToHead(charDesc);
@@ -816,9 +820,10 @@ const CHARCODEDESC* CGxFont::NewCodeDesc(uint32_t code) {
 
     // Attempt to allocate the character off of texture caches
     for (uint32_t textureNumber = 0; textureNumber < 8; textureNumber++) {
-        TEXTURECACHE* textureCache = &this->m_textureCache[textureNumber];
+        TEXTURECACHE *textureCache = &this->m_textureCache[textureNumber];
 
-        if (textureCache->m_texture && TextureGetGxTex(reinterpret_cast<CTexture*>(textureCache->m_texture), 1, nullptr)) {
+        if (textureCache->m_texture &&
+            TextureGetGxTex(reinterpret_cast<CTexture *>(textureCache->m_texture), 1, nullptr)) {
             charDesc = textureCache->AllocateNewGlyph(&data);
 
             if (charDesc) {
@@ -842,14 +847,14 @@ const CHARCODEDESC* CGxFont::NewCodeDesc(uint32_t code) {
     // No character was allocated from the texture caches, so evict the oldest character and
     // attempt to allocate from that character's texture cache row
     if (!charDesc) {
-        CHARCODEDESC* oldestDesc = this->m_activeCharacterCache.Tail();
+        CHARCODEDESC * oldestDesc = this->m_activeCharacterCache.Tail();
 
         if (oldestDesc) {
             uint32_t textureNumber = oldestDesc->textureNumber;
             uint32_t rowNumber = oldestDesc->rowNumber;
 
-            TEXTURECACHE* textureCache = &this->m_textureCache[textureNumber];
-            TEXTURECACHEROW* cacheRow = &textureCache->m_textureRows[rowNumber];
+            TEXTURECACHE *textureCache = &this->m_textureCache[textureNumber];
+            TEXTURECACHEROW *cacheRow = &textureCache->m_textureRows[rowNumber];
             cacheRow->EvictGlyph(oldestDesc);
 
             this->RegisterEvictNotice(textureNumber);
@@ -908,9 +913,9 @@ int32_t CGxFont::UpdateDimensions() {
     }
 
     this->m_cellHeight = pixelSize;
-    float baseline = (double)(pixelSize * theFace->ascender) / (double)v10;
+    float baseline = (double) (pixelSize * theFace->ascender) / (double) v10;
 
-    this->m_baseline = (int64_t)(baseline + 0.5);
+    this->m_baseline = (int64_t) (baseline + 0.5);
 
     uint32_t flags = this->m_flags;
 
@@ -922,7 +927,7 @@ int32_t CGxFont::UpdateDimensions() {
 
     int32_t result = FT_Set_Pixel_Sizes(theFace, pixelSize, 0) == FT_Err_Ok;
 
-    this->m_pixelsPerUnit = (double)theFace->size->metrics.x_ppem / (double)theFace->units_per_EM;
+    this->m_pixelsPerUnit = (double) theFace->size->metrics.x_ppem / (double) theFace->units_per_EM;
 
     return result;
 }

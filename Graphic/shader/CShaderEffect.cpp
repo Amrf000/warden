@@ -1,12 +1,15 @@
-#include "gx/shader/CShaderEffect.h"
-#include "gx/Device.h"
-#include "gx/Gx.h"
-#include "gx/RenderState.h"
-#include "gx/Shader.h"
-#include "gx/Transform.h"
-#include "model/CM2Lighting.h"
 #include <algorithm>
 #include <cstring>
+#include "CShaderEffect.h"
+#include "Graphic/Gx.h"
+#include "Graphic/RenderState.h"
+#include "Graphic/Shader.h"
+#include "Graphic/Device.h"
+#include "Graphic/Transform.h"
+#include <NTempest/C4Vector.h>
+#include <NTempest/C3Vector.h>
+using namespace NTempest;
+
 
 CShaderEffect* CShaderEffect::s_curEffect;
 int32_t CShaderEffect::s_enableShaders;

@@ -1,6 +1,7 @@
 #include "storm/String.h"
 #include "storm/Error.h"
 #include "storm/Memory.h"
+#include "Storm/string/bjhash.h"
 #include <cctype>
 #include <cmath>
 #include <cstdarg>

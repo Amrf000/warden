@@ -1,6 +1,7 @@
 #include "Blit.h"
 #include <algorithm>
 #include <cstring>
+#include "Storm/Unimplemented.h"
 #include <NTempest/C2iVector.h>
 
 using namespace NTempest;

@@ -1,7 +1,9 @@
 #pragma once
 
 #include <cstdint>
-#include <NTempest/Vector.h>
+#include <NTempest/C2iVector.h>
+
+using namespace NTempest;
 
 class CGxFormat {
 public:

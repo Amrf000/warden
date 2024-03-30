@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <cmath>
 #include <cstring>
 #include <new>
 #include "TSFixedArray.h"

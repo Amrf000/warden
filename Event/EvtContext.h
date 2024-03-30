@@ -8,9 +8,11 @@
 #include "event/Types.h"
 #include "Storm/thread/SCritSect.h"
 #include "Common/TSExplicitList.h"
+#include "Common/instance/TInstanceId.h"
+#include "Common/instance/TSingletonInstanceId.h"
 #include <storm/Thread.h>
 
-class EvtContext : public TSingletonInstanceId<EvtContext, offsetof(TInstanceId < EvtContext >, m_id)> {
+class EvtContext : public TSingletonInstanceId<EvtContext, offsetof(TInstanceId<EvtContext>, m_id)> {
 public:
     // Types
     enum SCHEDSTATE {

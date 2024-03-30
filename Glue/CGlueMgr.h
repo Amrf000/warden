@@ -3,7 +3,8 @@
 #pragma once
 
 #include "event.h"
-#include "net/Types.h"
+#include "Event/CEvent.h"
+#include "Net/Types.h"
 #include <cstdint>
 
 class CSimpleTop;

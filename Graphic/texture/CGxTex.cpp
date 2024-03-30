@@ -1,4 +1,6 @@
 #include "CGxTex.h"
+#include "Graphic/Types.h"
+#include "Graphic/Gx.h"
 #include <algorithm>
 
 CGxTexFlags::CGxTexFlags(EGxTexFilter filter, uint32_t wrapU, uint32_t wrapV, uint32_t force, uint32_t generateMipMaps,

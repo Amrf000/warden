@@ -1,7 +1,7 @@
 #pragma once
 
-#include "freetype/freetype.h"
 #include <cstdint>
+#include "freetype/freetype.h"
 
 void FreeTypeInitialize();
 

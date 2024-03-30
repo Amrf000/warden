@@ -2,9 +2,9 @@
 
 #include <cstdint>
 
-template<class T>
+template <class T>
 class TExtraInstanceRecyclable {
-public:
+    public:
     // Member variables
     uint32_t m_recycleBytes;
 };

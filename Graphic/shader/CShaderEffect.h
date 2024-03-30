@@ -1,7 +1,13 @@
 #pragma once
 
 #include <cstdint>
+#include <NTempest/C3Vector.h>
+#include <NTempest/CImVector.h>
+#include <NTempest/C44Matrix.h>
+#include "../../Common/TSHashObject.h"
+#include "Common/Hashkey.h"
 
+using namespace NTempest;
 
 class CGxShader;
 

@@ -1,8 +1,12 @@
 #include <cstring>
 #include <storm/Error.h>
 #include <storm/Memory.h>
+#include <winerror.h>
 #include "Common/TSGrowableArray.h"
 #include "CBLPFile.h"
+#include "Storm/SFile.h"
+#include "Graphic/Types.h"
+#include "Graphic/Texture.h"
 
 TSGrowableArray<unsigned char> CBLPFile::s_blpFileLoadBuffer;
 

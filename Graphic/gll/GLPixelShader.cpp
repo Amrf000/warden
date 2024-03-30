@@ -1,11 +1,11 @@
-#include "gx/gll/GLPixelShader.h"
-#include "gx/gll/GL.h"
+#include "GLPixelShader.h"
+#include "GL.h"
 
-GLPixelShader* GLPixelShader::Create() {
+GLPixelShader *GLPixelShader::Create() {
     // TODO
     // GLPool stuff
 
-    GLPixelShader* shader = new GLPixelShader();
+    GLPixelShader *shader = new GLPixelShader();
 
     shader->m_ShaderID = 0;
     shader->m_RefCount = 1;

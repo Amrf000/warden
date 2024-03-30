@@ -1,4 +1,4 @@
-#include "gx/CGxMatrixStack.h"
+#include "CGxMatrixStack.h"
 
 CGxMatrixStack::CGxMatrixStack() {
     this->m_flags[0] = F_Identity;
@@ -23,12 +23,12 @@ void CGxMatrixStack::Push() {
     this->m_dirty = 1;
 }
 
-C44Matrix& CGxMatrixStack::Top() {
+C44Matrix &CGxMatrixStack::Top() {
     this->m_dirty = 1;
     this->m_flags[this->m_level] &= ~F_Identity;
     return this->m_mtx[this->m_level];
 }
 
-const C44Matrix& CGxMatrixStack::TopConst() {
+const C44Matrix &CGxMatrixStack::TopConst() {
     return this->m_mtx[this->m_level];
 }

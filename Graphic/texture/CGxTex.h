@@ -1,8 +1,11 @@
 #pragma once
 
-#include "gx/Types.h"
+
 #include <cstdint>
-#include <NTempest/Rect.h>
+#include <NTempest/CiRect.h>
+#include "Graphic/Types.h"
+
+using namespace NTempest;
 
 class CGxTexFlags {
 public:

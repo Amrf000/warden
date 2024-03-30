@@ -1,7 +1,7 @@
 #pragma once
 
 #include "event/Types.h"
-#include "Common/TExtraInstanceRecyclable.h"
+#include "Common/instance/TExtraInstanceRecyclable.h"
 
 class EvtMessage : public TExtraInstanceRecyclable<EvtMessage> {
 public:

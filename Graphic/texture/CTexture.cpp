@@ -1,5 +1,6 @@
 #include "CTexture.h"
 #include "Storm/String.h"
+#include "Graphic/Texture.h"
 
 
 EGxTexFilter CTexture::s_filterMode = GxTex_LinearMipNearest;

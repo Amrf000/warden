@@ -2,6 +2,7 @@
 
 
 #include <cstdint>
+#include "Graphic/Types.h"
 
 
 enum MipMapAlgorithm {

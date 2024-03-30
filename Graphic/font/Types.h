@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include <common/Handle.h>
+
 
 typedef HOBJECT HTEXTBLOCK;
 typedef HOBJECT HTEXTFONT;
