@@ -1,38 +1,39 @@
-#include "gx/gll/GLMipmap.h"
-#include "gx/gll/GLCommand.h"
-#include "gx/gll/GLDevice.h"
-#include "gx/gll/GLFramebuffer.h"
-#include <bc/Debug.h>
+#include "GLMipmap.h"
+#include "GLCommand.h"
+#include "GLDevice.h"
+#include "GLFramebuffer.h"
+
 
 int32_t GLMipmap::GetDepthBits() {
     return this->m_DepthBits;
 }
 
-void GLMipmap::Attach(GLFramebuffer* framebuffer, GLenum attachPoint, int32_t a4) {
+void GLMipmap::Attach(GLFramebuffer *framebuffer, GLenum attachPoint, int32_t a4) {
     if (!this->m_AttachPoints) {
         this->m_AttachPoints = new std::vector<GLAttachPoint>();
     }
 
-    auto& attachPoints = *this->m_AttachPoints;
+    auto &attachPoints = *this->m_AttachPoints;
     auto framebufferID = framebuffer->m_FramebufferID;
 
     if (framebufferID >= attachPoints.size()) {
         attachPoints.resize(framebufferID + 1);
     } else {
-        BLIZZARD_ASSERT(attachPoints[framebufferID].framebuffer != framebuffer || attachPoints[framebufferID].point != attachPoint);
+        BLIZZARD_ASSERT(attachPoints[framebufferID].framebuffer != framebuffer ||
+                        attachPoints[framebufferID].point != attachPoint);
 
-        auto& attach = attachPoints[framebufferID];
+        auto &attach = attachPoints[framebufferID];
 
         if (
-            attach.point
-            && (attach.point != GL_DEPTH_ATTACHMENT || attachPoint != GL_STENCIL_ATTACHMENT)
-            && (attach.point != GL_STENCIL_ATTACHMENT || attachPoint != GL_DEPTH_ATTACHMENT)
-        ) {
+                attach.point
+                && (attach.point != GL_DEPTH_ATTACHMENT || attachPoint != GL_STENCIL_ATTACHMENT)
+                && (attach.point != GL_STENCIL_ATTACHMENT || attachPoint != GL_DEPTH_ATTACHMENT)
+                ) {
             framebuffer->Detach(attach.point);
         }
     }
 
-    GLDevice* device = GLDevice::Get();
+    GLDevice *device = GLDevice::Get();
 
     auto currentTarget = device->GetCurrentTarget();
     device->BindFramebuffer(framebuffer);
@@ -40,20 +41,20 @@ void GLMipmap::Attach(GLFramebuffer* framebuffer, GLenum attachPoint, int32_t a4
     if (framebufferID) {
         if (this->m_Target == GL_TEXTURE_3D) {
             glFramebufferTexture3DEXT(
-                GL_FRAMEBUFFER,
-                attachPoint,
-                GL_TEXTURE_3D,
-                this->m_Texture->m_TextureID,
-                this->m_Level,
-                a4
+                    GL_FRAMEBUFFER,
+                    attachPoint,
+                    GL_TEXTURE_3D,
+                    this->m_Texture->m_TextureID,
+                    this->m_Level,
+                    a4
             );
         } else {
             glFramebufferTexture2DEXT(
-                GL_FRAMEBUFFER,
-                attachPoint,
-                this->m_Target,
-                this->m_Texture->m_TextureID,
-                this->m_Level
+                    GL_FRAMEBUFFER,
+                    attachPoint,
+                    this->m_Target,
+                    this->m_Texture->m_TextureID,
+                    this->m_Level
             );
         }
     }
@@ -66,31 +67,31 @@ void GLMipmap::Attach(GLFramebuffer* framebuffer, GLenum attachPoint, int32_t a4
 
     device->BindFramebuffer(currentTarget);
 
-    auto& attach = attachPoints[framebufferID];
+    auto &attach = attachPoints[framebufferID];
     attach.framebuffer = framebuffer;
     attach.zOffset = a4;
 
     if (
-        (attach.point != GL_DEPTH_ATTACHMENT || attachPoint != GL_STENCIL_ATTACHMENT)
-        && (attach.point != GL_STENCIL_ATTACHMENT || attachPoint != GL_DEPTH_ATTACHMENT)
-    ) {
+            (attach.point != GL_DEPTH_ATTACHMENT || attachPoint != GL_STENCIL_ATTACHMENT)
+            && (attach.point != GL_STENCIL_ATTACHMENT || attachPoint != GL_DEPTH_ATTACHMENT)
+            ) {
         attach.point = attachPoint;
     } else {
         attach.point = GL_DEPTH_STENCIL;
     }
 }
 
-void GLMipmap::Detach(GLFramebuffer* framebuffer, GLenum attachPoint, bool a4) {
+void GLMipmap::Detach(GLFramebuffer *framebuffer, GLenum attachPoint, bool a4) {
     GLuint framebufferID = framebuffer->m_FramebufferID;
 
-    auto& attachPoints = *this->m_AttachPoints;
+    auto &attachPoints = *this->m_AttachPoints;
 
     BLIZZARD_ASSERT(attachPoints.size() >= framebufferID);
     BLIZZARD_ASSERT(attachPoints[framebufferID].framebuffer == framebuffer);
 
     if (!a4 && framebufferID) {
-        GLDevice* v12 = GLDevice::Get();
-        GLFramebuffer* v14 = v12->GetCurrentTarget();
+        GLDevice *v12 = GLDevice::Get();
+        GLFramebuffer *v14 = v12->GetCurrentTarget();
         v12->BindFramebuffer(framebuffer);
 
         if (this->m_Target == GL_TEXTURE_3D) {
@@ -102,7 +103,7 @@ void GLMipmap::Detach(GLFramebuffer* framebuffer, GLenum attachPoint, bool a4) {
         v12->BindFramebuffer(v14);
     }
 
-    GLAttachPoint* v9 = &attachPoints[framebufferID];
+    GLAttachPoint *v9 = &attachPoints[framebufferID];
 
     if (v9->point == GL_DEPTH_STENCIL) {
         BLIZZARD_ASSERT(this->GetFormat() == GLTF_D24S8);
@@ -131,7 +132,7 @@ void GLMipmap::DetachAll() {
         return;
     }
 
-    auto& attachPoints = *this->m_AttachPoints;
+    auto &attachPoints = *this->m_AttachPoints;
     for (int32_t i = 0; i < attachPoints.size(); i++) {
         BLIZZARD_ASSERT(attachPoints[i].point != GL_ZERO);
         BLIZZARD_ASSERT(attachPoints[i].framebuffer->m_FramebufferID == i);
@@ -144,7 +145,7 @@ GLTextureFormat GLMipmap::GetFormat() {
     return this->m_Texture->GetFormat();
 }
 
-TextureFormatInfo& GLMipmap::GetFormatInfo() {
+TextureFormatInfo &GLMipmap::GetFormatInfo() {
     return this->m_Texture->GetFormatInfo();
 };
 
@@ -158,7 +159,7 @@ int32_t GLMipmap::GetPitch() {
     return v4 >= bpp ? v4 : bpp;
 }
 
-GLTexture* GLMipmap::GetTexture() {
+GLTexture *GLMipmap::GetTexture() {
     return this->m_Texture;
 }
 
@@ -170,7 +171,7 @@ uint16_t GLMipmap::GetWidth() {
     return this->m_Width;
 }
 
-void* GLMipmap::Map(GLEnum mode, const GLBox* area) {
+void *GLMipmap::Map(GLEnum mode, const GLBox *area) {
     BLIZZARD_ASSERT(!this->m_Texture->IsSystemBuffer());
     BLIZZARD_ASSERT(this->m_Data != nullptr);
     BLIZZARD_ASSERT(!this->m_Texture->IsRenderTarget());
@@ -181,46 +182,48 @@ void* GLMipmap::Map(GLEnum mode, const GLBox* area) {
         this->m_Texture->m_MappedMipmaps++;
     }
 
-    MapParams* mapParams = new MapParams();
+    MapParams *mapParams = new MapParams();
     this->m_MapParams = mapParams;
 
     if (area) {
         BLIZZARD_ASSERT(area->width > 0);
         BLIZZARD_ASSERT(area->height > 0);
         BLIZZARD_ASSERT(area->depth > 0);
-        BLIZZARD_ASSERT(!this->GetFormatInfo().m_IsCompressed || ((area->top & 0x3) == 0 && (area->left & 0x3) == 0 && (area->width & 0x3) == 0 && (area->height & 0x3) == 0));
+        BLIZZARD_ASSERT(!this->GetFormatInfo().m_IsCompressed ||
+                        ((area->top & 0x3) == 0 && (area->left & 0x3) == 0 && (area->width & 0x3) == 0 &&
+                         (area->height & 0x3) == 0));
         BLIZZARD_ASSERT((area->height + area->top) <= this->m_Height);
         BLIZZARD_ASSERT((area->depth + area->front) <= this->m_Depth);
         BLIZZARD_ASSERT((area->width + area->left) <= this->m_Width);
 
         mapParams->m_MapArea = {
-            area->left,
-            area->top,
-            area->front,
-            area->width,
-            area->height,
-            area->depth
+                area->left,
+                area->top,
+                area->front,
+                area->width,
+                area->height,
+                area->depth
         };
 
         int32_t size = this->GetFormatInfo().m_BytePerPixel
-            * this->m_Width
-            * mapParams->m_MapArea.depth
-            * mapParams->m_MapArea.height;
+                       * this->m_Width
+                       * mapParams->m_MapArea.depth
+                       * mapParams->m_MapArea.height;
 
         mapParams->m_Size = this->GetFormatInfo().m_IsCompressed
-            ? size >> 4
-            : size;
+                            ? size >> 4
+                            : size;
 
         mapParams->m_Unk7 = (this->GetFormatInfo().m_BytePerPixel * mapParams->m_MapArea.left)
-            >> this->GetFormatInfo().m_IsCompressed ? 2 : 0;
+                                    >> this->GetFormatInfo().m_IsCompressed ? 2 : 0;
     } else {
         mapParams->m_MapArea = {
-            0,
-            0,
-            0,
-            this->m_Width,
-            this->m_Height,
-            this->m_Depth
+                0,
+                0,
+                0,
+                this->m_Width,
+                this->m_Height,
+                this->m_Depth
         };
 
         mapParams->m_Size = this->m_Size;
@@ -232,36 +235,38 @@ void* GLMipmap::Map(GLEnum mode, const GLBox* area) {
 
     int32_t rowPitch = this->GetPitch();
 
-    BLIZZARD_ASSERT(((mapParams->m_MapArea.top * rowPitch) + mapParams->m_MapArea.left * this->GetFormatInfo().m_BytePerPixel) < (this->GetFormatInfo().m_IsCompressed ? this->m_Size << 4 : this->m_Size));
+    BLIZZARD_ASSERT(
+            ((mapParams->m_MapArea.top * rowPitch) + mapParams->m_MapArea.left * this->GetFormatInfo().m_BytePerPixel) <
+            (this->GetFormatInfo().m_IsCompressed ? this->m_Size << 4 : this->m_Size));
 
     int32_t v22 = rowPitch * this->m_Height;
     if (this->GetFormatInfo().m_IsCompressed) {
         v22 >>= 2;
     }
 
-    unsigned char* v24 = this->m_Data
-        + ((mapParams->m_MapArea.top * rowPitch) >> (this->GetFormatInfo().m_IsCompressed ? 2 : 0))
-        + (mapParams->m_MapArea.front * v22);
+    unsigned char *v24 = this->m_Data
+                         + ((mapParams->m_MapArea.top * rowPitch) >> (this->GetFormatInfo().m_IsCompressed ? 2 : 0))
+                         + (mapParams->m_MapArea.front * v22);
 
     mapParams->m_Unk8 = v24;
 
     return v24 + mapParams->m_Unk7;
 }
 
-void* GLMipmap::Map(GLEnum mode, const GLRect* rect) {
+void *GLMipmap::Map(GLEnum mode, const GLRect *rect) {
     if (rect) {
         GLBox area = {
-            rect->left,
-            rect->top,
-            0,
-            rect->width,
-            rect->height,
-            1
+                rect->left,
+                rect->top,
+                0,
+                rect->width,
+                rect->height,
+                1
         };
 
         return this->Map(mode, &area);
     } else {
-        return this->Map(mode, static_cast<GLBox*>(nullptr));
+        return this->Map(mode, static_cast<GLBox *>(nullptr));
     }
 }
 
@@ -283,7 +288,7 @@ void GLMipmap::RemoveDebugMipmap() {
     // TODO
 }
 
-void GLMipmap::ResetData(GLEnum target, int32_t level, unsigned char* data) {
+void GLMipmap::ResetData(GLEnum target, int32_t level, unsigned char *data) {
     BLIZZARD_ASSERT(this->m_Target != GL_TEXTURE_3D || !this->GetFormatInfo().m_IsCompressed);
 
     this->m_Target = target;
@@ -332,96 +337,98 @@ void GLMipmap::ResetSize(uint32_t width, uint32_t height, uint32_t depth) {
     this->m_Size = this->m_Depth * v12;
 }
 
-void GLMipmap::TexImage(const void* pixels) {
-    BLIZZARD_ASSERT((this->m_Texture->IsRenderTarget() || pixels != nullptr) && GLDevice::Get()->GetVertexArrayStates().buffers[eGLBT_PIXEL_UNPACK] == 0);
+void GLMipmap::TexImage(const void *pixels) {
+    BLIZZARD_ASSERT((this->m_Texture->IsRenderTarget() || pixels != nullptr) &&
+                    GLDevice::Get()->GetVertexArrayStates().buffers[eGLBT_PIXEL_UNPACK] == 0);
 
     if (this->m_Target == GL_TEXTURE_3D) {
         glTexImage3D(
-            GL_TEXTURE_3D,
-            this->m_Level,
-            this->GetFormatInfo().m_InternalFormat,
-            this->m_Width,
-            this->m_Height,
-            this->m_Depth,
-            0,
-            this->GetFormatInfo().m_DataFormat,
-            this->GetFormatInfo().m_DataType,
-            pixels
+                GL_TEXTURE_3D,
+                this->m_Level,
+                this->GetFormatInfo().m_InternalFormat,
+                this->m_Width,
+                this->m_Height,
+                this->m_Depth,
+                0,
+                this->GetFormatInfo().m_DataFormat,
+                this->GetFormatInfo().m_DataType,
+                pixels
         );
     } else if (this->GetFormatInfo().m_IsCompressed) {
         glCompressedTexImage2D(
-            this->m_Target,
-            this->m_Level,
-            this->GetFormatInfo().m_InternalFormat,
-            this->m_Width,
-            this->m_Height,
-            0,
-            this->m_Size,
-            pixels
+                this->m_Target,
+                this->m_Level,
+                this->GetFormatInfo().m_InternalFormat,
+                this->m_Width,
+                this->m_Height,
+                0,
+                this->m_Size,
+                pixels
         );
     } else {
         glTexImage2D(
-            this->m_Target,
-            this->m_Level,
-            this->GetFormatInfo().m_InternalFormat,
-            this->m_Width,
-            this->m_Height,
-            0,
-            this->GetFormatInfo().m_DataFormat,
-            this->GetFormatInfo().m_DataType,
-            pixels
+                this->m_Target,
+                this->m_Level,
+                this->GetFormatInfo().m_InternalFormat,
+                this->m_Width,
+                this->m_Height,
+                0,
+                this->GetFormatInfo().m_DataFormat,
+                this->GetFormatInfo().m_DataType,
+                pixels
         );
     }
 }
 
-void GLMipmap::TexSubImage(const GLBox& a2, int32_t size, const void* pixels) {
-    BLIZZARD_ASSERT(!this->m_Texture->IsRenderTarget() && pixels != nullptr && GLDevice::Get()->GetVertexArrayStates().buffers[eGLBT_PIXEL_UNPACK] == 0);
+void GLMipmap::TexSubImage(const GLBox &a2, int32_t size, const void *pixels) {
+    BLIZZARD_ASSERT(!this->m_Texture->IsRenderTarget() && pixels != nullptr &&
+                    GLDevice::Get()->GetVertexArrayStates().buffers[eGLBT_PIXEL_UNPACK] == 0);
 
     if (this->m_Target == GL_TEXTURE_3D) {
         glPixelStorei(GL_UNPACK_ROW_LENGTH, this->m_Width);
         glPixelStorei(GL_UNPACK_IMAGE_HEIGHT, this->m_Height);
 
         glTexSubImage3D(
-            this->m_Target,
-            this->m_Level,
-            a2.left,
-            a2.top,
-            a2.front,
-            a2.width,
-            a2.height,
-            a2.depth,
-            this->GetFormatInfo().m_DataFormat,
-            this->GetFormatInfo().m_DataType,
-            pixels
+                this->m_Target,
+                this->m_Level,
+                a2.left,
+                a2.top,
+                a2.front,
+                a2.width,
+                a2.height,
+                a2.depth,
+                this->GetFormatInfo().m_DataFormat,
+                this->GetFormatInfo().m_DataType,
+                pixels
         );
 
         glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
         glPixelStorei(GL_UNPACK_IMAGE_HEIGHT, 0);
     } else if (this->GetFormatInfo().m_IsCompressed) {
         glCompressedTexSubImage2D(
-            this->m_Target,
-            this->m_Level,
-            0,
-            a2.top,
-            this->m_Width,
-            a2.height,
-            this->GetFormatInfo().m_InternalFormat,
-            size,
-            pixels
+                this->m_Target,
+                this->m_Level,
+                0,
+                a2.top,
+                this->m_Width,
+                a2.height,
+                this->GetFormatInfo().m_InternalFormat,
+                size,
+                pixels
         );
     } else {
         glPixelStorei(GL_UNPACK_ROW_LENGTH, this->m_Width);
 
         glTexSubImage2D(
-            this->m_Target,
-            this->m_Level,
-            a2.left,
-            a2.top,
-            a2.width,
-            a2.height,
-            this->GetFormatInfo().m_DataFormat,
-            this->GetFormatInfo().m_DataType,
-            pixels
+                this->m_Target,
+                this->m_Level,
+                a2.left,
+                a2.top,
+                a2.width,
+                a2.height,
+                this->GetFormatInfo().m_DataFormat,
+                this->GetFormatInfo().m_DataType,
+                pixels
         );
 
         glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
@@ -439,14 +446,14 @@ void GLMipmap::Unmap() {
         return;
     }
 
-    GLDevice* device = GLDevice::Get();
+    GLDevice *device = GLDevice::Get();
 
     BLIZZARD_ASSERT(this->m_Texture->m_MappedMipmaps > 0);
 
     if (device->m_TexWorker) {
         device->m_TexWorker->Lock();
 
-        GLTexUnmap* command = new GLTexUnmap(this->m_Texture, this, this->m_MapParams);
+        GLTexUnmap *command = new GLTexUnmap(this->m_Texture, this, this->m_MapParams);
         device->m_TexWorker->Send(command);
         device->m_TexWorker->Signal();
 
@@ -458,7 +465,7 @@ void GLMipmap::Unmap() {
     this->m_MapParams = nullptr;
 }
 
-void GLMipmap::Unmap(MapParams* mapParams) {
+void GLMipmap::Unmap(MapParams *mapParams) {
     BLIZZARD_ASSERT(mapParams != nullptr);
 
     this->m_Texture->Bind(nullptr, 0);
@@ -466,12 +473,12 @@ void GLMipmap::Unmap(MapParams* mapParams) {
     if (this->m_Unk24) {
         if (this->GetFormatInfo().m_IsCompressed) {
             GLBox area = {
-                0,
-                mapParams->m_MapArea.top,
-                mapParams->m_MapArea.front,
-                this->m_Width,
-                mapParams->m_MapArea.height,
-                mapParams->m_MapArea.depth
+                    0,
+                    mapParams->m_MapArea.top,
+                    mapParams->m_MapArea.front,
+                    this->m_Width,
+                    mapParams->m_MapArea.height,
+                    mapParams->m_MapArea.depth
             };
 
             this->TexSubImage(area, mapParams->m_Size, mapParams->m_Unk8);

@@ -1,13 +1,14 @@
-#include "gx/Font.h"
-#include "gx/font/CGxFont.h"
-#include "gx/font/CGxString.h"
-#include "gx/font/CGxStringBatch.h"
-#include "gx/font/Wrap.h"
-#include "gx/Coordinate.h"
-#include "gx/Device.h"
-#include "gx/FontInternal.h"
-#include "gx/Gx.h"
-#include "gx/Shader.h"
+#include "Font.h"
+#include "font/CGxFont.h"
+#include "font/CGxString.h"
+#include "font/CGxStringBatch.h"
+#include "font/Wrap.h"
+#include "Coordinate.h"
+#include "Device.h"
+#include "FontInternal.h"
+#include "Gx.h"
+#include "Shader.h"
+#include "Common/TSHashTable.h"
 #include <algorithm>
 #include <cstring>
 #include <new>
@@ -15,7 +16,9 @@
 #include <storm/Memory.h>
 #include <storm/String.h>
 #include <storm/Unicode.h>
-#include <NTempest/Math.h>
+#include <NTempest/CImVector.h>
+using namespace NTempest;
+
 
 CGxShader* g_fontPixelShader[1];
 CGxShader* g_fontVertexShader[2];

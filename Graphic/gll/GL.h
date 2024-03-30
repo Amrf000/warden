@@ -1,7 +1,7 @@
 #pragma once
 
-#include "gx/gll/GLTypes.h"
-#include <OpenGL/gl.h>
+#include "GLTypes.h"
+
 
 typedef GLenum GLEnum;
 
@@ -21,7 +21,7 @@ struct VertexTypeInfo {
     GLint m_Size;
     GLboolean m_Normalized;
     GLint m_ByteSize;
-    const char* m_Name;
+    const char *m_Name;
 };
 
 extern TextureFormatInfo k_TextureFormatInfo[GLTF_NUM_TEXTURE_FORMATS];

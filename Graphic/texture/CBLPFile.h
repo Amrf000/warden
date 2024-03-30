@@ -1,9 +1,8 @@
 #pragma once
 
-#include "gx/Types.h"
-#include "gx/texture/CGxTex.h"
+
 #include <cstdint>
-#include <storm/Array.h>
+
 
 enum MipMapAlgorithm {
     MMA_BOX = 0x0,
@@ -43,27 +42,31 @@ class CBLPFile {
         } extended;
     };
 
-    public:
-        // Static variables
-        static TSGrowableArray<unsigned char> s_blpFileLoadBuffer;
+public:
+    // Static variables
+    static TSGrowableArray<unsigned char> s_blpFileLoadBuffer;
 
-        // Member variables
-        MipBits* m_images = nullptr;
-        BLPHeader m_header;
-        void* m_inMemoryImage = nullptr;
-        int32_t m_inMemoryNeedsFree;
-        uint32_t m_numLevels;
-        uint32_t m_quality = 100;
-        void* m_colorMapping;
-        MipMapAlgorithm m_mipMapAlgorithm = MMA_BOX;
-        char* m_lockDecompMem;
+    // Member variables
+    MipBits *m_images = nullptr;
+    BLPHeader m_header;
+    void *m_inMemoryImage = nullptr;
+    int32_t m_inMemoryNeedsFree;
+    uint32_t m_numLevels;
+    uint32_t m_quality = 100;
+    void *m_colorMapping;
+    MipMapAlgorithm m_mipMapAlgorithm = MMA_BOX;
+    char *m_lockDecompMem;
 
-        // Member functions
-        void Close(void);
-        int32_t Lock2(const char*, PIXEL_FORMAT, uint32_t, unsigned char*, uint32_t&);
-        int32_t LockChain2(const char*, PIXEL_FORMAT, MipBits*&, uint32_t, int32_t);
-        int32_t Open(const char*, int32_t);
-        int32_t Source(void*);
+    // Member functions
+    void Close(void);
+
+    int32_t Lock2(const char *, PIXEL_FORMAT, uint32_t, unsigned char *, uint32_t &);
+
+    int32_t LockChain2(const char *, PIXEL_FORMAT, MipBits *&, uint32_t, int32_t);
+
+    int32_t Open(const char *, int32_t);
+
+    int32_t Source(void *);
 };
 
 

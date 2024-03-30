@@ -1,15 +1,10 @@
-#include "gx/font/CGxString.h"
-#include "gx/Buffer.h"
-#include "gx/font/CGxFont.h"
-#include "gx/font/Wrap.h"
-#include "gx/Font.h"
-#include "gx/Gx.h"
+#include "CGxString.h"
+#include "CGxFont.h"
 #include <algorithm>
 #include <cmath>
 #include <new>
 #include <storm/Memory.h>
 #include <storm/String.h>
-#include <NTempest/Math.h>
 
 TEXTLINETEXTURE *TEXTLINETEXTURE::NewTextLineTexture() {
     // TODO

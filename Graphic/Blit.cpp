@@ -1,8 +1,9 @@
 #include "Blit.h"
-#include "util/Unimplemented.h"
 #include <algorithm>
 #include <cstring>
-#include <NTempest/Vector.h>
+#include <NTempest/C2iVector.h>
+
+using namespace NTempest;
 
 int32_t initBlit = 0;
 BLIT_FUNCTION s_blits[BlitFormats_Last][BlitFormats_Last][BlitAlphas_Last];

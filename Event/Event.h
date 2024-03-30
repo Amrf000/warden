@@ -2,6 +2,12 @@
 
 #include "event/CEvent.h"
 #include "event/Types.h"
+#include "Storm/Atomic.h"
+#include "Storm/thread/SEvent.h"
+#include "Common/TSList.h"
+#include "Common/TSGrowableArray.h"
+#include "Storm/thread/SCritSect.h"
+#include "Common/TSGetLink.h"
 #include <cstdint>
 #include <storm/Thread.h>
 
@@ -21,13 +27,9 @@ namespace Event {
     extern TSGrowableArray<SThread *> s_schedulerThreads;
     extern ATOMIC32 s_threadListContention;
     extern SCritSect s_threadListCritsect;
-    extern TSList <EvtThread, TSGetLink<EvtThread>> s_threadList;
+    extern TSList<EvtThread, TSGetLink<EvtThread>> s_threadList;
     extern EvtContext *s_currentEvtContext;
     extern ATOMIC32 s_interactiveCount;
-
-#if defined(WHOA_SYSTEM_MAC)
-    extern bool s_shouldLoopTerminate;
-#endif
 }
 
 HEVENTCONTEXT EventCreateContextEx(int32_t interactive, int32_t (*initializeHandler)(const void *, void *),

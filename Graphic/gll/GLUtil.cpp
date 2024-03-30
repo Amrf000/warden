@@ -1,5 +1,6 @@
-#include "gx/gll/GLUtil.h"
-#include <bc/Debug.h>
+#include "GLUtil.h"
+#include "GL.h"
+
 
 uint32_t GLLTextureTypeToIndex(GLEnum textureType) {
     uint32_t index;

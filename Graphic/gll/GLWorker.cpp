@@ -1,11 +1,12 @@
-#include "gx/gll/GLWorker.h"
-#include "gx/gll/GLCommand.h"
-#include "gx/gll/GLDevice.h"
+#include "GLWorker.h"
+#include "GLCommand.h"
+#include "GLDevice.h"
+#include "GLTypes.h"
 
-void* GLWorker::Worker(void* userArg) {
-    GLWorker* worker = static_cast<GLWorker*>(userArg);
+void *GLWorker::Worker(void *userArg) {
+    GLWorker *worker = static_cast<GLWorker *>(userArg);
 
-    GLDevice* device = new GLDevice();
+    GLDevice *device = new GLDevice();
     device->Init(nullptr, "GLWorker", 0x10, GLTF_INVALID);
 
     auto commandsEnd = worker->m_Commands.end();
@@ -24,7 +25,7 @@ void* GLWorker::Worker(void* userArg) {
                 break;
             }
 
-            GLCommand* command = worker->m_Commands.front();
+            GLCommand *command = worker->m_Commands.front();
             worker->m_Commands.pop_front();
 
             pthread_mutex_unlock(&worker->m_Mutex1);
@@ -47,12 +48,12 @@ void* GLWorker::Worker(void* userArg) {
         pthread_mutex_unlock(&worker->m_Mutex1);
     }
 
-DONE:
+    DONE:
     delete device;
     return nullptr;
 }
 
-GLWorker::GLWorker(GLDevice* device): m_Commands() {
+GLWorker::GLWorker(GLDevice *device) : m_Commands() {
     this->m_UnkA0 = 0;
     this->m_UnkA1 = 0;
     this->m_Device = device;
@@ -69,7 +70,7 @@ void GLWorker::Lock() {
     pthread_mutex_lock(&this->m_Mutex1);
 }
 
-void GLWorker::Send(GLCommand* command) {
+void GLWorker::Send(GLCommand *command) {
     this->m_Commands.push_back(command);
     this->m_UnkA1 = 0;
 }
@@ -86,7 +87,7 @@ void GLWorker::WaitOnGLObjects() {
     pthread_mutex_lock(&this->m_Mutex1);
 
     if (this->m_Commands.begin() == this->m_Commands.end()) {
-        GLFlush* command = new GLFlush();
+        GLFlush *command = new GLFlush();
         this->m_Commands.push_back(command);
 
         this->m_Commands.push_back(nullptr);
@@ -96,12 +97,12 @@ void GLWorker::WaitOnGLObjects() {
         // TODO some kind of reordering logic for commands
 
         if (this->m_Commands.begin() == it) {
-            GLFlush* command = new GLFlush();
+            GLFlush *command = new GLFlush();
             this->m_Commands.push_back(command);
 
             this->m_Commands.push_back(nullptr);
-        }  else {
-            GLFlush* command = new GLFlush();
+        } else {
+            GLFlush *command = new GLFlush();
             this->m_Commands.insert(it, command);
 
             this->m_Commands.insert(it, nullptr);

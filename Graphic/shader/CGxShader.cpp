@@ -1,8 +1,7 @@
-#include "gx/shader/CGxShader.h"
-#include "gx/Device.h"
-#include "util/SFile.h"
+#include "CGxShader.h"
 
-void CGxShader::Load(SFile* file) {
+
+void CGxShader::Load(SFile *file) {
     SFile::Read(file, &this->int3C, 4, nullptr, nullptr, nullptr);
     SFile::Read(file, &this->int40, 4, nullptr, nullptr, nullptr);
     SFile::Read(file, &this->int44, 2, nullptr, nullptr, nullptr);

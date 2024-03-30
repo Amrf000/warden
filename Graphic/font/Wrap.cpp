@@ -1,11 +1,12 @@
-#include "gx/font/Wrap.h"
-#include "gx/font/CGxFont.h"
-#include "gx/Font.h"
+#include "Wrap.h"
+#include "CGxFont.h"
+#include "Graphic/Font.h"
 #include <cmath>
 #include <cwctype>
 #include <storm/Unicode.h>
 
-void CalcWrapPoint(CGxFont* face, const char* currentText, float fontHeight, float blockWidth, uint32_t* numBytes, float* extent, const char** nextText, float a8, uint32_t flags, bool* a10, float* a11, float scale) {
+void CalcWrapPoint(CGxFont *face, const char *currentText, float fontHeight, float blockWidth, uint32_t *numBytes,
+                   float *extent, const char **nextText, float a8, uint32_t flags, bool *a10, float *a11, float scale) {
     if (fontHeight < 0.0f || blockWidth <= 0.0f || !currentText || !*currentText) {
         *numBytes = 0;
         *extent = 0.0f;
@@ -16,39 +17,43 @@ void CalcWrapPoint(CGxFont* face, const char* currentText, float fontHeight, flo
 
     if (flags & 0x80) {
         CalcWrapPointBillboarded(
-            currentText,
-            flags,
-            face,
-            fontHeight,
-            numBytes,
-            extent,
-            nextText,
-            a11,
-            scale
+                currentText,
+                flags,
+                face,
+                fontHeight,
+                numBytes,
+                extent,
+                nextText,
+                a11,
+                scale
         );
     } else {
         CalcWrapPointNonBillboarded(
-            currentText,
-            face,
-            fontHeight,
-            blockWidth,
-            numBytes,
-            extent,
-            nextText,
-            a8,
-            flags,
-            a10,
-            a11,
-            scale
+                currentText,
+                face,
+                fontHeight,
+                blockWidth,
+                numBytes,
+                extent,
+                nextText,
+                a8,
+                flags,
+                a10,
+                a11,
+                scale
         );
     }
 }
 
-void CalcWrapPointBillboarded(const char* currentText, uint32_t flags, CGxFont* face, float fontHeight, uint32_t* numBytes, float* extent, const char** nextText, float* a8, float scale) {
+void
+CalcWrapPointBillboarded(const char *currentText, uint32_t flags, CGxFont *face, float fontHeight, uint32_t *numBytes,
+                         float *extent, const char **nextText, float *a8, float scale) {
     // TODO
 }
 
-void CalcWrapPointNonBillboarded(const char* currentText, CGxFont* face, float fontHeight, float blockWidth, uint32_t* numBytes, float* extent, const char** nextText, float a8, uint32_t flags, bool* a10, float* a11, float scale) {
+void CalcWrapPointNonBillboarded(const char *currentText, CGxFont *face, float fontHeight, float blockWidth,
+                                 uint32_t *numBytes, float *extent, const char **nextText, float a8, uint32_t flags,
+                                 bool *a10, float *a11, float scale) {
     if (fontHeight == 0.0f || flags & 0x4) {
         fontHeight = GxuFontGetOneToOneHeight(face);
     }
@@ -94,12 +99,12 @@ void CalcWrapPointNonBillboarded(const char* currentText, CGxFont* face, float f
         }
 
         if (
-            quotedCode == CODE_COLORON
-            || quotedCode == CODE_COLORRESTORE
-            || quotedCode == CODE_HYPERLINKSTART
-            || quotedCode == CODE_HYPERLINKSTOP
-            || quotedCode == CODE_TEXTURESTOP
-        ) {
+                quotedCode == CODE_COLORON
+                || quotedCode == CODE_COLORRESTORE
+                || quotedCode == CODE_HYPERLINKSTART
+                || quotedCode == CODE_HYPERLINKSTOP
+                || quotedCode == CODE_TEXTURESTOP
+                ) {
             currentText += advance;
 
             continue;
@@ -187,7 +192,7 @@ void CalcWrapPointNonBillboarded(const char* currentText, CGxFont* face, float f
         }
 
         while (*currentText) {
-            auto code = SUniSGetUTF8(reinterpret_cast<const uint8_t*>(currentText), &advance);
+            auto code = SUniSGetUTF8(reinterpret_cast<const uint8_t *>(currentText), &advance);
 
             if (!iswspace(code)) {
                 break;
@@ -295,7 +300,7 @@ int32_t CanWrapBetween(uint32_t codeA, uint32_t codeB) {
                 return 0;
             }
 
-LABEL_18:
+            LABEL_18:
             if (codeA <= 0x2014) {
                 if (codeA < 0x2013) {
                     switch (codeA) {
@@ -315,12 +320,12 @@ LABEL_18:
 
                         default:
                             return codeB == 0x3002
-                                || codeB == 0xFF0C
-                                || (codeA >= 0x1100 && codeA <= 0x11FF)
-                                || (codeA >= 0x3000 && codeA <= 0xD7AF)
-                                || (codeA >= 0xF900 && codeA <= 0xFAFF)
-                                || (codeA >= 0xFF00 && codeA <= 0xFF9F)
-                                || codeA - 0xFFA0 <= 0x3C;
+                                   || codeB == 0xFF0C
+                                   || (codeA >= 0x1100 && codeA <= 0x11FF)
+                                   || (codeA >= 0x3000 && codeA <= 0xD7AF)
+                                   || (codeA >= 0xF900 && codeA <= 0xFAFF)
+                                   || (codeA >= 0xFF00 && codeA <= 0xFF9F)
+                                   || codeA - 0xFFA0 <= 0x3C;
                     }
                 }
 
@@ -338,12 +343,12 @@ LABEL_18:
 
                         default:
                             return codeB == 0x3002
-                                || codeB == 0xFF0C
-                                || (codeA >= 0x1100 && codeA <= 0x11FF)
-                                || (codeA >= 0x3000 && codeA <= 0xD7AF)
-                                || (codeA >= 0xF900 && codeA <= 0xFAFF)
-                                || (codeA >= 0xFF00 && codeA <= 0xFF9F)
-                                || codeA - 0xFFA0 <= 0x3C;
+                                   || codeB == 0xFF0C
+                                   || (codeA >= 0x1100 && codeA <= 0x11FF)
+                                   || (codeA >= 0x3000 && codeA <= 0xD7AF)
+                                   || (codeA >= 0xF900 && codeA <= 0xFAFF)
+                                   || (codeA >= 0xFF00 && codeA <= 0xFF9F)
+                                   || codeA - 0xFFA0 <= 0x3C;
                     }
                 }
 
@@ -372,12 +377,12 @@ LABEL_18:
 
                         default:
                             return codeB == 0x3002
-                                || codeB == 0xFF0C
-                                || (codeA >= 0x1100 && codeA <= 0x11FF)
-                                || (codeA >= 0x3000 && codeA <= 0xD7AF)
-                                || (codeA >= 0xF900 && codeA <= 0xFAFF)
-                                || (codeA >= 0xFF00 && codeA <= 0xFF9F)
-                                || codeA - 0xFFA0 <= 0x3C;
+                                   || codeB == 0xFF0C
+                                   || (codeA >= 0x1100 && codeA <= 0x11FF)
+                                   || (codeA >= 0x3000 && codeA <= 0xD7AF)
+                                   || (codeA >= 0xF900 && codeA <= 0xFAFF)
+                                   || (codeA >= 0xFF00 && codeA <= 0xFF9F)
+                                   || codeA - 0xFFA0 <= 0x3C;
                     }
                 }
 
@@ -401,12 +406,12 @@ LABEL_18:
 
                     default:
                         return codeB == 0x3002
-                            || codeB == 0xFF0C
-                            || (codeA >= 0x1100 && codeA <= 0x11FF)
-                            || (codeA >= 0x3000 && codeA <= 0xD7AF)
-                            || (codeA >= 0xF900 && codeA <= 0xFAFF)
-                            || (codeA >= 0xFF00 && codeA <= 0xFF9F)
-                            || codeA - 0xFFA0 <= 0x3C;
+                               || codeB == 0xFF0C
+                               || (codeA >= 0x1100 && codeA <= 0x11FF)
+                               || (codeA >= 0x3000 && codeA <= 0xD7AF)
+                               || (codeA >= 0xF900 && codeA <= 0xFAFF)
+                               || (codeA >= 0xFF00 && codeA <= 0xFF9F)
+                               || codeA - 0xFFA0 <= 0x3C;
                 }
             }
 
@@ -420,23 +425,23 @@ LABEL_18:
                 }
 
                 return codeB == 0x3002
-                    || codeB == 0xFF0C
-                    || (codeA >= 0x1100 && codeA <= 0x11FF)
-                    || (codeA >= 0x3000 && codeA <= 0xD7AF)
-                    || (codeA >= 0xF900 && codeA <= 0xFAFF)
-                    || (codeA >= 0xFF00 && codeA <= 0xFF9F)
-                    || codeA - 0xFFA0 <= 0x3C;
+                       || codeB == 0xFF0C
+                       || (codeA >= 0x1100 && codeA <= 0x11FF)
+                       || (codeA >= 0x3000 && codeA <= 0xD7AF)
+                       || (codeA >= 0xF900 && codeA <= 0xFAFF)
+                       || (codeA >= 0xFF00 && codeA <= 0xFF9F)
+                       || codeA - 0xFFA0 <= 0x3C;
             }
 
             if (codeA > 0x2103) {
                 if (codeA < 0x3001) {
                     return codeB == 0x3002
-                        || codeB == 0xFF0C
-                        || (codeA >= 0x1100 && codeA <= 0x11FF)
-                        || (codeA >= 0x3000 && codeA <= 0xD7AF)
-                        || (codeA >= 0xF900 && codeA <= 0xFAFF)
-                        || (codeA >= 0xFF00 && codeA <= 0xFF9F)
-                        || codeA - 0xFFA0 <= 0x3C;
+                           || codeB == 0xFF0C
+                           || (codeA >= 0x1100 && codeA <= 0x11FF)
+                           || (codeA >= 0x3000 && codeA <= 0xD7AF)
+                           || (codeA >= 0xF900 && codeA <= 0xFAFF)
+                           || (codeA >= 0xFF00 && codeA <= 0xFF9F)
+                           || codeA - 0xFFA0 <= 0x3C;
                 }
 
                 v5 = codeA <= 0x3002;
@@ -447,12 +452,12 @@ LABEL_18:
 
                 if (codeA < 0x2032) {
                     return codeB == 0x3002
-                        || codeB == 0xFF0C
-                        || (codeA >= 0x1100 && codeA <= 0x11FF)
-                        || (codeA >= 0x3000 && codeA <= 0xD7AF)
-                        || (codeA >= 0xF900 && codeA <= 0xFAFF)
-                        || (codeA >= 0xFF00 && codeA <= 0xFF9F)
-                        || codeA - 0xFFA0 <= 0x3C;
+                           || codeB == 0xFF0C
+                           || (codeA >= 0x1100 && codeA <= 0x11FF)
+                           || (codeA >= 0x3000 && codeA <= 0xD7AF)
+                           || (codeA >= 0xF900 && codeA <= 0xFAFF)
+                           || (codeA >= 0xFF00 && codeA <= 0xFF9F)
+                           || codeA - 0xFFA0 <= 0x3C;
                 }
 
                 v5 = codeA <= 0x2033;
@@ -463,12 +468,12 @@ LABEL_18:
             }
 
             return codeB == 0x3002
-                || codeB == 0xFF0C
-                || (codeA >= 0x1100 && codeA <= 0x11FF)
-                || (codeA >= 0x3000 && codeA <= 0xD7AF)
-                || (codeA >= 0xF900 && codeA <= 0xFAFF)
-                || (codeA >= 0xFF00 && codeA <= 0xFF9F)
-                || codeA - 0xFFA0 <= 0x3C;
+                   || codeB == 0xFF0C
+                   || (codeA >= 0x1100 && codeA <= 0x11FF)
+                   || (codeA >= 0x3000 && codeA <= 0xD7AF)
+                   || (codeA >= 0xF900 && codeA <= 0xFAFF)
+                   || (codeA >= 0xFF00 && codeA <= 0xFF9F)
+                   || codeA - 0xFFA0 <= 0x3C;
         }
     }
 

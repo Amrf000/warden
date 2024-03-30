@@ -1,14 +1,14 @@
-#include "gx/font/FreeType.h"
-#include "gx/font/FreeTypeInternal.h"
-#include "freetype/ftmodule.h"
+#include "FreeType.h"
+#include "FreeTypeInternal.h"
+
 
 FT_Library g_FTLibrary;
 
 FT_MemoryRec_ s_GxuMemoryRecord = {
-    nullptr,
-    &FreeTypeAllocFunction,
-    &FreeTypeFreeFunction,
-    &FreeTypeReallocFunction
+        nullptr,
+        &FreeTypeAllocFunction,
+        &FreeTypeFreeFunction,
+        &FreeTypeReallocFunction
 };
 
 void FreeTypeInitialize() {
@@ -24,8 +24,8 @@ int32_t FREETYPE_RenderGlyph(uint32_t code, bool monochrome, FT_Face face) {
     }
 
     FT_Int flags = monochrome
-        ? FT_LOAD_NO_HINTING | FT_LOAD_CROP_BITMAP | FT_LOAD_PEDANTIC | FT_LOAD_LINEAR_DESIGN
-        : FT_LOAD_NO_HINTING | FT_LOAD_NO_BITMAP | FT_LOAD_PEDANTIC | FT_LOAD_LINEAR_DESIGN;
+                   ? FT_LOAD_NO_HINTING | FT_LOAD_CROP_BITMAP | FT_LOAD_PEDANTIC | FT_LOAD_LINEAR_DESIGN
+                   : FT_LOAD_NO_HINTING | FT_LOAD_NO_BITMAP | FT_LOAD_PEDANTIC | FT_LOAD_LINEAR_DESIGN;
 
     if (FT_Load_Glyph(face, index, flags)) {
         return 0;

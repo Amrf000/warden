@@ -1,10 +1,11 @@
-#include "gx/texture/CTexture.h"
-#include "gx/Texture.h"
+#include "CTexture.h"
+#include "Storm/String.h"
+
 
 EGxTexFilter CTexture::s_filterMode = GxTex_LinearMipNearest;
 int32_t CTexture::s_maxAnisotropy = 1;
 
-bool HASHKEY_TEXTUREFILE::operator==(const HASHKEY_TEXTUREFILE& key) {
+bool HASHKEY_TEXTUREFILE::operator==(const HASHKEY_TEXTUREFILE &key) {
     if (!SStrCmpI(this->m_filename, key.m_filename, STORM_MAX_PATH) && this->m_texFlags == key.m_texFlags) {
         return true;
     }

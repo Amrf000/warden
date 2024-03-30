@@ -1,6 +1,7 @@
 #pragma once
 
 #include "event/Types.h"
+#include "Common/TRefCnt.h"
 #include <cstdint>
 
 

@@ -2,8 +2,9 @@
 
 #include "Types.h"
 #include <cstdint>
+#include <NTempest/C2iVector.h>
 
-class C2iVector;
+using namespace NTempest;
 
 typedef void (*BLIT_FUNCTION)(const C2iVector &, const void *, uint32_t, void *, uint32_t);
 

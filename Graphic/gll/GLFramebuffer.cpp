@@ -1,12 +1,11 @@
-#include "gx/gll/GLFramebuffer.h"
-#include "gx/gll/GLDevice.h"
-#include "gx/gll/GLMipmap.h"
-#include "gx/gll/GLPool.h"
-#include "gx/gll/GLTypes.h"
-#include <bc/Debug.h>
+#include "GLFramebuffer.h"
+#include "GLDevice.h"
+#include "GLMipmap.h"
+#include "GLPool.h"
 
-GLFramebuffer* GLFramebuffer::Create(bool a1) {
-    GLFramebuffer* framebuffer = new GLFramebuffer(a1);
+
+GLFramebuffer *GLFramebuffer::Create(bool a1) {
+    GLFramebuffer *framebuffer = new GLFramebuffer(a1);
 
     if (!a1) {
         // TODO
@@ -28,7 +27,7 @@ GLFramebuffer::GLFramebuffer(bool a1) : GLObject() {
     }
 }
 
-void GLFramebuffer::Attach(GLMipmap* image, GLenum a3, int32_t a4) {
+void GLFramebuffer::Attach(GLMipmap *image, GLenum a3, int32_t a4) {
     BLIZZARD_ASSERT(this->m_Device == GLDevice::Get());
 
     if (!image) {
@@ -59,7 +58,7 @@ void GLFramebuffer::Attach(GLMipmap* image, GLenum a3, int32_t a4) {
 
     BLIZZARD_ASSERT(index < MAX_ATTACHMENT);
 
-    GLMipmap* oldImage = this->m_Attachments[index];
+    GLMipmap *oldImage = this->m_Attachments[index];
 
     if (image != oldImage) {
         if (oldImage) {
@@ -98,7 +97,7 @@ void GLFramebuffer::Detach(GLenum a2) {
 
     BLIZZARD_ASSERT(index < MAX_ATTACHMENT);
 
-    GLMipmap* oldImage = this->m_Attachments[index];
+    GLMipmap *oldImage = this->m_Attachments[index];
 
     if (oldImage) {
         oldImage->Detach(this, v2, 0);
@@ -118,7 +117,7 @@ void GLFramebuffer::Detach(GLenum a2) {
     }
 }
 
-GLMipmap* GLFramebuffer::GetAttachment(GLEnum a2) {
+GLMipmap *GLFramebuffer::GetAttachment(GLEnum a2) {
     int32_t index;
 
     if (a2 == GL_DEPTH_ATTACHMENT) {
@@ -136,8 +135,8 @@ GLMipmap* GLFramebuffer::GetAttachment(GLEnum a2) {
 
 int32_t GLFramebuffer::GetSampleCount() {
     return this->m_FramebufferID
-        ? 1
-        : this->m_Device->m_Context.m_Context->sampleCount;
+           ? 1
+           : this->m_Device->m_Context.m_Context->sampleCount;
 }
 
 bool GLFramebuffer::IsValid() {

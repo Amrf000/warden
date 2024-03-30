@@ -2,10 +2,8 @@
 #include <cstdarg>
 #include <cstdio>
 #include <cstdlib>
-
-#if defined(WHOA_SYSTEM_WIN)
 #include <Windows.h>
-#endif
+
 
 static uint32_t s_lasterror = ERROR_SUCCESS;
 

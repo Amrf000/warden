@@ -1,14 +1,14 @@
 #include "event/Synthesize.h"
 #include "event/EvtContext.h"
 #include "event/Queue.h"
-#include <common/Time.h>
+#include "Storm/Time.h"
 
-void SynthesizeDestroy(EvtContext* context) {
+void SynthesizeDestroy(EvtContext *context) {
     // TODO
     exit(0);
 }
 
-void SynthesizeIdle(EvtContext* context, uint32_t currTime, float elapsedSec) {
+void SynthesizeIdle(EvtContext *context, uint32_t currTime, float elapsedSec) {
     bool closed;
 
     context->m_critsect.Enter();
@@ -32,7 +32,7 @@ void SynthesizeIdle(EvtContext* context, uint32_t currTime, float elapsedSec) {
     IEvtQueueDispatch(context, EVENT_ID_IDLE, &data);
 }
 
-int32_t SynthesizeInitialize(EvtContext* context) {
+int32_t SynthesizeInitialize(EvtContext *context) {
     uint32_t schedFlags = context->m_schedFlags;
 
     if (schedFlags & 0x1) {
@@ -47,7 +47,7 @@ int32_t SynthesizeInitialize(EvtContext* context) {
     return 1;
 }
 
-void SynthesizePaint(EvtContext* context) {
+void SynthesizePaint(EvtContext *context) {
     bool closed;
 
     context->m_critsect.Enter();
@@ -66,7 +66,7 @@ void SynthesizePaint(EvtContext* context) {
     }
 }
 
-void SynthesizePoll(EvtContext* context) {
+void SynthesizePoll(EvtContext *context) {
     bool closed;
 
     context->m_critsect.Enter();

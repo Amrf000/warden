@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include "Agile/CHandleObject.h"
+#include "Common/TSLink.h"
 
 
 typedef HOBJECT HLAYER;

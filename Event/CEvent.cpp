@@ -1,7 +1,8 @@
 #include "event/CEvent.h"
-#include "gx/Coordinate.h"
+#include "Graphic/Coordinate.h"
 
-CCharEvent& CCharEvent::operator=(const EVENT_DATA_CHAR& data) {
+
+CCharEvent &CCharEvent::operator=(const EVENT_DATA_CHAR &data) {
     this->ch = data.ch;
     this->metaKeyState = data.metaKeyState;
     this->repeat = data.repeat;
@@ -9,7 +10,7 @@ CCharEvent& CCharEvent::operator=(const EVENT_DATA_CHAR& data) {
     return *this;
 }
 
-CKeyEvent& CKeyEvent::operator=(const EVENT_DATA_KEY& data) {
+CKeyEvent &CKeyEvent::operator=(const EVENT_DATA_KEY &data) {
     this->key = data.key;
     this->metaKeyState = data.metaKeyState;
     this->repeat = data.repeat;
@@ -18,7 +19,7 @@ CKeyEvent& CKeyEvent::operator=(const EVENT_DATA_KEY& data) {
     return *this;
 }
 
-CMouseEvent& CMouseEvent::operator=(const EVENT_DATA_MOUSE& data) {
+CMouseEvent &CMouseEvent::operator=(const EVENT_DATA_MOUSE &data) {
     this->mode = data.mode;
     this->button = data.button;
     this->buttonState = data.buttonState;
@@ -32,7 +33,7 @@ CMouseEvent& CMouseEvent::operator=(const EVENT_DATA_MOUSE& data) {
     return *this;
 }
 
-CSizeEvent& CSizeEvent::operator=(const EVENT_DATA_SIZE& data) {
+CSizeEvent &CSizeEvent::operator=(const EVENT_DATA_SIZE &data) {
     this->w = data.w;
     this->h = data.h;
 

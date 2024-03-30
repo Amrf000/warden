@@ -1,31 +1,33 @@
-#include "gx/gll/GLShader.h"
-#include "gx/gll/GLDevice.h"
-#include "gx/gll/GLPixelShader.h"
-#include "gx/gll/GLPool.h"
-#include "gx/gll/GLVertexShader.h"
-#include <bc/Debug.h>
+#include "GLShader.h"
+#include "GLDevice.h"
+#include "GLPixelShader.h"
+#include "GLPool.h"
+#include "GLVertexShader.h"
+
 
 // TODO
 // - threaded compiler support
 // - glsl support
 // - hybrid support
-GLShader* GLShader::Create(ShaderType shaderType, bool hybrid, bool usingCG, const char* a4, const void* buf, int32_t codeLen, const char* a7, const char* name, GLShaderLogInfo* logInfo) {
-    const char* shaderCode = reinterpret_cast<const char*>(buf);
+GLShader *
+GLShader::Create(ShaderType shaderType, bool hybrid, bool usingCG, const char *a4, const void *buf, int32_t codeLen,
+                 const char *a7, const char *name, GLShaderLogInfo *logInfo) {
+    const char *shaderCode = reinterpret_cast<const char *>(buf);
 
-    if (*reinterpret_cast<const int32_t*>(buf) == 'GSL1') {
+    if (*reinterpret_cast<const int32_t *>(buf) == 'GSL1') {
         BLIZZARD_ASSERT(!usingCG);
 
-        const ShaderDataHeader header = *reinterpret_cast<const ShaderDataHeader*>(buf);
+        const ShaderDataHeader header = *reinterpret_cast<const ShaderDataHeader *>(buf);
 
         BLIZZARD_ASSERT(header.shaderType == shaderType);
         BLIZZARD_ASSERT(header.size == codeLen);
         BLIZZARD_ASSERT(header.codePos >= sizeof(ShaderDataHeader));
         BLIZZARD_ASSERT(header.codeSize > 0);
 
-        shaderCode = &reinterpret_cast<const char*>(buf)[header.codePos];
+        shaderCode = &reinterpret_cast<const char *>(buf)[header.codePos];
     }
 
-    GLShader* shader = nullptr;
+    GLShader *shader = nullptr;
 
     if (shaderType == ePixelShader) {
         shader = GLPixelShader::Create();
@@ -50,11 +52,11 @@ GLShader* GLShader::Create(ShaderType shaderType, bool hybrid, bool usingCG, con
     return shader;
 }
 
-bool GLShader::CheckErrorsARB(GLShaderLogInfo* logInfo) {
+bool GLShader::CheckErrorsARB(GLShaderLogInfo *logInfo) {
     GLint errorPos;
 
     glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
-    const GLubyte* errorStr = glGetString(GL_PROGRAM_ERROR_STRING_ARB);
+    const GLubyte *errorStr = glGetString(GL_PROGRAM_ERROR_STRING_ARB);
 
     // TODO
     // Blizzard::Debug::VAssert(logInfo != 0 || errorPos == -1, errorStr);
@@ -62,19 +64,20 @@ bool GLShader::CheckErrorsARB(GLShaderLogInfo* logInfo) {
     return errorPos == -1;
 }
 
-void GLShader::Compile(GLShaderLogInfo* logInfo) {
+void GLShader::Compile(GLShaderLogInfo *logInfo) {
     this->ImmediateCompile(logInfo);
 }
 
-void GLShader::CompileCG(const char* a2, const void* shaderCode, int32_t codeLen, const char* a5, GLShaderLogInfo* logInfo) {
+void
+GLShader::CompileCG(const char *a2, const void *shaderCode, int32_t codeLen, const char *a5, GLShaderLogInfo *logInfo) {
     // TODO
 }
 
-void GLShader::FlushUniforms(GLGLSLProgram* program) {
+void GLShader::FlushUniforms(GLGLSLProgram *program) {
     // TODO
 }
 
-std::string& GLShader::GetCode() {
+std::string &GLShader::GetCode() {
     return this->m_Code;
 }
 
@@ -82,7 +85,7 @@ int32_t GLShader::GetShaderType() {
     return this->m_ShaderType;
 }
 
-void GLShader::ImmediateCompile(GLShaderLogInfo* logInfo) {
+void GLShader::ImmediateCompile(GLShaderLogInfo *logInfo) {
     BLIZZARD_ASSERT(!this->GetCode().empty());
 
     this->m_Device = GLDevice::Get();
@@ -98,7 +101,7 @@ void GLShader::ImmediateCompile(GLShaderLogInfo* logInfo) {
 
         this->m_Device->BindShader(this);
 
-        const char* arbCode = this->GetCode().c_str();
+        const char *arbCode = this->GetCode().c_str();
         size_t arbLen = strlen(arbCode);
 
         glProgramStringARB(this->var5, GL_PROGRAM_FORMAT_ASCII_ARB, arbLen, arbCode);
@@ -129,6 +132,6 @@ void GLShader::ReleaseObject() {
     // TODO
 }
 
-void GLShader::SetShaderConstants(ShaderType shaderType, uint32_t index, const float* constants, uint32_t count) {
+void GLShader::SetShaderConstants(ShaderType shaderType, uint32_t index, const float *constants, uint32_t count) {
     // TODO
 }

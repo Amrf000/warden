@@ -1,7 +1,11 @@
 #pragma once
 
 #include <cstdint>
-#include <NTempest/Vector.h>
+#include <NTempest/C3Vector.h>
+#include <NTempest/CImVector.h>
+#include <NTempest/C2Vector.h>
+
+using namespace NTempest;
 
 enum EGxPoolHintBits {
     GxPoolHintBit_Unk0 = 0,

@@ -1,21 +1,15 @@
-#include "gx/font/CGxStringBatch.h"
-#include "gx/font/CGxFont.h"
-#include "gx/Buffer.h"
-#include "gx/CGxBatch.h"
-#include "gx/Device.h"
-#include "gx/Draw.h"
-#include "gx/Font.h"
-#include "gx/Gx.h"
-#include "gx/RenderState.h"
-#include "gx/Shader.h"
-#include "gx/Texture.h"
-#include "gx/Transform.h"
+#include "CGxStringBatch.h"
+#include "CGxFont.h"
+#include "Graphic/Transform.h"
+#include "Graphic/Gx.h"
+#include "Graphic/Font.h"
+#include "Graphic/buffer/Types.h"
 #include <cmath>
 #include <storm/Error.h>
 
 bool BATCHEDRENDERFONTDESC::s_billboarded;
-CGxBuf* BATCHEDRENDERFONTDESC::s_indexBuf;
-CGxPool* BATCHEDRENDERFONTDESC::s_indexPool;
+CGxBuf *BATCHEDRENDERFONTDESC::s_indexBuf;
+CGxPool *BATCHEDRENDERFONTDESC::s_indexPool;
 
 int32_t SetProjection() {
     float minX, maxX, minY, maxY, minZ, maxZ;
@@ -63,19 +57,19 @@ int32_t SetProjection() {
 }
 
 void BATCHEDRENDERFONTDESC::Initialize() {
-    CGxPool* indexPool = GxPoolCreate(
-        GxPoolTarget_Index,
-        GxPoolUsage_Static,
-        6144,
-        GxPoolHintBit_Unk0,
-        "BATCHEDRENDERFONTDESC_idx"
+    CGxPool *indexPool = GxPoolCreate(
+            GxPoolTarget_Index,
+            GxPoolUsage_Static,
+            6144,
+            GxPoolHintBit_Unk0,
+            "BATCHEDRENDERFONTDESC_idx"
     );
 
-    CGxBuf* indexBuf = GxBufCreate(
-        indexPool,
-        2,
-        3072,
-        0
+    CGxBuf *indexBuf = GxBufCreate(
+            indexPool,
+            2,
+            3072,
+            0
     );
 
     BATCHEDRENDERFONTDESC::s_indexPool = indexPool;
@@ -83,8 +77,8 @@ void BATCHEDRENDERFONTDESC::Initialize() {
 }
 
 void BATCHEDRENDERFONTDESC::InitializeIndexBuff() {
-    char* indexData = g_theGxDevicePtr->BufLock(BATCHEDRENDERFONTDESC::s_indexBuf);
-    uint16_t* indexBuf = reinterpret_cast<uint16_t*>(indexData);
+    char *indexData = g_theGxDevicePtr->BufLock(BATCHEDRENDERFONTDESC::s_indexBuf);
+    uint16_t *indexBuf = reinterpret_cast<uint16_t *>(indexData);
 
     uint16_t index = 0;
 
@@ -102,7 +96,7 @@ void BATCHEDRENDERFONTDESC::InitializeIndexBuff() {
     GxBufUnlock(BATCHEDRENDERFONTDESC::s_indexBuf, 0);
 };
 
-CGxVertexPCT* BATCHEDRENDERFONTDESC::UnlockVertexPtrAndRender(CGxBuf*& buf, int32_t count) {
+CGxVertexPCT *BATCHEDRENDERFONTDESC::UnlockVertexPtrAndRender(CGxBuf *&buf, int32_t count) {
     GxBufUnlock(buf, sizeof(CGxVertexPCT) * count);
 
     if (!BATCHEDRENDERFONTDESC::s_indexBuf->unk1C || !BATCHEDRENDERFONTDESC::s_indexBuf->unk1D) {
@@ -123,7 +117,7 @@ CGxVertexPCT* BATCHEDRENDERFONTDESC::UnlockVertexPtrAndRender(CGxBuf*& buf, int3
         GxDraw(&batch, 1);
     }
 
-    return reinterpret_cast<CGxVertexPCT*>(g_theGxDevicePtr->BufLock(buf));
+    return reinterpret_cast<CGxVertexPCT *>(g_theGxDevicePtr->BufLock(buf));
 }
 
 void BATCHEDRENDERFONTDESC::RenderBatch() {
@@ -141,16 +135,16 @@ void BATCHEDRENDERFONTDESC::RenderBatch() {
 
     int32_t maxBatchCapacity = 2048;
 
-    CGxBuf* vertexStream = g_theGxDevicePtr->BufStream(GxPoolTarget_Vertex, 0x18, maxBatchCapacity);
-    char* vertexData = g_theGxDevicePtr->BufLock(vertexStream);
-    CGxVertexPCT* vertexBuf = reinterpret_cast<CGxVertexPCT*>(vertexData);
+    CGxBuf *vertexStream = g_theGxDevicePtr->BufStream(GxPoolTarget_Vertex, 0x18, maxBatchCapacity);
+    char *vertexData = g_theGxDevicePtr->BufLock(vertexStream);
+    CGxVertexPCT *vertexBuf = reinterpret_cast<CGxVertexPCT *>(vertexData);
 
     for (int32_t i = 0; i < 8; i++) {
-        auto& textureCache = this->m_face->m_textureCache[i];
+        auto &textureCache = this->m_face->m_textureCache[i];
         auto texture = textureCache.m_texture;
 
         if (texture) {
-            auto gxTex = TextureGetGxTex(reinterpret_cast<CTexture*>(texture), 1, nullptr);
+            auto gxTex = TextureGetGxTex(reinterpret_cast<CTexture *>(texture), 1, nullptr);
 
             if (gxTex) {
                 GxRsSet(GxRs_Texture0, gxTex);
@@ -196,13 +190,13 @@ CGxStringBatch::~CGxStringBatch() {
     this->m_fontBatch.Clear();
 }
 
-void CGxStringBatch::AddString(CGxString* string) {
+void CGxStringBatch::AddString(CGxString *string) {
     STORM_ASSERT(string);
     STORM_ASSERT(string->m_currentFace);
 
     auto face = string->m_currentFace;
     uint32_t hashval = reinterpret_cast<uintptr_t>(face);
-    HASHKEY_PTR key = { face };
+    HASHKEY_PTR key = {face};
 
     auto batch = this->m_fontBatch.Ptr(hashval, key);
 
@@ -256,8 +250,8 @@ void CGxStringBatch::RenderBatch() {
         stereoEnabled = g_theGxDevicePtr->StereoEnabled();
     }
 
-    CGxShader* vs = g_fontVertexShader[stereoEnabled ? 1 : 0];
-    CGxShader* ps = g_fontPixelShader[0];
+    CGxShader *vs = g_fontVertexShader[stereoEnabled ? 1 : 0];
+    CGxShader *ps = g_fontPixelShader[0];
 
     if (setProjection && vs->Valid() && ps->Valid()) {
         GxRsSet(GxRs_VertexShader, vs);
@@ -265,7 +259,7 @@ void CGxStringBatch::RenderBatch() {
 
         C44Matrix viewProjMat;
         GxXformViewProjNativeTranspose(viewProjMat);
-        GxShaderConstantsSet(GxSh_Vertex, 0, reinterpret_cast<float*>(&viewProjMat), 4);
+        GxShaderConstantsSet(GxSh_Vertex, 0, reinterpret_cast<float *>(&viewProjMat), 4);
 
         for (auto fontBatch = this->m_fontBatch.Head(); fontBatch; fontBatch = this->m_fontBatch.Next(fontBatch)) {
             if (fontBatch->m_strings.Head()) {

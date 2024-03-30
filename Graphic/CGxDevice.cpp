@@ -1,8 +1,7 @@
-#include "gx/CGxDevice.h"
-#include "gx/Gx.h"
-#include "gx/Shader.h"
-#include "gx/texture/CGxTex.h"
-#include "util/SFile.h"
+#include "CGxDevice.h"
+#include "Gx.h"
+#include "Shader.h"
+#include "texture/CGxTex.h"
 #include <algorithm>
 #include <cstring>
 #include <limits>

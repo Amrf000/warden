@@ -1,45 +1,45 @@
 #pragma once
 
-#include "gx/gll/GLMipmap.h"
+#include "GLMipmap.h"
 
 class GLDevice;
 
 class GLCommand {
-    public:
-        // Virtual member functions
-        virtual void Execute(GLDevice*) = 0;
+public:
+    // Virtual member functions
+    virtual void Execute(GLDevice *) = 0;
 };
 
 class GLFlush : public GLCommand {
-    public:
-        // Virtual member functions
-        virtual void Execute(GLDevice* device);
+public:
+    // Virtual member functions
+    virtual void Execute(GLDevice *device);
 };
 
 class GLTexUnmap : public GLCommand {
-    public:
-        // Member variables
-        GLTexture* m_Texture;
-        GLMipmap* m_Mipmap;
-        GLMipmap::MapParams* m_MapParams;
+public:
+    // Member variables
+    GLTexture *m_Texture;
+    GLMipmap *m_Mipmap;
+    GLMipmap::MapParams *m_MapParams;
 
-        // Virtual member functions
-        virtual void Execute(GLDevice*);
+    // Virtual member functions
+    virtual void Execute(GLDevice *);
 
-        // Member functions
-        GLTexUnmap(GLTexture*, GLMipmap*, GLMipmap::MapParams*);
+    // Member functions
+    GLTexUnmap(GLTexture *, GLMipmap *, GLMipmap::MapParams *);
 };
 
 class GLTexDestroy : public GLCommand {
-    public:
-        // Member variables
-        GLTexture* m_Texture;
+public:
+    // Member variables
+    GLTexture *m_Texture;
 
-        // Virtual member functions
-        virtual void Execute(GLDevice* device);
+    // Virtual member functions
+    virtual void Execute(GLDevice *device);
 
-        // Member functions
-        GLTexDestroy(GLTexture* texture);
+    // Member functions
+    GLTexDestroy(GLTexture *texture);
 };
 
 

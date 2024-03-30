@@ -1,5 +1,5 @@
-#include "gx/gll/GLObject.h"
-#include <bc/Debug.h>
+#include "GLObject.h"
+
 
 void GLObject::AddRefTwin() {
 }

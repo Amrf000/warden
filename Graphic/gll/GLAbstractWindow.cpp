@@ -1,4 +1,4 @@
-#include "gx/gll/GLAbstractWindow.h"
+#include "GLAbstractWindow.h"
 #include <cmath>
 
 int32_t GLAbstractWindow::GetBackingWidth() {
