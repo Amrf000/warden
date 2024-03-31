@@ -35,7 +35,11 @@ file(GLOB_RECURSE dir_src
         "Net/*.cpp"
 )
 find_package(OpenGL REQUIRED)
-add_executable(warden main.cpp ${dir_src})
+add_executable(warden main.cpp ${dir_src}
+        Storm/lock/win32Critical_Section.cpp
+        Storm/lock/win32Critical_Section.h
+        externel/opengl/glext.h
+        externel/opengl/glxext.h)
 
 target_include_directories(warden PRIVATE "/")
 target_include_directories(warden PRIVATE "externel/freetype-2.0.9/include")

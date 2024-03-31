@@ -4,6 +4,7 @@
 #include "GLPool.h"
 #include "GLUtil.h"
 #include "Storm/Debug.h"
+#include "Storm/Memory.h"
 #include <deque>
 
 

@@ -1,5 +1,6 @@
 #include "GLUtil.h"
 #include "GL.h"
+#include "Storm/Debug.h"
 
 
 uint32_t GLLTextureTypeToIndex(GLEnum textureType) {

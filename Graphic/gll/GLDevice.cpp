@@ -2,6 +2,7 @@
 #include "GLPool.h"
 #include "GLUtil.h"
 #include "Storm/Debug.h"
+#include "opengl/glext.h"
 #include <algorithm>
 #include <cmath>
 #include <cstring>

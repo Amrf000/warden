@@ -3,6 +3,8 @@
 #include "GLPixelShader.h"
 #include "GLPool.h"
 #include "GLVertexShader.h"
+#include "Storm/Debug.h"
+#include "opengl/glext.h"
 
 
 // TODO

@@ -1,8 +1,9 @@
 #include "GL.h"
 #include "GLTypes.h"
+#include "opengl/glext.h"
 
 TextureFormatInfo k_TextureFormatInfo[GLTF_NUM_TEXTURE_FORMATS] = {
-        {0,                                0,                  0,                              0, 0,  "GLTF INVALID!!"},
+        {0, 0, 0,                                                                              0, 0,  "GLTF INVALID!!"},
         {GL_RGBA8,                         GL_BGRA,            GL_UNSIGNED_INT_8_8_8_8_REV,    0, 4,  "ARGB8888"},
         {GL_RGB8,                          GL_BGRA,            GL_UNSIGNED_INT_8_8_8_8_REV,    0, 4,  "XRGB8888"},
         {GL_RGBA8,                         GL_RGBA,            GL_UNSIGNED_INT_8_8_8_8,        0, 4,  "RGBA8888"},

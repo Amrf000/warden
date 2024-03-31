@@ -88,7 +88,6 @@ void Blizzard::System_Thread::InitThreadSystem() {
 }
 
 bool Blizzard::System_Thread::InternalAllocateLocalStorage(Thread::TLSSlot *slot, void (*destructor)(void *)) {
-#if defined(WHOA_SYSTEM_WIN)
     auto index = TlsAlloc();
     if (index == TLS_OUT_OF_INDEXES) {
         return false;
@@ -98,32 +97,15 @@ bool Blizzard::System_Thread::InternalAllocateLocalStorage(Thread::TLSSlot *slot
     slot->allocated = true;
 
     return true;
-#elif defined(WHOA_SYSTEM_MAC) || defined(WHOA_SYSTEM_LINUX)
-    if (pthread_key_create(&slot->key, destructor)) {
-        return false;
-    }
-
-    slot->allocated = true;
-    return true;
-#endif
 }
 
 void *Blizzard::System_Thread::InternalGetLocalStorage(const Thread::TLSSlot *slot) {
-#if defined(WHOA_SYSTEM_WIN)
     return TlsGetValue(slot->key);
-#elif defined(WHOA_SYSTEM_MAC) || defined(WHOA_SYSTEM_LINUX)
-    return pthread_getspecific(slot->key);
-#endif
 }
 
 void Blizzard::System_Thread::InternalSetLocalStorage(const Thread::TLSSlot *slot, const void *value) {
-#if defined(WHOA_SYSTEM_WIN)
-    auto result = TlsSetValue(slot->key, const_cast<void*>(value));
+    auto result = TlsSetValue(slot->key, const_cast<void *>(value));
     BLIZZARD_ASSERT(result);
-#elif defined(WHOA_SYSTEM_MAC) || defined(WHOA_SYSTEM_LINUX)
-    auto err = pthread_setspecific(slot->key, value);
-    BLIZZARD_ASSERT(err == 0);
-#endif
 }
 
 Blizzard::Thread::ThreadRecord *Blizzard::System_Thread::NewThread(uint32_t (*a1)(void *), void *a2, const char *name) {

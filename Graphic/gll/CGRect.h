@@ -1,9 +1,12 @@
 #pragma once
-struct Rect {
+struct CGRect_ {
+    float x;
+    float y;
     float width;
     float height;
 };
 
 struct CGRect {
-    struct Rect size;
+    struct CGRect_ origin;
+    struct CGRect_ size;
 };
