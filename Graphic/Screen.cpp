@@ -5,6 +5,9 @@
 #include "Font.h"
 #include "Gx.h"
 #include "Transform.h"
+#include "Common/TSExplicitList.h"
+#include "Storm/Filesystem.h"
+#include "Common/Region.h"
 #include <storm/String.h>
 
 
@@ -12,16 +15,16 @@ int32_t Screen::s_captureScreen = 0;
 float Screen::s_elapsedSec = 0.0f;
 int32_t Screen::s_presentDisable = 0;
 static HOBJECT s_stockObjects[SCRNSTOCKOBJECTS];
-static float s_stockObjectHeights[SCRNSTOCKOBJECTS] = { 0.01953125f, 0.01953125f };
+static float s_stockObjectHeights[SCRNSTOCKOBJECTS] = {0.01953125f, 0.01953125f};
 static STORM_EXPLICIT_LIST(CILayer, zorderlink) s_zOrderList;
 
-int32_t OnIdle(const EVENT_DATA_IDLE* data, void* a2) {
+int32_t OnIdle(const EVENT_DATA_IDLE *data, void *a2) {
     Screen::s_elapsedSec = data->elapsedSec + Screen::s_elapsedSec;
 
     return 1;
 }
 
-int32_t OnPaint(const void* a1, void* a2) {
+int32_t OnPaint(const void *a1, void *a2) {
     // TODO
     // if (!g_theGxDevicePtr || !g_theGxDevicePtr->CapsHasContext(-1) || !g_theGxDevicePtr->CapsIsWindowVisible(-1)) {
     //     // TODO
@@ -33,17 +36,17 @@ int32_t OnPaint(const void* a1, void* a2) {
     CSRgn rgn;
     SRgnCreate(&rgn.m_handle, 0);
 
-    RECTF baseRect = { 0.0f, 0.0f, 1.0f, 1.0f };
+    RECTF baseRect = {0.0f, 0.0f, 1.0f, 1.0f};
     SRgnCombineRectf(rgn.m_handle, &baseRect, nullptr, 2);
 
     // Walk the layer list backward (highest z-order to lowest) to establish visibility rects
     for (auto layer = s_zOrderList.Tail(); layer; layer = layer->zorderlink.Prev()) {
         SRgnGetBoundingRectf(rgn.m_handle, &layer->visible);
 
-        layer->visible.left = std::max(layer->visible.left, layer->rect.left);
-        layer->visible.bottom = std::max(layer->visible.bottom, layer->rect.bottom);
-        layer->visible.right = std::min(layer->visible.right, layer->rect.right);
-        layer->visible.top = std::min(layer->visible.top, layer->rect.top);
+        layer->visible.left = (std::max)(layer->visible.left, layer->rect.left);
+        layer->visible.bottom = (std::max)(layer->visible.bottom, layer->rect.bottom);
+        layer->visible.right = (std::min)(layer->visible.right, layer->rect.right);
+        layer->visible.top = (std::min)(layer->visible.top, layer->rect.top);
 
         if (!(layer->flags & 0x1)) {
             SRgnCombineRectf(rgn.m_handle, &layer->rect, nullptr, 4);
@@ -61,21 +64,21 @@ int32_t OnPaint(const void* a1, void* a2) {
         if (layer->visible.right > layer->visible.left && layer->visible.top > layer->visible.bottom) {
             if (layer->flags & 0x4) {
                 GxXformSetViewport(
-                    0.0f,
-                    1.0f,
-                    0.0f,
-                    1.0f,
-                    0.0f,
-                    1.0f
+                        0.0f,
+                        1.0f,
+                        0.0f,
+                        1.0f,
+                        0.0f,
+                        1.0f
                 );
             } else {
                 GxXformSetViewport(
-                    layer->visible.left,
-                    layer->visible.right,
-                    layer->visible.bottom,
-                    layer->visible.top,
-                    0.0f,
-                    1.0f
+                        layer->visible.left,
+                        layer->visible.right,
+                        layer->visible.bottom,
+                        layer->visible.top,
+                        0.0f,
+                        1.0f
                 );
             }
 
@@ -85,22 +88,22 @@ int32_t OnPaint(const void* a1, void* a2) {
 
                 C44Matrix orthoProj;
                 GxuXformCreateOrtho(
-                    layer->visible.left,
-                    layer->visible.right,
-                    layer->visible.bottom,
-                    layer->visible.top,
-                    0.0f,
-                    500.0f,
-                    orthoProj
+                        layer->visible.left,
+                        layer->visible.right,
+                        layer->visible.bottom,
+                        layer->visible.top,
+                        0.0f,
+                        500.0f,
+                        orthoProj
                 );
                 GxXformSetProjection(orthoProj);
             }
 
             layer->paintfunc(
-                layer->param,
-                &layer->rect,
-                &layer->visible,
-                Screen::s_elapsedSec
+                    layer->param,
+                    &layer->rect,
+                    &layer->visible,
+                    Screen::s_elapsedSec
             );
         }
     }
@@ -164,12 +167,13 @@ void ScrnInitialize(int32_t a1) {
     IStockInitialize();
 }
 
-void ScrnLayerCreate(const RECTF* rect, float zOrder, uint32_t flags, void* param, void (*paintFunc)(void*, const RECTF*, const RECTF*, float), HLAYER* layerPtr) {
-    static RECTF defaultrect = { 0.0f, 0.0f, 1.0f, 1.0f };
-    const RECTF* r = rect ? rect : &defaultrect;
+void ScrnLayerCreate(const RECTF *rect, float zOrder, uint32_t flags, void *param,
+                     void (*paintFunc)(void *, const RECTF *, const RECTF *, float), HLAYER *layerPtr) {
+    static RECTF defaultrect = {0.0f, 0.0f, 1.0f, 1.0f};
+    const RECTF *r = rect ? rect : &defaultrect;
 
     auto m = SMemAlloc(sizeof(CILayer), __FILE__, __LINE__, 0x0);
-    auto layer = new (m) CILayer();
+    auto layer = new(m) CILayer();
 
     layer->rect.left = r->left;
     layer->rect.bottom = r->bottom;
@@ -192,11 +196,11 @@ void ScrnLayerCreate(const RECTF* rect, float zOrder, uint32_t flags, void* para
     *layerPtr = HandleCreate(layer);
 }
 
-void ScrnLayerSetRect(HLAYER layer, const RECTF* rect) {
-    static_cast<CILayer*>(HandleDereference(layer))->rect = *rect;
+void ScrnLayerSetRect(HLAYER layer, const RECTF *rect) {
+    static_cast<CILayer *>(HandleDereference(layer))->rect = *rect;
 }
 
-void ScrnSetStockFont(SCRNSTOCK stockID, const char* fontTexturePath) {
+void ScrnSetStockFont(SCRNSTOCK stockID, const char *fontTexturePath) {
     if (s_stockObjects[stockID]) {
         HandleClose(s_stockObjects[stockID]);
     }

@@ -8,7 +8,14 @@
 #include "Types.h"
 #include "Shader.h"
 #include <cstdint>
+#include "NTempest/C4Vector.h"
+#include "NTempest/C3Vector.h"
+#include "NTempest/C44Matrix.h"
+#include "NTempest/CRect.h"
+#include "NTempest/CiRect.h"
+#include "NTempest/CBoundingBox.h"
 
+using namespace NTempest;
 
 class CGxBatch;
 
@@ -64,15 +71,15 @@ public:
     static uint32_t PrimCalcCount(EGxPrim primType, uint32_t count);
 
     // Member variables
-    TSGrowableArray <CGxPushedRenderState> m_pushedStates;
-    TSGrowableArray <size_t> m_stackOffsets;
-    TSGrowableArray <EGxRenderState> m_dirtyStates;
+    TSGrowableArray<CGxPushedRenderState> m_pushedStates;
+    TSGrowableArray<size_t> m_stackOffsets;
+    TSGrowableArray<EGxRenderState> m_dirtyStates;
     CRect m_defWindowRect;
     CRect m_curWindowRect;
     EGxApi m_api = GxApis_Last;
     CGxFormat m_format;
     CGxCaps m_caps;
-    TSHashTable <CGxShader, HASHKEY_STRI> m_shaderList[GxShTargets_Last];
+    TSHashTable<CGxShader, HASHKEY_STRI> m_shaderList[GxShTargets_Last];
 
     int32_t (*m_windowProc)(void *window, uint32_t message, uintptr_t wparam, intptr_t lparam) = nullptr;
 
@@ -87,7 +94,7 @@ public:
     CGxMatrixStack m_xforms[GxXforms_Last];
     uint32_t m_appMasterEnables = 0;
     uint32_t m_hwMasterEnables = 0;
-    TSList <CGxPool, TSGetLink<CGxPool>> m_poolList;
+    TSList<CGxPool, TSGetLink<CGxPool>> m_poolList;
     CGxBuf *m_bufLocked[GxPoolTargets_Last];
     CGxPool *m_vertexPool = nullptr;
     CGxPool *m_indexPool = nullptr;
@@ -101,8 +108,8 @@ public:
     uint32_t m_primVertexSize;
     CGxBuf *m_primIndexBuf = nullptr;
     int32_t m_primIndexDirty = 0;
-    TSFixedArray <CGxAppRenderState> m_appRenderStates;
-    TSFixedArray <CGxStateBom> m_hwRenderStates;
+    TSFixedArray<CGxAppRenderState> m_appRenderStates;
+    TSFixedArray<CGxStateBom> m_hwRenderStates;
     uint32_t m_baseMipLevel = 0; // TODO placeholder
 
     // Virtual member functions

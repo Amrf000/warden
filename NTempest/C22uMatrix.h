@@ -1,19 +1,23 @@
 #pragma once
 
 #include "C2uVector.h"
+#include "Common/softfloat.h"
 
 namespace NTempest {
     class C22uMatrix {
     public:
-        C22uMatrix(unsigned int a2, unsigned int a3, unsigned int a4, unsigned int a5) {
-            this->columns[0].x = a2;
-            this->columns[0].y = a3;
-            this->columns[1].x = a4;
-            this->columns[1].y = a5;
+        C22uMatrix(uint32_t a2, uint32_t a3, uint32_t a4, uint32_t a5) {
+            this->a0 = a2;
+            this->a1 = a3;
+            this->b0 = a4;
+            this->b1 = a5;
         }
 
     public:
-        C2uVector columns[2];
+        softfloat a0;
+        softfloat a1;
+        softfloat b0;
+        softfloat b1;
     };
 }
 

@@ -5,31 +5,41 @@
 namespace NTempest {
     class C4Quaternion {
     public:
-        C4Quaternion *operator C33Matrix(C33Matrix *that) {
-            v3 = that->a1;
-            v4 = that->a2;
-            v5 = that->a3;
-            v6 = that->a4;
-            v13 = (float) (v3 + v3) * v6;
-            v7 = (float) (v4 + v4) * v6;
-            v14 = v6 * (float) (v5 + v5);
-            v15 = (float) (v3 + v3) * v3;
-            v8 = that->a1 * (float) (v4 + v4);
-            v12 = that->a1 * (float) (v5 + v5);
-            v9 = (float) (v4 + v4) * v4;
-            v10 = v4 * (float) (v5 + v5);
-            v11 = v5 * (float) (v5 + v5);
-            this->a1 = 1.0 - (float) (v9 + v11);
-            this->a2 = v14 + v8;
-            this->a3 = v12 - v7;
-            this->a4 = v8 - v14;
-            this->a5 = 1.0 - (float) (v11 + v15);
-            this->a6 = v13 + v10;
-            this->a7 = v7 + v12;
-            this->a8 = v10 - v13;
-            this->a9 = 1.0 - (float) (v9 + v15);
-            return this;
+        // Static functions
+        static C4Quaternion Nlerp(float ratio, const C4Quaternion &q1, const C4Quaternion &q2) {
+            float x = (q2.x - q1.x) * ratio + q1.x;
+            float y = (q2.y - q1.y) * ratio + q1.y;
+            float z = (q2.z - q1.z) * ratio + q1.z;
+            float w = (q2.w - q1.w) * ratio + q1.w;
+
+            float m = x * x + y * y + z * z + w * w;
+            float v9 = ((m - 0.95906597) * -0.532516) + 1.021435;
+
+            if (m <= 0.91521198) {
+                v9 *= (((v9 * v9 * m) - 0.95906597) * -0.532516) + 1.021435;
+
+                if (m <= 0.6521197) {
+                    v9 *= (((v9 * v9 * m) - 0.95906597) * -0.532516) + 1.021435;
+                }
+            }
+
+            x *= v9;
+            y *= v9;
+            z *= v9;
+            w *= v9;
+
+            return {x, y, z, w};
         }
+
+        C4Quaternion() {
+            x = 0.0f;
+            y = 0.0f;
+            z = 0.0f;
+            w = 1.0f;
+        }
+
+        C4Quaternion(float x, float y, float z, float w)
+                : x(x), y(y), z(z), w(w) {}
 
     public:
         float x;
@@ -37,6 +47,10 @@ namespace NTempest {
         float z;
         float w;
     };
+
+//    C4Quaternion *operator C33Matrix(C33Matrix *that) {
+//
+//    }
 }
 
 

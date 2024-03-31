@@ -4,6 +4,7 @@
 #include "Agile/CHandleObject.h"
 #include "Common/TSLink.h"
 #include "Storm/Handle.h"
+#include "Common/region/Types.h"
 
 
 typedef HOBJECT HLAYER;

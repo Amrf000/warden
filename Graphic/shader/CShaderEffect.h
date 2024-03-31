@@ -9,12 +9,6 @@
 
 using namespace NTempest;
 
-class CGxShader;
-
-class CM2Light;
-
-class CM2Lighting;
-
 class CShaderEffect : public TSHashObject<CShaderEffect, HASHKEY_STRI> {
 public:
     // Structs

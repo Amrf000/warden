@@ -3,11 +3,13 @@
 
 #include <cstdint>
 
-class CiRange {
+namespace NTempest {
+    class CiRange {
     public:
-    // Member variables
-    int32_t l;
-    int32_t h;
-};
+        // Member variables
+        int32_t l;
+        int32_t h;
+    };
+}
 
 #endif

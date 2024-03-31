@@ -4,9 +4,8 @@
 #include "Common/Hashkey.h"
 #include "Common/TSGrowableArray.h"
 #include "Common/TSHashObject.h"
+#include "Storm/SFile.h"
 
-
-class SFile;
 
 class CGxShader : public TSHashObject<CGxShader, HASHKEY_STRI> {
 public:

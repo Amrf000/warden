@@ -1,6 +1,7 @@
 #include "CGxFont.h"
 #include "FontFace.h"
 #include "Storm/Memory.h"
+#include "Graphic/Font.h"
 #include <cmath>
 #include <cstring>
 #include <storm/Error.h>
@@ -70,7 +71,7 @@ CHARCODEDESC *TEXTURECACHEROW::CreateNewDesc(GLYPHBITMAPDATA *data, uint32_t row
     }
 
     if (!this->glyphList.Head()) {
-        CHARCODEDESC * newCode = this->glyphList.NewNode(2, 0, 0);
+        CHARCODEDESC *newCode = this->glyphList.NewNode(2, 0, 0);
 
         newCode->glyphStartPixel = 0;
         newCode->glyphEndPixel = glyphWidth - 1;
@@ -113,7 +114,7 @@ CHARCODEDESC *TEXTURECACHEROW::CreateNewDesc(GLYPHBITMAPDATA *data, uint32_t row
     }
 
     int32_t inserted = 0;
-    CHARCODEDESC * newCode = nullptr;
+    CHARCODEDESC *newCode = nullptr;
 
     for (auto code = this->glyphList.Head(); code; code = this->glyphList.Link(code)->Next()) {
         uint32_t gapToNext = code->GapToNextTexture();
@@ -805,7 +806,7 @@ int32_t CGxFont::Initialize(const char *name, uint32_t newFlags, float fontHeigh
 
 const CHARCODEDESC *CGxFont::NewCodeDesc(uint32_t code) {
     HASHKEY_NONE key = {};
-    CHARCODEDESC * charDesc = this->m_activeCharacters.Ptr(code, key);
+    CHARCODEDESC *charDesc = this->m_activeCharacters.Ptr(code, key);
 
     if (charDesc) {
         this->m_activeCharacterCache.LinkToHead(charDesc);
@@ -847,7 +848,7 @@ const CHARCODEDESC *CGxFont::NewCodeDesc(uint32_t code) {
     // No character was allocated from the texture caches, so evict the oldest character and
     // attempt to allocate from that character's texture cache row
     if (!charDesc) {
-        CHARCODEDESC * oldestDesc = this->m_activeCharacterCache.Tail();
+        CHARCODEDESC *oldestDesc = this->m_activeCharacterCache.Tail();
 
         if (oldestDesc) {
             uint32_t textureNumber = oldestDesc->textureNumber;

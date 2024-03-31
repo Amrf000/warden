@@ -5,6 +5,7 @@
 #include "Common/TSHashObject.h"
 #include "Agile/CHandleObject.h"
 #include "Types.h"
+#include "freetype/freetype.h"
 
 class FACEDATA : public CHandleObject, public TSHashObject<FACEDATA, HASHKEY_STRI> {
 public:

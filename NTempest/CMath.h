@@ -1,153 +1,69 @@
 #pragma once
+
+#include <cmath>
 #include "Storm/Error.h"
+
+
 namespace NTempest {
+    class CMath {
+    public:
+        static constexpr float PI = 3.1415927f;
+        static constexpr float TWO_PI = 6.2831855f;
+        static constexpr float OO_TWO_PI = 1.0f / TWO_PI;
 
-
-class CMath {
-public:
-    static constexpr float PI = 3.1415927f;
-    static constexpr float TWO_PI = 6.2831855f;
-    static constexpr float OO_TWO_PI = 1.0f / TWO_PI;
-
-    static int32_t fint(float n) {
-        return static_cast<int32_t>(n);
-    }
-
-    static int32_t fint_n(float n) {
-        return n <= 0.0f ? static_cast<int32_t>(n - 0.5f) : static_cast<int32_t>(n + 0.5f);
-    }
-
-    static uint32_t fuint(float n) {
-        return static_cast<uint32_t>(n);
-    }
-
-    static uint32_t fuint_n(float n) {
-        return static_cast<uint32_t>(n + 0.5f);
-    }
-    static uint32_t fuint_pi(float n) {
-        return static_cast<uint32_t>(n + 0.99994999);
-    }
-    static float sqrt(float x) {
-        STORM_ASSERT(x >= 0.0f);
-        return ::sqrt(x);
-    }
-
-    float * sincos_(CMath *this, float a2, float *a3)
-    {
-        long double v3;
-        float *result;
-
-        *(float *)LODWORD(a2) = sinf(*(float *)&this);
-        v3 = cosf(*(float *)&this);
-        result = a3;
-        *a3 = v3;
-        return result;
-    }
-
-    __int32  fint_n(CMath *this)
-    {
-        __m128 v1;
-        __m128 v2;
-        __m128 v3;
-        __m128 v4;
-        __int32 result;
-        __m128 v6;
-        __m128 v7;
-        __m128 v8;
-        __m128 v9;
-        __m128 v10;
-
-        v1 = (__m128)(unsigned int)this;
-        if ( *(float *)&this <= 0.0 )
-        {
-            v6 = (__m128)0x3F000000u;
-            v6.f32[0] = 0.5 - *(float *)&this;
-            v7 = v6;
-            v7.f32[0] = fmaxf(0.5 - *(float *)&this, 0.0);
-            v8.i32[0] = 1325400064;
-            v9 = _mm_cmple_ss(v8, v7);
-            v10.i32[0] = 1333788672;
-            result = -_mm_or_si128(
-                    _mm_add_epi32(
-                            _mm_cvttps_epi32(_mm_sub_ps(v7, _mm_and_ps((__m128)0x4F000000u, v9))),
-                            _mm_slli_epi32((__m128i)v9, 0x1Fu)),
-                    (__m128i)_mm_cmple_ss(v10, v7)).i32[0];
+        static int32_t fint(float n) {
+            return static_cast<int32_t>(n);
         }
-        else
-        {
-            v1.f32[0] = fmaxf(*(float *)&this + 0.5, 0.0);
-            v2.i32[0] = 1325400064;
-            v3 = _mm_cmple_ss(v2, v1);
-            v4.i32[0] = 1333788672;
-            result = _mm_or_si128(
-                    _mm_add_epi32(
-                            _mm_cvttps_epi32(_mm_sub_ps(v1, _mm_and_ps((__m128)0x4F000000u, v3))),
-                            _mm_slli_epi32((__m128i)v3, 0x1Fu)),
-                    (__m128i)_mm_cmple_ss(v4, v1)).u32[0];
+
+        static int32_t fint_n(float n) {
+            return n <= 0.0f ? static_cast<int32_t>(n - 0.5f) : static_cast<int32_t>(n + 0.5f);
         }
-        return result;
-    }
 
-    __int32  fint_mi(CMath *this)
-    {
-        __m128 v1;
-        __m128 v2;
-        __m128 v3;
-        __m128 v4;
-        __int32 result;
-        __m128 v6;
-        __m128 v7;
-        __m128 v8;
-        __m128 v9;
-        __m128 v10;
-
-        v1 = (__m128)(unsigned int)this;
-        if ( *(float *)&this <= 0.0 )
-        {
-            v6 = (__m128)0x3F7FFF58u;
-            v6.f32[0] = 0.99998999 - *(float *)&this;
-            v7 = v6;
-            v7.f32[0] = fmaxf(0.99998999 - *(float *)&this, 0.0);
-            v8.i32[0] = 1325400064;
-            v9 = _mm_cmple_ss(v8, v7);
-            v10.i32[0] = 1333788672;
-            result = -_mm_or_si128(
-                    _mm_add_epi32(
-                            _mm_cvttps_epi32(_mm_sub_ps(v7, _mm_and_ps((__m128)0x4F000000u, v9))),
-                            _mm_slli_epi32((__m128i)v9, 0x1Fu)),
-                    (__m128i)_mm_cmple_ss(v10, v7)).i32[0];
+        static uint32_t fuint(float n) {
+            return static_cast<uint32_t>(n);
         }
-        else
-        {
-            v1.f32[0] = fmaxf(*(float *)&this, 0.0);
-            v2.i32[0] = 1325400064;
-            v3 = _mm_cmple_ss(v2, v1);
-            v4.i32[0] = 1333788672;
-            result = _mm_or_si128(
-                    _mm_add_epi32(
-                            _mm_cvttps_epi32(_mm_sub_ps(v1, _mm_and_ps((__m128)0x4F000000u, v3))),
-                            _mm_slli_epi32((__m128i)v3, 0x1Fu)),
-                    (__m128i)_mm_cmple_ss(v4, v1)).u32[0];
+
+        static uint32_t fuint_n(float n) {
+            return static_cast<uint32_t>(n + 0.5f);
         }
-        return result;
-    }
 
-    double * sincos_(int64_t this, double *__x_8, double *__x_12)
-    {
-        long double v3;
-        double *result;
-        long double v5;
-        long double v6;
+        static uint32_t fuint_pi(float n) {
+            return static_cast<uint32_t>(n + 0.99994999);
+        }
 
-        *(QWORD *)&v5 = this;
-        *__x_8 = sin(v5);
-        *(QWORD *)&v6 = this;
-        v3 = cos(v6);
-        result = __x_12;
-        *__x_12 = v3;
-        return result;
-    }
-};
+        static float sqrt(float x) {
+            STORM_ASSERT(x >= 0.0f);
+            return ::sqrt(x);
+        }
+
+        static int32_t fint_mi(float input) {
+            if (input <= 0.0f) {
+                float result = (std::max)(0.99998999f - input, 0.0f);
+                result = result - 1.5f;
+                int32_t intResult = static_cast<int32_t>(result);
+                intResult += (result >= 0.0f) ? 0x80000000 : 0;
+                intResult |= (result >= 2.0f) ? 0x80000000 : 0;
+                return -intResult;
+            } else {
+                float result = (std::max)(input, 0.0f);
+                result = result - 1.5f;
+                int32_t intResult = static_cast<int32_t>(result);
+                intResult += (result >= 0.0f) ? 0x80000000 : 0;
+                intResult |= (result >= 2.0f) ? 0x80000000 : 0;
+                return intResult;
+            }
+        }
+
+        static void sincos_(float value, float &a2, float &a3) {
+            a2 = sinf(value);
+            a3 = cosf(value);
+        }
+
+        static void sincos_(double value, double &x_8, double &x_12) {
+            x_8 = sin(value);
+            x_12 = cos(value);
+        }
+    };
 }
 
 

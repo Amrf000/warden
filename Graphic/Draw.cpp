@@ -1,6 +1,7 @@
 #include "Draw.h"
 #include "CGxBatch.h"
 #include "Device.h"
+#include "Storm/Debug.h"
 
 void GxDraw(CGxBatch *batch, int32_t indexed) {
     g_theGxDevicePtr->Draw(batch, indexed);

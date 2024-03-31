@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-
+#include "Storm/Handle.h"
 
 typedef HOBJECT HTEXTBLOCK;
 typedef HOBJECT HTEXTFONT;

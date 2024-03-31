@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common.h"
+
 #include "C2iVector.h"
 #include "CuMath.h"
 

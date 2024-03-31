@@ -1,4 +1,5 @@
 #include "FaceData.h"
+#include "Storm/SFile.h"
 
 FACEDATA::~FACEDATA() {
     if (this->face) {

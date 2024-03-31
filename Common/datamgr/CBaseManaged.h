@@ -1,10 +1,11 @@
 #pragma once
 
 #include <cstdint>
+#include "Common/TSLink.h"
 
 
 class CBaseManaged {
-    public:
+public:
     // Types
     enum ManagedTypeIds {
         // TODO
@@ -21,11 +22,13 @@ class CBaseManaged {
     };
 
     // Member variables
-    TSLink<CBaseManaged> m_link;
+    TSLink <CBaseManaged> m_link;
     uint8_t m_dataTypeId = 0;
     uint8_t m_flags = 0;
-    void (*m_updateFcn)(float, void*, void*) = nullptr;
-    void* m_updateData = nullptr;
+
+    void (*m_updateFcn)(float, void *, void *) = nullptr;
+
+    void *m_updateData = nullptr;
     float m_updatePriority = 0.0f;
 };
 

@@ -1,5 +1,4 @@
-#ifndef STORM_STRING_HPP
-#define STORM_STRING_HPP
+#pragma once
 
 #include <cstdint>
 #include <cstdlib>
@@ -43,4 +42,4 @@ int32_t SStrToInt(const char* string);
 
 void SStrUpper(char* string);
 
-#endif
+

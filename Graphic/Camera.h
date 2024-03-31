@@ -1,13 +1,14 @@
 #pragma once
 
 #include <cstdint>
+#include "Common/DataMgr.h"
+#include <NTempest/CRect.h>
+#include <NTempest/C2Vector.h>
 
+using namespace NTempest;
 
 typedef HDATAMGR HCAMERA;
 
-class CRect;
-
-class C2Vector;
 
 HCAMERA CameraCreate(void);
 

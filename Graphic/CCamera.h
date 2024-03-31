@@ -3,12 +3,11 @@
 #include <cstdint>
 #include <NTempest/CRect.h>
 #include <NTempest/C3Vector.h>
+#include "Common/datamgr/TManaged.h"
+#include "Common/datamgr/CDataMgr.h"
 
 using namespace NTempest;
 
-namespace NTempest {
-    class CRect;
-}
 
 class CAngle : public TManaged<float> {
 public:
@@ -36,8 +35,8 @@ public:
     static const float DEFAULT_NEARZ;
 
     // Member variables
-    TManaged <C3Vector> m_position;
-    TManaged <C3Vector> m_target;
+    TManaged<C3Vector> m_position;
+    TManaged<C3Vector> m_target;
     TManaged<float> m_distance;
     TManaged<float> m_zFar;
     TManaged<float> m_zNear;

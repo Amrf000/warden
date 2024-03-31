@@ -1,10 +1,11 @@
 #include "FontFace.h"
 #include "FaceData.h"
 #include "Common/TSHashTable.h"
+#include "Storm/SFile.h"
 #include <storm/Error.h>
 
 
-TSHashTable <FACEDATA, HASHKEY_STRI> s_faceHash;
+TSHashTable<FACEDATA, HASHKEY_STRI> s_faceHash;
 
 void FontFaceCloseHandle(HFACE handle) {
     STORM_ASSERT(handle);

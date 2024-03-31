@@ -1,6 +1,7 @@
 #pragma once
 
-#include "common.h"
+
+#include "Common/TRefCnt.h"
 
 class CEventTimer : public TRefCnt {
 public:

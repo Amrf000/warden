@@ -9,27 +9,13 @@ GxDevCreate(EGxApi api, int32_t (*windowProc)(void *window, uint32_t message, ui
             const CGxFormat &format) {
     CGxDevice *device;
 
-#if defined(WHOA_SYSTEM_WIN)
-    if (api == GxApi_OpenGl) {
-        device = CGxDevice::NewOpenGl();
-    } else if (api == GxApi_D3d9) {
-        device = CGxDevice::NewD3d();
-    } else if (api == GxApi_D3d9Ex) {
-        device = CGxDevice::NewD3d9Ex();
-    } else {
-        // Error
-    }
-#endif
 
-#if defined(WHOA_SYSTEM_MAC)
     if (api == GxApi_OpenGl) {
         device = CGxDevice::NewOpenGl();
-    } else if (api == GxApi_GLL) {
-        device = CGxDevice::NewGLL();
     } else {
         // Error
     }
-#endif
+
 
     g_theGxDevicePtr = device;
 

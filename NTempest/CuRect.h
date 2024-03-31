@@ -166,10 +166,10 @@ namespace NTempest {
 
         CRect *asCRect() {
             CRect result;
-            result.miny = *(float *) &this->miny;
-            result.minx = *(float *) &this->minx;
-            result.maxy = *(float *) &this->maxy;
-            result.maxx = *(float *) &this->maxx;
+            result.minY = *(float *) &this->miny;
+            result.minX = *(float *) &this->minx;
+            result.maxY = *(float *) &this->maxy;
+            result.maxX = *(float *) &this->maxx;
             return &result;
         }
 

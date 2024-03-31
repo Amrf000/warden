@@ -9,6 +9,8 @@
 #include "Gx.h"
 #include "Shader.h"
 #include "Common/TSHashTable.h"
+#include "Common/TSList.h"
+#include "Common/TSGetLink.h"
 #include <algorithm>
 #include <cstring>
 #include <new>
@@ -17,11 +19,13 @@
 #include <storm/String.h>
 #include <storm/Unicode.h>
 #include <NTempest/CImVector.h>
+#include <NTempest/CRect.h>
+
 using namespace NTempest;
 
 
-CGxShader* g_fontPixelShader[1];
-CGxShader* g_fontVertexShader[2];
+CGxShader *g_fontPixelShader[1];
+CGxShader *g_fontVertexShader[2];
 TSList<CGxFont, TSGetLink<CGxFont>> g_fonts;
 TSHashTable<FONTHASHOBJ, HASHKEY_STR> s_fontHash;
 uint32_t g_heightPixels;
@@ -34,7 +38,7 @@ STORM_LIST(CGxString) g_strings;
 
 FONTHASHOBJ::~FONTHASHOBJ() {
     if (this->font) {
-       GxuFontDestroyFont(this->font);
+        GxuFontDestroyFont(this->font);
     }
 }
 
@@ -42,7 +46,8 @@ TEXTBLOCK::~TEXTBLOCK() {
     GxuFontDestroyString(this->string);
 }
 
-void CalculateYOffset(uint32_t pixelHeight, uint32_t a2, FT_Face face, uint32_t glyphHeight, int32_t* yOffset, int32_t* yStart) {
+void CalculateYOffset(uint32_t pixelHeight, uint32_t a2, FT_Face face, uint32_t glyphHeight, int32_t *yOffset,
+                      int32_t *yStart) {
     uint32_t v6 = 0;
     int32_t v8 = 0;
 
@@ -123,7 +128,7 @@ uint32_t ConvertStringFlags(uint32_t flags) {
     return convertedFlags;
 }
 
-float GetCharacterWidth(const char* text, uint32_t flags, uint32_t prevCode, CGxFont* font, float a5) {
+float GetCharacterWidth(const char *text, uint32_t flags, uint32_t prevCode, CGxFont *font, float a5) {
     if (!prevCode) {
         return 0.0f;
     }
@@ -180,8 +185,9 @@ uint32_t GetScreenPixelWidth() {
     return g_widthPixels;
 }
 
-QUOTEDCODE GxuDetermineQuotedCode(const char* text, int32_t& advance, CImVector* color, uint32_t flags, uint32_t& wide) {
-    wide = SUniSGetUTF8(reinterpret_cast<const uint8_t*>(text), &advance);
+QUOTEDCODE
+GxuDetermineQuotedCode(const char *text, int32_t &advance, CImVector *color, uint32_t flags, uint32_t &wide) {
+    wide = SUniSGetUTF8(reinterpret_cast<const uint8_t *>(text), &advance);
 
     switch (wide) {
         case 0x0:
@@ -189,7 +195,7 @@ QUOTEDCODE GxuDetermineQuotedCode(const char* text, int32_t& advance, CImVector*
             return CODE_INVALIDCODE;
 
         case '\r':
-            advance = 2 - (SUniSGetUTF8(reinterpret_cast<const uint8_t*>(text + 1), &advance) != '\n');
+            advance = 2 - (SUniSGetUTF8(reinterpret_cast<const uint8_t *>(text + 1), &advance) != '\n');
             return CODE_NEWLINE;
 
         case '\n':
@@ -218,7 +224,7 @@ QUOTEDCODE GxuDetermineQuotedCode(const char* text, int32_t& advance, CImVector*
             return CODE_NEWLINE;
         }
 
-        // TODO handle other control codes
+            // TODO handle other control codes
     }
 
     // TODO remainder of function
@@ -226,7 +232,7 @@ QUOTEDCODE GxuDetermineQuotedCode(const char* text, int32_t& advance, CImVector*
     return CODE_INVALIDCODE;
 }
 
-int32_t GxuFontAddToBatch(CGxStringBatch* batch, CGxString* string) {
+int32_t GxuFontAddToBatch(CGxStringBatch *batch, CGxString *string) {
     if (batch && string) {
         batch->AddString(string);
         return 1;
@@ -235,7 +241,7 @@ int32_t GxuFontAddToBatch(CGxStringBatch* batch, CGxString* string) {
     }
 }
 
-void GxuFontAddShadow(CGxString* string, const CImVector& color, const C2Vector& offset) {
+void GxuFontAddShadow(CGxString *string, const CImVector &color, const C2Vector &offset) {
     if (string) {
         if (!(string->m_flags & 0x80)) {
             string->AddShadow(offset, color);
@@ -243,15 +249,15 @@ void GxuFontAddShadow(CGxString* string, const CImVector& color, const C2Vector&
     }
 }
 
-CGxStringBatch* GxuFontCreateBatch(bool a1, bool a2) {
-    CGxStringBatch* batch;
+CGxStringBatch *GxuFontCreateBatch(bool a1, bool a2) {
+    CGxStringBatch *batch;
 
     if (s_unusedBatches.Head()) {
         batch = s_unusedBatches.Head();
         s_unusedBatches.UnlinkNode(batch);
     } else {
         auto m = SMemAlloc(sizeof(CGxStringBatch), __FILE__, __LINE__, 0x8);
-        batch = new (m) CGxStringBatch();
+        batch = new(m) CGxStringBatch();
     }
 
     if (a1) {
@@ -269,12 +275,12 @@ CGxStringBatch* GxuFontCreateBatch(bool a1, bool a2) {
     return batch;
 }
 
-int32_t GxuFontCreateFont(const char* name, float fontHeight, CGxFont*& face, uint32_t flags) {
+int32_t GxuFontCreateFont(const char *name, float fontHeight, CGxFont *&face, uint32_t flags) {
     STORM_ASSERT(name);
     STORM_ASSERT(*name);
     STORM_ASSERT((fontHeight <= 1.0f) && (fontHeight > 0.0f));
 
-    CGxFont* newFace = g_fonts.NewNode(2, 0, 0);
+    CGxFont *newFace = g_fonts.NewNode(2, 0, 0);
 
     uint32_t v12 = flags;
 
@@ -294,7 +300,11 @@ int32_t GxuFontCreateFont(const char* name, float fontHeight, CGxFont*& face, ui
     return v13;
 }
 
-int32_t GxuFontCreateString(CGxFont* face, const char* text, float fontHeight, const C3Vector& position, float blockWidth, float blockHeight, float spacing, CGxString*& string, EGxFontVJusts vertJustification, EGxFontHJusts horzJustification, uint32_t flags, const CImVector& color, float charSpacing, float scale) {
+int32_t
+GxuFontCreateString(CGxFont *face, const char *text, float fontHeight, const C3Vector &position, float blockWidth,
+                    float blockHeight, float spacing, CGxString *&string, EGxFontVJusts vertJustification,
+                    EGxFontHJusts horzJustification, uint32_t flags, const CImVector &color, float charSpacing,
+                    float scale) {
     STORM_ASSERT(face);
     STORM_ASSERT(text);
     // TODO
@@ -305,18 +315,18 @@ int32_t GxuFontCreateString(CGxFont* face, const char* text, float fontHeight, c
     auto newString = CGxString::GetNewString(1);
 
     int32_t result = newString->Initialize(
-        fontHeight,
-        position,
-        blockWidth,
-        blockHeight,
-        face,
-        text,
-        vertJustification,
-        horzJustification,
-        spacing,
-        flags & ~0x1,
-        color,
-        scale
+            fontHeight,
+            position,
+            blockWidth,
+            blockHeight,
+            face,
+            text,
+            vertJustification,
+            horzJustification,
+            spacing,
+            flags & ~0x1,
+            color,
+            scale
     );
 
     if (result) {
@@ -328,7 +338,7 @@ int32_t GxuFontCreateString(CGxFont* face, const char* text, float fontHeight, c
     return result;
 }
 
-int32_t GxuFontDestroyBatch(CGxStringBatch* batch) {
+int32_t GxuFontDestroyBatch(CGxStringBatch *batch) {
     if (!batch) {
         return 0;
     }
@@ -340,7 +350,7 @@ int32_t GxuFontDestroyBatch(CGxStringBatch* batch) {
     return 1;
 }
 
-void GxuFontDestroyFont(CGxFont*& font) {
+void GxuFontDestroyFont(CGxFont *&font) {
     if (font) {
         g_fonts.DeleteNode(font);
     }
@@ -348,7 +358,7 @@ void GxuFontDestroyFont(CGxFont*& font) {
     font = nullptr;
 }
 
-void GxuFontDestroyString(CGxString*& string) {
+void GxuFontDestroyString(CGxString *&string) {
     if (string) {
         string->Unlink();
         string->Recycle();
@@ -356,7 +366,7 @@ void GxuFontDestroyString(CGxString*& string) {
     }
 }
 
-uint32_t GxuFontGetFontFlags(CGxFont* font) {
+uint32_t GxuFontGetFontFlags(CGxFont *font) {
     if (font) {
         return font->m_flags;
     }
@@ -364,30 +374,34 @@ uint32_t GxuFontGetFontFlags(CGxFont* font) {
     return 0;
 }
 
-const char* GxuFontGetFontName(CGxFont* font) {
+const char *GxuFontGetFontName(CGxFont *font) {
     return font
-        ? font->GetName()
-        : nullptr;
+           ? font->GetName()
+           : nullptr;
 }
 
-uint32_t GxuFontGetMaxCharsWithinWidth(CGxFont* font, const char* text, float height, float maxWidth, uint32_t lineBytes, float* extent, float a7, float scale, float a9, uint32_t flags) {
+uint32_t
+GxuFontGetMaxCharsWithinWidth(CGxFont *font, const char *text, float height, float maxWidth, uint32_t lineBytes,
+                              float *extent, float a7, float scale, float a9, uint32_t flags) {
     return InternalGetMaxCharsWithinWidth(
-        font,
-        text,
-        height,
-        maxWidth,
-        lineBytes,
-        extent,
-        flags,
-        a7,
-        scale,
-        nullptr,
-        nullptr,
-        nullptr
+            font,
+            text,
+            height,
+            maxWidth,
+            lineBytes,
+            extent,
+            flags,
+            a7,
+            scale,
+            nullptr,
+            nullptr,
+            nullptr
     );
 }
 
-uint32_t GxuFontGetMaxCharsWithinWidthAndHeight(CGxFont* font, const char* text, float fontHeight, float maxWidth, float maxHeight, uint32_t lineBytes, float a7, float scale, float a9, uint32_t flags) {
+uint32_t GxuFontGetMaxCharsWithinWidthAndHeight(CGxFont *font, const char *text, float fontHeight, float maxWidth,
+                                                float maxHeight, uint32_t lineBytes, float a7, float scale, float a9,
+                                                uint32_t flags) {
     if (!font) {
         return 0;
     }
@@ -415,7 +429,7 @@ uint32_t GxuFontGetMaxCharsWithinWidthAndHeight(CGxFont* font, const char* text,
     auto v27 = v12;
     v24 = 0.0f;
     auto v13 = fontHeight;
-    const char* nextText;
+    const char *nextText;
 
     uint32_t maxChars = 0;
 
@@ -428,18 +442,18 @@ uint32_t GxuFontGetMaxCharsWithinWidthAndHeight(CGxFont* font, const char* text,
 
         float v21;
         CalcWrapPoint(
-            font,
-            currentText,
-            fontHeight,
-            maxWidth,
-            &v22,
-            &v21,
-            &nextText,
-            a7,
-            flags,
-            &v26,
-            0,
-            scale
+                font,
+                currentText,
+                fontHeight,
+                maxWidth,
+                &v22,
+                &v21,
+                &nextText,
+                a7,
+                flags,
+                &v26,
+                0,
+                scale
         );
 
         v22 = nextText - currentText;
@@ -475,17 +489,21 @@ uint32_t GxuFontGetMaxCharsWithinWidthAndHeight(CGxFont* font, const char* text,
     return maxChars;
 }
 
-float GxuFontGetOneToOneHeight(CGxFont* font) {
+float GxuFontGetOneToOneHeight(CGxFont *font) {
     STORM_ASSERT(font);
 
     return PixelToScreenHeight(font->GetPixelSize());
 }
 
-void GxuFontGetTextExtent(CGxFont* font, const char* text, uint32_t numBytes, float a4, float* extent, float a6, float a7, float a8, uint32_t flags) {
+void
+GxuFontGetTextExtent(CGxFont *font, const char *text, uint32_t numBytes, float a4, float *extent, float a6, float a7,
+                     float a8, uint32_t flags) {
     InternalGetTextExtent(font, text, numBytes, a4, extent, flags, a6, a7);
 }
 
-float GxuFontGetWrappedTextHeight(CGxFont* font, const char* text, float a3, float a4, const C2Vector& a5, float a6, float a7, uint32_t flags) {
+float
+GxuFontGetWrappedTextHeight(CGxFont *font, const char *text, float a3, float a4, const C2Vector &a5, float a6, float a7,
+                            uint32_t flags) {
     STORM_ASSERT(font);
     STORM_ASSERT(text);
 
@@ -500,8 +518,8 @@ float GxuFontGetWrappedTextHeight(CGxFont* font, const char* text, float a3, flo
     float extent = 0.0f;
     float v17 = 0.0f;
     float v18 = 0.0f;
-    const char* currentText = text;
-    const char* nextText = nullptr;
+    const char *currentText = text;
+    const char *nextText = nullptr;
     bool v21 = true;
 
     while (currentText && *currentText) {
@@ -515,18 +533,18 @@ float GxuFontGetWrappedTextHeight(CGxFont* font, const char* text, float a3, flo
             nextText = currentText + advance;
         } else {
             CalcWrapPoint(
-                font,
-                currentText,
-                a3,
-                a4,
-                &numBytes,
-                &extent,
-                &nextText,
-                a5.x,
-                flags,
-                &v21,
-                &v17,
-                a6
+                    font,
+                    currentText,
+                    a3,
+                    a4,
+                    &numBytes,
+                    &extent,
+                    &nextText,
+                    a5.x,
+                    flags,
+                    &v21,
+                    &v17,
+                    a6
             );
 
             if (currentText == nextText) {
@@ -537,7 +555,7 @@ float GxuFontGetWrappedTextHeight(CGxFont* font, const char* text, float a3, flo
         v8++;
         currentText = nextText;
 
-        float v14 = (float)GetScreenPixelHeight() * a3;
+        float v14 = (float) GetScreenPixelHeight() * a3;
         if (v14 < v17) {
             v18 = v17 - v14 + v18;
         }
@@ -547,7 +565,8 @@ float GxuFontGetWrappedTextHeight(CGxFont* font, const char* text, float a3, flo
         }
     }
 
-    if (!(flags & 0x02) && currentText > text && GxuDetermineQuotedCode(currentText - 1, advance, nullptr, flags, code) == CODE_NEWLINE) {
+    if (!(flags & 0x02) && currentText > text &&
+        GxuDetermineQuotedCode(currentText - 1, advance, nullptr, flags, code) == CODE_NEWLINE) {
         v8++;
     }
 
@@ -560,7 +579,7 @@ float GxuFontGetWrappedTextHeight(CGxFont* font, const char* text, float a3, flo
     float v13 = v14 + 0.99994999f;
     float v23 = v13 / v22;
 
-    return (v18 / v22 + v23 * (float)(v8 - 1) + (float)v8 * a3);
+    return (v18 / v22 + v23 * (float) (v8 - 1) + (float) v8 * a3);
 }
 
 void GxuFontInitialize() {
@@ -577,13 +596,13 @@ void GxuFontInitialize() {
     // sub_6BD160();
 }
 
-void GxuFontRenderBatch(CGxStringBatch* batch) {
+void GxuFontRenderBatch(CGxStringBatch *batch) {
     if (batch) {
         batch->RenderBatch();
     }
 }
 
-int32_t GxuFontSetStringColor(CGxString* string, const CImVector& color) {
+int32_t GxuFontSetStringColor(CGxString *string, const CImVector &color) {
     STORM_ASSERT(string);
 
     string->SetColor(color);
@@ -591,7 +610,7 @@ int32_t GxuFontSetStringColor(CGxString* string, const CImVector& color) {
     return 1;
 }
 
-void GxuFontSetStringPosition(CGxString* string, const C3Vector& position) {
+void GxuFontSetStringPosition(CGxString *string, const C3Vector &position) {
     STORM_ASSERT(string);
 
     string->SetStringPosition(position);
@@ -606,14 +625,14 @@ void GxuFontUpdate() {
 }
 
 void GxuFontWindowSizeChanged() {
-    static CRect s_currentRect = { 0.0f, 0.0f, 0.0f, 0.0f };
+    static CRect s_currentRect = {0.0f, 0.0f, 0.0f, 0.0f};
 
-    CRect rect = { 0.0f, 0.0f, 0.0f, 0.0f };
+    CRect rect = {0.0f, 0.0f, 0.0f, 0.0f};
 
     GxCapsWindowSize(rect);
 
     if (rect.maxY - rect.minY == 0.0f || rect.maxX - rect.minX == 0.0f) {
-        rect = { 0.0f, 0.0f, 480.0f, 640.0f };
+        rect = {0.0f, 0.0f, 480.0f, 640.0f};
     }
 
     if (s_currentRect == rect) {
@@ -631,7 +650,9 @@ void GxuFontWindowSizeChanged() {
     // - walk s_fonts and trigger HandleScreenSizeChange
 }
 
-int32_t IGxuFontGlyphRenderGlyph(FT_Face face, uint32_t pixelHeight, uint32_t code, uint32_t baseline, GLYPHBITMAPDATA* dataPtr, int32_t monochrome, uint32_t a7) {
+int32_t
+IGxuFontGlyphRenderGlyph(FT_Face face, uint32_t pixelHeight, uint32_t code, uint32_t baseline, GLYPHBITMAPDATA *dataPtr,
+                         int32_t monochrome, uint32_t a7) {
     STORM_ASSERT(face);
     STORM_ASSERT(pixelHeight);
     STORM_ASSERT(dataPtr);
@@ -672,7 +693,7 @@ int32_t IGxuFontGlyphRenderGlyph(FT_Face face, uint32_t pixelHeight, uint32_t co
         dummyGlyph = 1;
     }
 
-    void* data = SMemAlloc(dataSize, __FILE__, __LINE__, 0x0);
+    void *data = SMemAlloc(dataSize, __FILE__, __LINE__, 0x0);
 
     if (data) {
         memset(data, 0, dataSize);
@@ -688,8 +709,8 @@ int32_t IGxuFontGlyphRenderGlyph(FT_Face face, uint32_t pixelHeight, uint32_t co
     dataPtr->m_glyphWidth = width;
     dataPtr->m_glyphHeight = height;
     dataPtr->m_glyphCellWidth = width + a7;
-    dataPtr->m_glyphAdvance = (double)(face->glyph->metrics.horiAdvance / 64) + 1.0;
-    dataPtr->m_glyphBearing = (double)face->glyph->metrics.horiBearingX * 0.015625;
+    dataPtr->m_glyphAdvance = (double) (face->glyph->metrics.horiAdvance / 64) + 1.0;
+    dataPtr->m_glyphBearing = (double) face->glyph->metrics.horiBearingX * 0.015625;
     dataPtr->m_yOffset = 0;
     dataPtr->m_yStart = 0;
 
@@ -701,15 +722,15 @@ int32_t IGxuFontGlyphRenderGlyph(FT_Face face, uint32_t pixelHeight, uint32_t co
 }
 
 float PixelToScreenHeight(int32_t height) {
-    return (double)height / (double)g_heightPixels;
+    return (double) height / (double) g_heightPixels;
 }
 
 float PixelToScreenWidth(int32_t width) {
-    return (double)width / (double)g_widthPixels;
+    return (double) width / (double) g_widthPixels;
 }
 
 float PixelToScreenWidth(float width) {
-    return width / (double)g_widthPixels;
+    return width / (double) g_widthPixels;
 }
 
 float ScreenToPixelHeight(int32_t billboarded, float height) {
@@ -754,7 +775,7 @@ float Sub6C2280(FT_Face face, float height) {
     return v7 >= height ? v7 : height;
 }
 
-void TextBlockAddShadow(HTEXTBLOCK string, CImVector color, const C2Vector& offset) {
+void TextBlockAddShadow(HTEXTBLOCK string, CImVector color, const C2Vector &offset) {
     STORM_ASSERT(string);
 
     C2Vector ndcOffset;
@@ -763,14 +784,17 @@ void TextBlockAddShadow(HTEXTBLOCK string, CImVector color, const C2Vector& offs
     GxuFontAddShadow(TextBlockGetStringPtr(string), color, offset);
 }
 
-HTEXTBLOCK TextBlockCreate(HTEXTFONT font, const char* text, const CImVector& color, const C3Vector& pos, float fontHeight, float blockWidth, float blockHeight, uint32_t flags, float charSpacing, float lineSpacing, float scale) {
+HTEXTBLOCK
+TextBlockCreate(HTEXTFONT font, const char *text, const CImVector &color, const C3Vector &pos, float fontHeight,
+                float blockWidth, float blockHeight, uint32_t flags, float charSpacing, float lineSpacing,
+                float scale) {
     STORM_ASSERT(font);
     STORM_ASSERT(text);
 
     auto m = SMemAlloc(sizeof(TEXTBLOCK), __FILE__, __LINE__, 0x0);
-    auto textBlock = new (m) TEXTBLOCK();
+    auto textBlock = new(m) TEXTBLOCK();
 
-    C3Vector position = { 0.0f, 0.0f, pos.z };
+    C3Vector position = {0.0f, 0.0f, pos.z};
     DDCToNDC(pos.x, pos.y, &position.x, &position.y);
 
     EGxFontHJusts hjust = GxHJ_Center;
@@ -798,26 +822,26 @@ HTEXTBLOCK TextBlockCreate(HTEXTFONT font, const char* text, const CImVector& co
     float v23 = DDCToNDCHeight(fontHeight);
 
     GxuFontCreateString(
-        reinterpret_cast<FONTHASHOBJ*>(font)->font,
-        text,
-        v23,
-        position,
-        v22,
-        v21,
-        v20,
-        textBlock->string,
-        vjust,
-        hjust,
-        v16,
-        color,
-        v15,
-        scale
+            reinterpret_cast<FONTHASHOBJ *>(font)->font,
+            text,
+            v23,
+            position,
+            v22,
+            v21,
+            v20,
+            textBlock->string,
+            vjust,
+            hjust,
+            v16,
+            color,
+            v15,
+            scale
     );
 
     return HandleCreate(textBlock);
 }
 
-HTEXTFONT TextBlockGenerateFont(const char* fontName, uint32_t fontFlags, float fontHeight) {
+HTEXTFONT TextBlockGenerateFont(const char *fontName, uint32_t fontFlags, float fontHeight) {
     STORM_ASSERT(fontName);
     STORM_ASSERT(*fontName);
 
@@ -885,61 +909,66 @@ uint32_t TextBlockGetFontFlags(HTEXTFONT fontHandle) {
     return flags;
 }
 
-const char* TextBlockGetFontName(HTEXTFONT fontHandle) {
+const char *TextBlockGetFontName(HTEXTFONT fontHandle) {
     STORM_ASSERT(fontHandle);
 
-    return GxuFontGetFontName(reinterpret_cast<FONTHASHOBJ*>(fontHandle)->font);
+    return GxuFontGetFontName(reinterpret_cast<FONTHASHOBJ *>(fontHandle)->font);
 }
 
-CGxFont* TextBlockGetFontPtr(HTEXTFONT fontHandle) {
+CGxFont *TextBlockGetFontPtr(HTEXTFONT fontHandle) {
     STORM_ASSERT(fontHandle);
 
-    return reinterpret_cast<FONTHASHOBJ*>(fontHandle)->font;
+    return reinterpret_cast<FONTHASHOBJ *>(fontHandle)->font;
 }
 
-uint32_t TextBlockGetMaxCharsWithinWidth(HTEXTFONT fontHandle, const char* text, float height, float maxWidth, uint32_t lineBytes, float* extent, float a7, float scale, float a9, uint32_t flags) {
+uint32_t TextBlockGetMaxCharsWithinWidth(HTEXTFONT fontHandle, const char *text, float height, float maxWidth,
+                                         uint32_t lineBytes, float *extent, float a7, float scale, float a9,
+                                         uint32_t flags) {
     STORM_ASSERT(fontHandle);
     STORM_ASSERT(text);
 
     return GxuFontGetMaxCharsWithinWidth(
-        TextBlockGetFontPtr(fontHandle),
-        text,
-        DDCToNDCHeight(height),
-        DDCToNDCWidth(maxWidth),
-        lineBytes,
-        extent,
-        DDCToNDCWidth(a7),
-        scale,
-        DDCToNDCWidth(a9),
-        ConvertStringFlags(flags)
+            TextBlockGetFontPtr(fontHandle),
+            text,
+            DDCToNDCHeight(height),
+            DDCToNDCWidth(maxWidth),
+            lineBytes,
+            extent,
+            DDCToNDCWidth(a7),
+            scale,
+            DDCToNDCWidth(a9),
+            ConvertStringFlags(flags)
     );
 }
 
-uint32_t TextBlockGetMaxCharsWithinWidthAndHeight(HTEXTFONT fontHandle, const char* text, float height, float maxWidth, float maxHeight, uint32_t lineBytes, float a7, float scale, float a9, uint32_t flags) {
+uint32_t TextBlockGetMaxCharsWithinWidthAndHeight(HTEXTFONT fontHandle, const char *text, float height, float maxWidth,
+                                                  float maxHeight, uint32_t lineBytes, float a7, float scale, float a9,
+                                                  uint32_t flags) {
     STORM_ASSERT(fontHandle);
     STORM_ASSERT(text);
 
     return GxuFontGetMaxCharsWithinWidthAndHeight(
-        TextBlockGetFontPtr(fontHandle),
-        text,
-        DDCToNDCHeight(height),
-        DDCToNDCWidth(maxWidth),
-        DDCToNDCHeight(maxHeight),
-        lineBytes,
-        DDCToNDCWidth(a7),
-        scale,
-        DDCToNDCWidth(a9),
-        ConvertStringFlags(flags)
+            TextBlockGetFontPtr(fontHandle),
+            text,
+            DDCToNDCHeight(height),
+            DDCToNDCWidth(maxWidth),
+            DDCToNDCHeight(maxHeight),
+            lineBytes,
+            DDCToNDCWidth(a7),
+            scale,
+            DDCToNDCWidth(a9),
+            ConvertStringFlags(flags)
     );
 }
 
-CGxString* TextBlockGetStringPtr(HTEXTBLOCK stringHandle) {
+CGxString *TextBlockGetStringPtr(HTEXTBLOCK stringHandle) {
     STORM_ASSERT(stringHandle);
 
-    return reinterpret_cast<TEXTBLOCK*>(stringHandle)->string;
+    return reinterpret_cast<TEXTBLOCK *>(stringHandle)->string;
 }
 
-void TextBlockGetTextExtent(HTEXTFONT fontHandle, const char* text, uint32_t numChars, float fontHeight, float* extent, float a6, float scale, float a8, uint32_t flags) {
+void TextBlockGetTextExtent(HTEXTFONT fontHandle, const char *text, uint32_t numChars, float fontHeight, float *extent,
+                            float a6, float scale, float a8, uint32_t flags) {
     STORM_ASSERT(fontHandle);
     STORM_ASSERT(text);
     STORM_ASSERT(extent);
@@ -947,52 +976,54 @@ void TextBlockGetTextExtent(HTEXTFONT fontHandle, const char* text, uint32_t num
     *extent = 0.0f;
 
     GxuFontGetTextExtent(
-        TextBlockGetFontPtr(fontHandle),
-        text,
-        numChars,
-        DDCToNDCHeight(fontHeight),
-        extent,
-        DDCToNDCWidth(a6),
-        scale,
-        DDCToNDCWidth(a8),
-        ConvertStringFlags(flags)
+            TextBlockGetFontPtr(fontHandle),
+            text,
+            numChars,
+            DDCToNDCHeight(fontHeight),
+            extent,
+            DDCToNDCWidth(a6),
+            scale,
+            DDCToNDCWidth(a8),
+            ConvertStringFlags(flags)
     );
 
     NDCToDDC(*extent, 0.0f, extent, nullptr);
 }
 
-float TextBlockGetWrappedTextHeight(HTEXTFONT fontHandle, const char* text, float a3, float a4, const C2Vector& a5, float a6, float a7, uint32_t flags) {
+float
+TextBlockGetWrappedTextHeight(HTEXTFONT fontHandle, const char *text, float a3, float a4, const C2Vector &a5, float a6,
+                              float a7, uint32_t flags) {
     STORM_ASSERT(fontHandle);
     STORM_ASSERT(text);
 
     float shadowWidth;
     float shadowHeight;
     DDCToNDC(a5.x, a5.y, &shadowWidth, &shadowHeight);
-    C2Vector shadowSize  = { shadowWidth, shadowHeight };
+    C2Vector shadowSize = {shadowWidth, shadowHeight};
 
     float height = GxuFontGetWrappedTextHeight(
-        TextBlockGetFontPtr(fontHandle),
-        text,
-        DDCToNDCHeight(a3),
-        DDCToNDCWidth(a4),
-        shadowSize,
-        a6,
-        DDCToNDCHeight(a7),
-        ConvertStringFlags(flags)
+            TextBlockGetFontPtr(fontHandle),
+            text,
+            DDCToNDCHeight(a3),
+            DDCToNDCWidth(a4),
+            shadowSize,
+            a6,
+            DDCToNDCHeight(a7),
+            ConvertStringFlags(flags)
     );
 
     return NDCToDDCHeight(height);
 }
 
-void TextBlockSetStringPos(HTEXTBLOCK stringHandle, const C3Vector& pos) {
+void TextBlockSetStringPos(HTEXTBLOCK stringHandle, const C3Vector &pos) {
     STORM_ASSERT(stringHandle);
 
-    C3Vector ndcPos = { 0.0f, 0.0f, pos.z };
+    C3Vector ndcPos = {0.0f, 0.0f, pos.z};
     DDCToNDC(pos.x, pos.y, &ndcPos.x, &ndcPos.y);
     GxuFontSetStringPosition(TextBlockGetStringPtr(stringHandle), ndcPos);
 }
 
-void TextBlockUpdateColor(HTEXTBLOCK stringHandle, const CImVector& color) {
+void TextBlockUpdateColor(HTEXTBLOCK stringHandle, const CImVector &color) {
     STORM_ASSERT(stringHandle);
 
     GxuFontSetStringColor(TextBlockGetStringPtr(stringHandle), color);

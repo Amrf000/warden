@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CPresenceTagged.h"
+
 namespace NTempest {
     template<typename T>
     class CLinkedNodeCache {

@@ -2,7 +2,8 @@
 #include "Device.h"
 #include "Gx.h"
 #include "CGxBatch.h"
-#include <bc/Debug.h>
+#include "Storm/Debug.h"
+
 
 CGxVertexAttrib vertexAttribsP[] = {
         {GxVA_Position, 4, GxVertexAttribOffset(GxVBF_P, GxVA_Position), 12}

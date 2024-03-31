@@ -2,6 +2,7 @@
 #include "CCamera.h"
 #include "Device.h"
 #include "Transform.h"
+#include "Storm/Handle.h"
 #include <storm/Error.h>
 
 HCAMERA CameraCreate() {

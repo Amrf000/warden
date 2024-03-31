@@ -4,6 +4,8 @@
 #include "Graphic/Gx.h"
 #include "Graphic/Font.h"
 #include "Graphic/buffer/Types.h"
+#include "Graphic/RenderState.h"
+#include "Graphic/Device.h"
 #include <cmath>
 #include <storm/Error.h>
 

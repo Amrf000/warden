@@ -1,25 +1,26 @@
 #pragma once
 
 #include "CRndSeed.h"
+#include "Common/softfloat.h"
 
 namespace NTempest {
     class CuRange {
     public:
-        CuRange(unsigned int *min, unsigned int *max) {
-            this->min = *min;
-            this->max = *max;
+        CuRange(const softfloat &min, const softfloat &max) {
+            this->min = min;
+            this->max = max;
         }
 
-        CuRange *ClampClosed(float *a2, float *a3) {
-            float *v3;
+        CuRange *ClampClosed(const softfloat &a2, const softfloat &a3) {
+            softfloat v3;
 
             v3 = a2;
-            if (*a2 <= *a3) {
+            if (a2 <= a3) {
                 v3 = a2 + 1;
-                if (*a3 <= a2[1])
+                if (a3 <= a2[1])
                     v3 = a3;
             }
-            this->min = *(unsigned int *) v3;
+            this->min = v3;
             return this;
         }
 
@@ -33,13 +34,13 @@ namespace NTempest {
             return this;
         }
 
-        bool InClosedRange(float *a2) {
-            return *a2 >= *(float *) &this->min && *(float *) &this->max >= *a2;
+        bool InClosedRange(const softfloat &a2) {
+            return a2 >= this->min && this->max >= a2;
         }
 
     public:
-        unsigned int min;
-        unsigned int max;
+        softfloat min;
+        softfloat max;
     };
 }
 

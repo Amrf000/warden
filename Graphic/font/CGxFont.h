@@ -6,8 +6,10 @@
 #include "Common/TSFixedArray.h"
 #include "Graphic/Texture.h"
 #include "Common/TSExplicitList.h"
+#include "Common/TSList.h"
 #include "Types.h"
 #include "CGxString.h"
+#include "Common/TSHashTable.h"
 #include <NTempest/CRect.h>
 
 using namespace NTempest;

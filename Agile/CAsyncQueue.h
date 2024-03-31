@@ -1,8 +1,8 @@
 #pragma once
 
-
-#include "common.h"
 #include "CAsyncObject.h"
+#include "Common/TSLinkedNode.h"
+#include "Common/TSGetExplicitLink.h"
 
 class CAsyncQueue : public TSLinkedNode<CAsyncQueue> {
 public:

@@ -50,7 +50,7 @@ namespace NTempest {
 
         uint32_t Desaturate(uint32_t v3) {
             uint8_t v1 = Gray(v3);
-            return (v1 << 8) | (v1 << 16) | (uint32_t) this & 0xFF000000 | v1;
+            return (v1 << 8) | (v1 << 16) | this->value & 0xFF000000 | v1;
         }
 
         uint32_t Desaturate() {

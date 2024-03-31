@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Storm.h"
 
 namespace NTempest {
     class CEntity {

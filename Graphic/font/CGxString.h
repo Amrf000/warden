@@ -1,16 +1,22 @@
 #pragma once
 
-#include "gx/Types.h"
+#include "Types.h"
+#include "Common/TSGrowableArray.h"
+#include "Common/TSLinkedNode.h"
+#include "Graphic/Types.h"
+#include "Graphic/buffer/Types.h"
 #include <cstdint>
-#include <storm/Array.h>
-#include <storm/List.h>
-#include <NTempest/Vector.h>
+#include <NTempest/C3Vector.h>
+#include <NTempest/C2Vector.h>
+#include <NTempest/CImVector.h>
+
+using namespace NTempest;
+
 
 struct EMBEDDEDPARSEINFO;
 
 class CGxFont;
 
-class CGxVertexPCT;
 
 struct VERT {
     C3Vector vc;
@@ -25,8 +31,8 @@ public:
     static void Recycle(TEXTLINETEXTURE *ptr);
 
     // Member variables
-    TSGrowableArray <VERT> m_vert;
-    TSGrowableArray <CImVector> m_colors;
+    TSGrowableArray<VERT> m_vert;
+    TSGrowableArray<CImVector> m_colors;
 
     // Member functions
     void
@@ -40,8 +46,8 @@ public:
     static CGxString *GetNewString(int32_t linkOnList);
 
     // Member variables
-    TSLink <CGxString> m_fontStringLink;
-    TSLink <CGxString> m_batchedStringLink;
+    TSLink<CGxString> m_fontStringLink;
+    TSLink<CGxString> m_batchedStringLink;
     float m_requestedFontHeight = 0.02f;
     float m_currentFontHeight = 0.02f;
     C3Vector m_position;

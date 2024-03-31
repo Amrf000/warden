@@ -1,3 +1,7 @@
+
+#include <algorithm>
+#include <cstring>
+#include <cmath>
 #include "event/Scheduler.h"
 #include "event/Context.h"
 #include "event/Event.h"
@@ -7,26 +11,27 @@
 #include "event/Queue.h"
 #include "event/Synthesize.h"
 #include "event/Timer.h"
-#include <algorithm>
-#include <cstring>
+#include "Storm/Time.h"
+#include "Common/Call.h"
 #include <common/Prop.h>
 #include <storm/Memory.h>
 #include <storm/String.h>
 #include <storm/Thread.h>
 
 
-
 void DestroySchedulerThread(uint32_t a1) {
     // TODO
 }
 
-HEVENTCONTEXT IEvtSchedulerCreateContext(int32_t interactive, int32_t (*initializeHandler)(const void*, void*), int32_t (*destroyHandler)(const void*, void*), uint32_t idleTime, uint32_t debugFlags) {
+HEVENTCONTEXT IEvtSchedulerCreateContext(int32_t interactive, int32_t (*initializeHandler)(const void *, void *),
+                                         int32_t (*destroyHandler)(const void *, void *), uint32_t idleTime,
+                                         uint32_t debugFlags) {
     if (idleTime < 1) {
         idleTime = 1;
     }
 
     char contextName[256];
-    void* callContext = nullptr;
+    void *callContext = nullptr;
 
     if (debugFlags & 0x1) {
         SStrPrintf(contextName, 256, "Context: interactive = %u, idleTime = %u", interactive, idleTime);
@@ -34,12 +39,12 @@ HEVENTCONTEXT IEvtSchedulerCreateContext(int32_t interactive, int32_t (*initiali
     }
 
     auto m = SMemAlloc(sizeof(EvtContext), __FILE__, __LINE__, 0x0);
-    auto context = new (m) EvtContext(
-        interactive != 0 ? 2 : 0,
-        idleTime,
-        interactive != 0 ? 1000 : 1,
-        callContext,
-        (debugFlags >> 1) & 1
+    auto context = new(m) EvtContext(
+            interactive != 0 ? 2 : 0,
+            idleTime,
+            interactive != 0 ? 1000 : 1,
+            callContext,
+            (debugFlags >> 1) & 1
     );
 
     if (interactive) {
@@ -79,11 +84,12 @@ void IEvtSchedulerInitialize(int32_t threadCount, int32_t netServer) {
     int32_t v4 = sizeof(SCritSect) * threadSlotCount;
 
     auto slotMem = SMemAlloc((v4 + 4), __FILE__, __LINE__, 0x0);
-    Event::s_threadSlotCritsects = new (slotMem) SCritSect[threadSlotCount];
+    Event::s_threadSlotCritsects = new(slotMem) SCritSect[threadSlotCount];
 
     // Allocate EvtThread pointers for each thread slot
-    Event::s_threadSlots = static_cast<EvtThread**>(SMemAlloc(sizeof(EvtThread*) * threadSlotCount, __FILE__, __LINE__, 0));
-    memset(Event::s_threadSlots, 0, sizeof(EvtThread*) * threadSlotCount);
+    Event::s_threadSlots = static_cast<EvtThread **>(SMemAlloc(sizeof(EvtThread *) * threadSlotCount, __FILE__,
+                                                               __LINE__, 0));
+    memset(Event::s_threadSlots, 0, sizeof(EvtThread *) * threadSlotCount);
 
     Event::s_startEvent.Reset();
     Event::s_shutdownEvent.Reset();
@@ -92,7 +98,7 @@ void IEvtSchedulerInitialize(int32_t threadCount, int32_t netServer) {
 
     for (int32_t i = 0; i < threadCount - 1; ++i) {
         auto threadMem = SMemAlloc(sizeof(SThread), __FILE__, __LINE__, 0x0);
-        auto thread = new (threadMem) SThread();
+        auto thread = new(threadMem) SThread();
 
         Event::s_schedulerThreads.SetCount(Event::s_schedulerThreads.Count() + 1);
 
@@ -108,40 +114,40 @@ void IEvtSchedulerInitialize(int32_t threadCount, int32_t netServer) {
 }
 
 void IEvtSchedulerProcess() {
-    #if defined(WHOA_SYSTEM_WIN)
-        Event::s_startEvent.Set();
+#if defined(WHOA_SYSTEM_WIN)
+    Event::s_startEvent.Set();
 
-        SchedulerThreadProc(reinterpret_cast<void*>(1));
+    SchedulerThreadProc(reinterpret_cast<void*>(1));
+
+    Event::s_mainThread = 0;
+#endif
+
+#if defined(WHOA_SYSTEM_MAC)
+    Event::s_startEvent.Set();
+
+    if (OsInputIsUsingCocoaEventLoop()) {
+        PropSelectContext(0);
+
+        Event::s_startEvent.Wait(0xFFFFFFFF);
+
+        uintptr_t v0 = SGetCurrentThreadId();
+        char v2[64];
+        SStrPrintf(v2, 64, "Engine %x", v0);
+
+        OsCallInitialize(v2);
+
+        RunCocoaEventLoop();
+
+        DestroySchedulerThread(Event::s_mainThread);
+        OsCallDestroy();
 
         Event::s_mainThread = 0;
-    #endif
-
-    #if defined(WHOA_SYSTEM_MAC)
-        Event::s_startEvent.Set();
-
-        if (OsInputIsUsingCocoaEventLoop()) {
-            PropSelectContext(0);
-
-            Event::s_startEvent.Wait(0xFFFFFFFF);
-
-            uintptr_t v0 = SGetCurrentThreadId();
-            char v2[64];
-            SStrPrintf(v2, 64, "Engine %x", v0);
-
-            OsCallInitialize(v2);
-
-            RunCocoaEventLoop();
-
-            DestroySchedulerThread(Event::s_mainThread);
-            OsCallDestroy();
-
-            Event::s_mainThread = 0;
-        } else {
-            // Legacy
-            // sub_890180(1);
-            // dword_141B3C8 = 0;
-        }
-    #endif
+    } else {
+        // Legacy
+        // sub_890180(1);
+        // dword_141B3C8 = 0;
+    }
+#endif
 }
 
 void IEvtSchedulerShutdown() {
@@ -158,8 +164,7 @@ uint32_t InitializeSchedulerThread() {
     for (int32_t i = 0; i < Event::s_threadSlotCount; ++i) {
         if (slot == Event::s_threadSlotCount
             || Event::s_threadSlots[i] == nullptr
-            || Event::s_threadSlots[i]->m_threadCount < Event::s_threadSlots[slot]->m_threadCount)
-        {
+            || Event::s_threadSlots[i]->m_threadCount < Event::s_threadSlots[slot]->m_threadCount) {
             slot = i;
 
             if (!Event::s_threadSlots[i]) {
@@ -168,7 +173,7 @@ uint32_t InitializeSchedulerThread() {
         }
     }
 
-    EvtThread* v4 = Event::s_threadSlots[slot];
+    EvtThread *v4 = Event::s_threadSlots[slot];
 
     if (!v4) {
         v4 = Event::s_threadList.NewNode(1, 0, 0x8);
@@ -200,7 +205,7 @@ bool SchedulerMainProcess() {
     return SchedulerThreadProcProcess(Event::s_mainThread) != 0;
 }
 
-uint32_t SchedulerThreadProc(void* mainThread) {
+uint32_t SchedulerThreadProc(void *mainThread) {
     uint32_t v1;
 
     if (mainThread) {
@@ -237,7 +242,7 @@ int32_t SchedulerThreadProcProcess(uint32_t a1) {
         return 1;
     }
 
-    EvtContext* context = GetNextContext(a1);
+    EvtContext *context = GetNextContext(a1);
 
     int32_t v11;
 
@@ -345,9 +350,9 @@ int32_t SchedulerThreadProcProcess(uint32_t a1) {
             nextDelay = context->m_schedIdleTime;
         }
 
-        nextDelay = std::min(
-            nextDelay,
-            std::max((uint32_t)0, v16 + context->m_schedLastIdle - currTime)
+        nextDelay = (std::min)(
+                nextDelay,
+                (std::max)((uint32_t) 0, v16 + context->m_schedLastIdle - currTime)
         );
     }
 
