@@ -7,11 +7,13 @@
 
 typedef void *HANDLE;
 
-#define DECLARE_HANDLE(name) \
-    struct name##__;         \
-    typedef struct name##__* name
+//#define DECLARE_HANDLE(name) \
+//    struct name##__;         \
+//    typedef struct name##__* name
 
-DECLARE_HANDLE(HOBJECT);
+
+struct HOBJECT__;
+typedef struct HOBJECT__ *HOBJECT;
 
 HOBJECT HandleCreate(CHandleObject *ptr);
 

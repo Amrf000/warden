@@ -1,9 +1,10 @@
 #include "Region.h"
+#include <limits>
 #include "Common/region/RGN.h"
 #include "Storm/thread/CCritSect.h"
 #include "TSGrowableArray.h"
 #include "TSExportTableSyncReuse.h"
-#include <limits>
+#include "region/Types.h"
 
 static TSExportTableSyncReuse<RGN, HSRGN, HLOCKEDRGN, CCritSect> s_rgntable;
 

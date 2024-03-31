@@ -214,7 +214,7 @@ void GxBufUnlock(CGxBuf *buf, uint32_t size) {
     buf->unk1C = 1;
 }
 
-CGxPool *GxPoolCreate(EGxPoolTarget target, EGxPoolUsage usage, uint32_t size, EGxPoolHintBits hint, char *name) {
+CGxPool *GxPoolCreate(EGxPoolTarget target, EGxPoolUsage usage, uint32_t size, EGxPoolHintBits hint, const char *name) {
     return g_theGxDevicePtr->PoolCreate(target, usage, size, hint, name);
 }
 

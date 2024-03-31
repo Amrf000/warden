@@ -6,6 +6,8 @@
 #include "Graphic/buffer/Types.h"
 #include "Graphic/RenderState.h"
 #include "Graphic/Device.h"
+#include "Graphic/CGxBatch.h"
+#include "Graphic/Draw.h"
 #include <cmath>
 #include <storm/Error.h>
 
@@ -160,7 +162,7 @@ void BATCHEDRENDERFONTDESC::RenderBatch() {
                         int32_t batchCapacity = maxBatchCapacity;
 
                         while (vertsNeeded) {
-                            int32_t batchCount = std::min(vertsNeeded, batchCapacity);
+                            int32_t batchCount = (std::min)(vertsNeeded, batchCapacity);
 
                             string->WriteGeometry(vertexBuf, i, batchOffset, batchCount);
 

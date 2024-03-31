@@ -3,6 +3,7 @@
 
 #include "GLAbstractWindow.h"
 
+
 typedef struct objc_object GLLayerView;
 typedef struct objc_object GLFullscreenWindow;
 typedef struct objc_object NSView;
@@ -11,6 +12,8 @@ typedef struct objc_object NSEvent;
 
 
 class GLContext;
+
+class Class;
 
 struct GLWindowCallbacks {
     void (*OnResized)(int32_t, int32_t, bool);

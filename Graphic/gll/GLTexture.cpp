@@ -3,6 +3,7 @@
 #include "GLDevice.h"
 #include "GLPool.h"
 #include "GLUtil.h"
+#include "Storm/Debug.h"
 #include <deque>
 
 
@@ -370,7 +371,7 @@ void GLTexture::SetupTexture() {
     GLDevice *device = GLDevice::Get();
 
     if (this->GetFormatInfo().m_IsCompressed) {
-        int32_t smallestDim = std::min(this->m_Width, this->m_Height);
+        int32_t smallestDim = (std::min)(this->m_Width, this->m_Height);
 
         BLIZZARD_ASSERT(smallestDim >= 4);
 
@@ -408,7 +409,7 @@ void GLTexture::SetupTexture() {
             this->m_NumMipmap = n - 1;
         }
     } else {
-        int32_t largestDim = std::max(this->m_Width, this->m_Height);
+        int32_t largestDim = (std::max)(this->m_Width, this->m_Height);
 
         if (largestDim == 1) {
             this->m_NumMipmap = 1;
@@ -452,7 +453,7 @@ void GLTexture::SetupTexture() {
     if (!(this->m_Flags & GLTFLAG_SYSTEM_BUFFER)) {
         BLIZZARD_ASSERT(this->m_RequestedNumMipmaps != 0);
 
-        this->m_NumMipmap = std::min(this->m_NumMipmap, this->m_RequestedNumMipmaps);
+        this->m_NumMipmap = (std::min)(this->m_NumMipmap, this->m_RequestedNumMipmaps);
     }
 
     this->var12 = this->GetFormatInfo().m_BytePerPixel * this->m_Width;

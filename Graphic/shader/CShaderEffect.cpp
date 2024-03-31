@@ -8,10 +8,11 @@
 #include "Graphic/Transform.h"
 #include <NTempest/C4Vector.h>
 #include <NTempest/C3Vector.h>
+
 using namespace NTempest;
 
 
-CShaderEffect* CShaderEffect::s_curEffect;
+CShaderEffect *CShaderEffect::s_curEffect;
 int32_t CShaderEffect::s_enableShaders;
 C4Vector CShaderEffect::s_fogColorAlphaRef;
 float CShaderEffect::s_fogMul;
@@ -25,7 +26,8 @@ C3Vector CShaderEffect::s_sunDir;
 int32_t CShaderEffect::s_useAlphaRef;
 int32_t CShaderEffect::s_usePcfFiltering;
 
-void CShaderEffect::ComputeLocalLights(LocalLights* localLights, uint32_t localLightsCount, CM2Light** lights, const C3Vector* a4) {
+void CShaderEffect::ComputeLocalLights(LocalLights *localLights, uint32_t localLightsCount, CM2Light **lights,
+                                       const C3Vector *a4) {
     // TODO
 }
 
@@ -43,13 +45,13 @@ void CShaderEffect::SetAlphaRef(float alphaRef) {
     if (CShaderEffect::s_useAlphaRef) {
         GxRsSet(GxRs_AlphaRef, static_cast<int32_t>(alphaRef * 255.0f));
     } else {
-        GxShaderConstantsSet(GxSh_Pixel, 2, reinterpret_cast<float*>(&CShaderEffect::s_fogColorAlphaRef), 1);
+        GxShaderConstantsSet(GxSh_Pixel, 2, reinterpret_cast<float *>(&CShaderEffect::s_fogColorAlphaRef), 1);
     }
 }
 
-void CShaderEffect::SetDiffuse(const C4Vector& diffuse) {
+void CShaderEffect::SetDiffuse(const C4Vector &diffuse) {
     if (CShaderEffect::s_enableShaders) {
-        GxShaderConstantsSet(GxSh_Vertex, 28, reinterpret_cast<const float*>(&diffuse), 1);
+        GxShaderConstantsSet(GxSh_Vertex, 28, reinterpret_cast<const float *>(&diffuse), 1);
         return;
     }
 
@@ -57,9 +59,9 @@ void CShaderEffect::SetDiffuse(const C4Vector& diffuse) {
     // - non-shader code path
 }
 
-void CShaderEffect::SetEmissive(const C4Vector& emissive) {
+void CShaderEffect::SetEmissive(const C4Vector &emissive) {
     if (CShaderEffect::s_enableShaders) {
-        GxShaderConstantsSet(GxSh_Vertex, 29, reinterpret_cast<const float*>(&emissive), 1);
+        GxShaderConstantsSet(GxSh_Vertex, 29, reinterpret_cast<const float *>(&emissive), 1);
         return;
     }
 
@@ -69,13 +71,13 @@ void CShaderEffect::SetEmissive(const C4Vector& emissive) {
 void CShaderEffect::SetFogEnabled(int32_t fogEnabled) {
     if (fogEnabled && GxMasterEnable(GxMasterEnable_Fog)) {
         if (CShaderEffect::s_enableShaders && !GxCaps().int138) {
-            GxShaderConstantsSet(GxSh_Vertex, 30, reinterpret_cast<float*>(&CShaderEffect::s_fogParams), 1);
+            GxShaderConstantsSet(GxSh_Vertex, 30, reinterpret_cast<float *>(&CShaderEffect::s_fogParams), 1);
         } else {
             GxRsSet(GxRs_Fog, 1);
         }
     } else {
         if (CShaderEffect::s_enableShaders && !GxCaps().int138) {
-            float fogParams[] = { 0.0f, 1.0f, 1.0f, 0.0f };
+            float fogParams[] = {0.0f, 1.0f, 1.0f, 0.0f};
             GxShaderConstantsSet(GxSh_Vertex, 30, fogParams, 1);
         } else {
             GxRsSet(GxRs_Fog, 0);
@@ -83,7 +85,7 @@ void CShaderEffect::SetFogEnabled(int32_t fogEnabled) {
     }
 }
 
-void CShaderEffect::SetFogParams(float fogStart, float fogEnd, float fogRate, const CImVector& fogColor) {
+void CShaderEffect::SetFogParams(float fogStart, float fogEnd, float fogRate, const CImVector &fogColor) {
     if (CShaderEffect::s_enableShaders) {
         CShaderEffect::s_fogColorAlphaRef.x = fogColor.r / 255.0f;
         CShaderEffect::s_fogColorAlphaRef.y = fogColor.g / 255.0f;
@@ -96,7 +98,7 @@ void CShaderEffect::SetFogParams(float fogStart, float fogEnd, float fogRate, co
         CShaderEffect::s_fogParams.w = 0.0f;
 
         if (!GxCaps().int134) {
-            GxShaderConstantsSet(GxSh_Pixel, 2, reinterpret_cast<float*>(&CShaderEffect::s_fogColorAlphaRef), 1);
+            GxShaderConstantsSet(GxSh_Pixel, 2, reinterpret_cast<float *>(&CShaderEffect::s_fogColorAlphaRef), 1);
             return;
         }
     } else {
@@ -107,7 +109,7 @@ void CShaderEffect::SetFogParams(float fogStart, float fogEnd, float fogRate, co
     GxRsSet(GxRs_FogColor, fogColor.value);
 }
 
-void CShaderEffect::SetLocalLighting(CM2Lighting* lighting, int32_t lightEnabled, const C3Vector* a3) {
+void CShaderEffect::SetLocalLighting(CM2Lighting *lighting, int32_t lightEnabled, const C3Vector *a3) {
     CShaderEffect::s_lightEnabled = lightEnabled;
 
     if (!CShaderEffect::s_enableShaders) {
@@ -123,31 +125,32 @@ void CShaderEffect::SetLocalLighting(CM2Lighting* lighting, int32_t lightEnabled
     if (CShaderEffect::s_enableShaders) {
         CShaderEffect::s_sunDir = lighting->m_sunDir;
 
-        if (CShaderEffect::s_sunDir.x != 0.0f || CShaderEffect::s_sunDir.y != 0.0f || CShaderEffect::s_sunDir.z != 0.0f) {
+        if (CShaderEffect::s_sunDir.x != 0.0f || CShaderEffect::s_sunDir.y != 0.0f ||
+            CShaderEffect::s_sunDir.z != 0.0f) {
             CShaderEffect::s_sunDir.Normalize();
         }
 
         CShaderEffect::s_sunAmbient = lighting->m_sunAmbient;
 
         CShaderEffect::s_sunDiffuse = {
-            std::min(lighting->m_sunDiffuse.x, 1.0f),
-            std::min(lighting->m_sunDiffuse.y, 1.0f),
-            std::min(lighting->m_sunDiffuse.z, 1.0f)
+                (std::min)(lighting->m_sunDiffuse.x, 1.0f),
+                (std::min)(lighting->m_sunDiffuse.y, 1.0f),
+                (std::min)(lighting->m_sunDiffuse.z, 1.0f)
         };
 
-        GxShaderConstantsSet(GxSh_Vertex, 10, reinterpret_cast<float*>(&CShaderEffect::s_sunDiffuse), 1);
-        GxShaderConstantsSet(GxSh_Vertex, 11, reinterpret_cast<float*>(&CShaderEffect::s_sunAmbient), 1);
-        GxShaderConstantsSet(GxSh_Vertex, 12, reinterpret_cast<float*>(&CShaderEffect::s_sunDir), 1);
+        GxShaderConstantsSet(GxSh_Vertex, 10, reinterpret_cast<float *>(&CShaderEffect::s_sunDiffuse), 1);
+        GxShaderConstantsSet(GxSh_Vertex, 11, reinterpret_cast<float *>(&CShaderEffect::s_sunAmbient), 1);
+        GxShaderConstantsSet(GxSh_Vertex, 12, reinterpret_cast<float *>(&CShaderEffect::s_sunDir), 1);
 
         if (CShaderEffect::s_localLightCount) {
             CShaderEffect::ComputeLocalLights(
-                &CShaderEffect::s_localLights,
-                CShaderEffect::s_localLightCount,
-                lighting->m_lights,
-                a3
+                    &CShaderEffect::s_localLights,
+                    CShaderEffect::s_localLightCount,
+                    lighting->m_lights,
+                    a3
             );
 
-            GxShaderConstantsSet(GxSh_Vertex, 17, reinterpret_cast<float*>(&CShaderEffect::s_localLights), 11);
+            GxShaderConstantsSet(GxSh_Vertex, 17, reinterpret_cast<float *>(&CShaderEffect::s_localLights), 11);
         }
 
         // TODO
@@ -173,7 +176,7 @@ void CShaderEffect::SetShaders(uint32_t vertexPermute, uint32_t pixelPermute) {
         if (useAlphaRef) {
             GxRsSet(GxRs_AlphaRef, static_cast<uint8_t>(CShaderEffect::s_fogColorAlphaRef.w * 255.0f));
         } else {
-            GxShaderConstantsSet(GxSh_Pixel, 2, reinterpret_cast<float*>(&CShaderEffect::s_fogColorAlphaRef), 1);
+            GxShaderConstantsSet(GxSh_Pixel, 2, reinterpret_cast<float *>(&CShaderEffect::s_fogColorAlphaRef), 1);
             GxRsSet(GxRs_AlphaRef, 0);
         }
     }
@@ -182,8 +185,8 @@ void CShaderEffect::SetShaders(uint32_t vertexPermute, uint32_t pixelPermute) {
 void CShaderEffect::SetTexMtx_Identity(uint32_t a1) {
     if (CShaderEffect::s_enableShaders) {
         float matrix[] = {
-            1.0f, 0.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f, 0.0f
+                1.0f, 0.0f, 0.0f, 0.0f,
+                0.0f, 1.0f, 0.0f, 0.0f
         };
 
         GxShaderConstantsSet(GxSh_Vertex, 2 * a1 + 6, matrix, 2);
@@ -193,15 +196,15 @@ void CShaderEffect::SetTexMtx_Identity(uint32_t a1) {
     }
 }
 
-void CShaderEffect::SetTexMtx(const C44Matrix& matrix, uint32_t a2) {
+void CShaderEffect::SetTexMtx(const C44Matrix &matrix, uint32_t a2) {
     // TODO
 }
 
 void CShaderEffect::SetTexMtx_SphereMap(uint32_t a1) {
     if (CShaderEffect::s_enableShaders) {
         float matrix[] = {
-            1.0f, 0.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f, 0.0f
+                1.0f, 0.0f, 0.0f, 0.0f,
+                0.0f, 1.0f, 0.0f, 0.0f
         };
 
         GxShaderConstantsSet(GxSh_Vertex, 2 * a1 + 6, matrix, 2);
@@ -219,10 +222,10 @@ void CShaderEffect::UpdateProjMatrix() {
     C44Matrix proj;
     GxXformProjNativeTranspose(proj);
 
-    GxShaderConstantsSet(GxSh_Vertex, 2, reinterpret_cast<float*>(&proj), 4);
+    GxShaderConstantsSet(GxSh_Vertex, 2, reinterpret_cast<float *>(&proj), 4);
 }
 
-void CShaderEffect::InitEffect(const char* vsName, const char* psName) {
+void CShaderEffect::InitEffect(const char *vsName, const char *psName) {
     memset(this->m_vertexShaders, 0, sizeof(this->m_vertexShaders));
     memset(this->m_pixelShaders, 0, sizeof(this->m_pixelShaders));
 

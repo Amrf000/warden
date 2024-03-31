@@ -13,7 +13,7 @@ namespace Texture {
     int32_t s_createBlpAsync; // Invented name
     MipBits *s_mipBits;
     int32_t s_mipBitsValid;
-    TSHashTable <CTexture, HASHKEY_TEXTUREFILE> s_textureCache;
+    TSHashTable<CTexture, HASHKEY_TEXTUREFILE> s_textureCache;
 
     EGxTexFormat s_pixelFormatToGxTexFormat[10] = {
             GxTex_Dxt1,         // PIXEL_DXT1
@@ -79,8 +79,8 @@ uint32_t CalcLevelOffset(uint32_t level, uint32_t width, uint32_t height, uint32
 }
 
 uint32_t CalcLevelSize(uint32_t level, uint32_t width, uint32_t height, uint32_t fourCC) {
-    uint32_t v4 = std::max(width >> level, 1u);
-    uint32_t v5 = std::max(height >> level, 1u);
+    uint32_t v4 = (std::max)(width >> level, 1u);
+    uint32_t v5 = (std::max)(height >> level, 1u);
 
     if (fourCC == 0 || fourCC == 1 || fourCC == 7) {
         if (v4 == 6 * v5) {
@@ -215,7 +215,7 @@ uint32_t GxCalcTexelStrideInBytes(EGxTexFormat format, uint32_t width) {
 
     if (format == GxTex_Dxt1 || format == GxTex_Dxt3 || format == GxTex_Dxt5) {
         uint32_t v11 = (width >> 2) * word9F1058[format];
-        return std::max(v11, static_cast<uint32_t>(word9F1058[format]));
+        return (std::max)(v11, static_cast<uint32_t>(word9F1058[format]));
     } else {
         return width * word9F103C[format] >> 3;
     }

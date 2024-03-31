@@ -1,7 +1,7 @@
 #pragma once
 
-#include "region/Types.h"
 #include <cstdint>
+#include "region/Types.h"
 
 void SRgnCombineRectf(HSRGN handle, RECTF *rect, void *param, int32_t combineMode);
 

@@ -2,6 +2,7 @@
 #include "Gx.h"
 #include "Shader.h"
 #include "texture/CGxTex.h"
+#include "CGxBatch.h"
 #include <algorithm>
 #include <cstring>
 #include <limits>
@@ -561,14 +562,14 @@ CGxDevice::ITexWHDStartEnd(CGxTex *texId, uint32_t &width, uint32_t &height, uin
     mipCount = 1;
 
     if (texId->m_format == GxTex_Dxt1 || texId->m_format == GxTex_Dxt3 || texId->m_format == GxTex_Dxt5) {
-        uint32_t shortEdge = std::min(texId->m_width, texId->m_height);
+        uint32_t shortEdge = (std::min)(texId->m_width, texId->m_height);
 
         while (shortEdge > 4) {
             shortEdge /= 2;
             mipCount++;
         }
     } else {
-        uint32_t longEdge = std::max(texId->m_width, texId->m_height);
+        uint32_t longEdge = (std::max)(texId->m_width, texId->m_height);
 
         while (longEdge > 1) {
             longEdge /= 2;
@@ -576,7 +577,7 @@ CGxDevice::ITexWHDStartEnd(CGxTex *texId, uint32_t &width, uint32_t &height, uin
         }
     }
 
-    baseMip = std::min(this->m_baseMipLevel, mipCount - 1);
+    baseMip = (std::min)(this->m_baseMipLevel, mipCount - 1);
 
     width >>= baseMip;
     height >>= baseMip;
@@ -851,12 +852,12 @@ void CGxDevice::ShaderConstantsSet(EGxShTarget target, uint32_t index, const flo
 void CGxDevice::ShaderConstantsUnlock(EGxShTarget target, uint32_t index, uint32_t count) {
     if (target == GxSh_Pixel) {
         ShaderConstants &dst = CGxDevice::s_shadowConstants[0];
-        dst.unk2 = std::min(dst.unk2, index);
-        dst.unk1 = std::max(dst.unk1, index + count - 1);
+        dst.unk2 = (std::min)(dst.unk2, index);
+        dst.unk1 = (std::max)(dst.unk1, index + count - 1);
     } else {
         ShaderConstants &dst = CGxDevice::s_shadowConstants[1];
-        dst.unk2 = std::min(dst.unk2, index);
-        dst.unk1 = std::max(dst.unk1, index + count - 1);
+        dst.unk2 = (std::min)(dst.unk2, index);
+        dst.unk1 = (std::max)(dst.unk1, index + count - 1);
     }
 }
 

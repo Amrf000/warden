@@ -1,9 +1,12 @@
 #pragma once
 
-
+#include <cstdint>
 #include "M2Model.h"
 #include "M2Types.h"
-#include <cstdint>
+#include "Common/TSGrowableArray.h"
+#include <NTempest/C44Matrix.h>
+
+using namespace NTempest;
 
 
 class CM2Cache;
@@ -44,9 +47,9 @@ public:
     CM2Light *m_lightList = nullptr;
     CM2Model *m_animateList = nullptr;
     CM2Model *m_drawList = nullptr;
-    TSGrowableArray <M2Element> m_elements;
-    TSGrowableArray <uint32_t> array44;
-    TSGrowableArray <uint32_t> array54[3];
+    TSGrowableArray<M2Element> m_elements;
+    TSGrowableArray<uint32_t> array44;
+    TSGrowableArray<uint32_t> array54[3];
     C44Matrix m_view;
     C44Matrix m_viewInv;
     uint32_t uint104 = 0;

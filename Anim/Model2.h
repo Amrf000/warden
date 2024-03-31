@@ -4,7 +4,6 @@
 #include "CM2Model.h"
 #include "CM2Scene.h"
 
-class C3Vector;
 
 int32_t M2ConvertModelFileName(const char *source, char *dest, uint32_t a3, uint32_t a4);
 

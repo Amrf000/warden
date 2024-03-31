@@ -63,8 +63,8 @@ void CM2Scene::ComputeElementShaders(M2Element *element) {
     }
 
     int32_t v9 = v18 && (/* TODO !GxCaps().dword130 ||*/ v8);
-    int32_t v10 = std::min(boneInfluences, 2);
-    int32_t v11 = std::min(v8, 2);
+    int32_t v10 = (std::min)(boneInfluences, 2);
+    int32_t v11 = (std::min)(v8, 2);
 
     element->vertexPermute = shaded + 2 * (v11 + v10 + 2 * v11 + lightCount + 4 * (v11 + v10 + 2 * v11));
     element->pixelPermute = v8 + 4 * (CShaderEffect::s_usePcfFiltering + 2 * v9);
@@ -197,7 +197,7 @@ int32_t CM2Scene::SortOpaqueGeoBatches(M2Element *elementA, M2Element *elementB)
     }
 
     if (batchA->textureCount > 0 && batchB->textureCount > 0) {
-        for (int32_t i = 0; i < std::min(batchA->textureCount, batchB->textureCount); i++) {
+        for (int32_t i = 0; i < (std::min)(batchA->textureCount, batchB->textureCount); i++) {
             auto textureIndexA = dataA->textureCombos[batchA->textureComboIndex];
             auto textureA = textureIndexA >= dataA->textures.Count() ? 0
                                                                      : reinterpret_cast<intptr_t>(modelA->m_textures[textureIndexA]);

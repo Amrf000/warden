@@ -2,18 +2,19 @@
 
 #include "TSHashObjectChunk.h"
 #include "TSHashTable.h"
-#include "storm/Error.h"
+#include "TSExplicitList.h"
 #include <cstddef>
 #include <cstdint>
 
-template <class T, class TKey>
+template<class T, class TKey>
 class TSHashTableReuse : public TSHashTable<T, TKey> {
-    public:
+public:
     // Virtual member functions
     virtual ~TSHashTableReuse();
+
     virtual void Destroy();
 
-    private:
+private:
     using object_chunk_t = TSHashObjectChunk<T, TKey>;
 
     // Member variables
@@ -22,45 +23,47 @@ class TSHashTableReuse : public TSHashTable<T, TKey> {
     STORM_EXPLICIT_LIST(object_chunk_t, m_link) m_chunkList;
 
     // Virtual member functions
-    virtual void InternalDelete(T* ptr);
-    virtual T* InternalNew(STORM_EXPLICIT_LIST(T, m_linktoslot)* listptr, size_t extrabytes, uint32_t flags);
+    virtual void InternalDelete(T *ptr);
+
+    virtual T *InternalNew(STORM_EXPLICIT_LIST(T, m_linktoslot) *listptr, size_t extrabytes, uint32_t flags);
 
     // Member functions
     void Destructor();
 };
 
-template <class T, class TKey>
+template<class T, class TKey>
 TSHashTableReuse<T, TKey>::~TSHashTableReuse() {
     this->Destructor();
 }
 
-template <class T, class TKey>
+template<class T, class TKey>
 void TSHashTableReuse<T, TKey>::Destroy() {
     this->Clear();
     this->Destructor();
 }
 
-template <class T, class TKey>
+template<class T, class TKey>
 void TSHashTableReuse<T, TKey>::Destructor() {
     this->m_chunkList.Clear();
     this->m_reuseList.Clear();
     this->m_chunkSize = 16;
 }
 
-template <class T, class TKey>
-void TSHashTableReuse<T, TKey>::InternalDelete(T* ptr) {
+template<class T, class TKey>
+void TSHashTableReuse<T, TKey>::InternalDelete(T *ptr) {
     this->m_fulllist.UnlinkNode(ptr);
     this->m_reuseList.LinkNode(ptr, 1, nullptr);
 }
 
-template <class T, class TKey>
-T* TSHashTableReuse<T, TKey>::InternalNew(STORM_EXPLICIT_LIST(T, m_linktoslot)* listptr, size_t extrabytes, uint32_t flags) {
+template<class T, class TKey>
+T *TSHashTableReuse<T, TKey>::InternalNew(STORM_EXPLICIT_LIST(T, m_linktoslot) *listptr, size_t extrabytes,
+                                          uint32_t flags) {
     STORM_ASSERT(!extrabytes);
 
     auto node = this->m_reuseList.Head();
 
     if (!node) {
-        object_chunk_t* chunk;
+        object_chunk_t *chunk;
 
         while (true) {
             chunk = this->m_chunkList.Head();

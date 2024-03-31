@@ -6,6 +6,8 @@
 #include <NTempest/C44Matrix.h>
 #include "../../Common/TSHashObject.h"
 #include "Common/Hashkey.h"
+#include "Anim/CM2Lighting.h"
+#include "CGxShader.h"
 
 using namespace NTempest;
 

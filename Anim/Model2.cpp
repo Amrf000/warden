@@ -1,7 +1,7 @@
 #include "Model2.h"
 #include "CM2Cache.h"
 #include "M2Internal.h"
-#include "console/CVar.h"
+#include "Storm/CVar.h"
 #include "Storm/Filesystem.h"
 #include <cstring>
 #include <new>

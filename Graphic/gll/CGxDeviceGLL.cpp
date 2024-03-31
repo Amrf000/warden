@@ -4,7 +4,10 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <NTempest/CiRect.h>
+#include <NTempest/CRect.h>
 
+using namespace NTempest;
 
 GLEnum CGxDeviceGLL::s_glCubeMapFaces[] = {
         GL_TEXTURE_CUBE_MAP_POSITIVE_X,
@@ -1078,8 +1081,8 @@ void CGxDeviceGLL::ITexUpload(CGxTex *texId) {
                         (texId->m_updateRect.maxX >> mipLevel) + 1
                 };
 
-                lockRect.maxY = std::min(lockRect.maxY, static_cast<int32_t>(height));
-                lockRect.maxX = std::min(lockRect.maxX, static_cast<int32_t>(width));
+                lockRect.maxY = (std::min)(lockRect.maxY, static_cast<int32_t>(height));
+                lockRect.maxX = (std::min)(lockRect.maxX, static_cast<int32_t>(width));
 
                 BLIZZARD_ASSERT(lockRect.minX >= 0 && lockRect.maxX <= static_cast<int32_t>(width));
                 BLIZZARD_ASSERT(lockRect.minY >= 0 && lockRect.maxY <= static_cast<int32_t>(height));
@@ -1095,12 +1098,12 @@ void CGxDeviceGLL::ITexUpload(CGxTex *texId) {
                     int32_t v17 = rect.width + (rect.left & 3);
                     rect.left &= 0xFFFFFFFC;
                     rect.width = (v17 + 3) & 0xFFFFFFFC;
-                    rect.width = std::max(rect.width, 4);
+                    rect.width = (std::max)(rect.width, 4);
 
                     int32_t v20 = rect.height + (rect.top & 3);
                     rect.top &= 0xFFFFFFFC;
                     rect.height = (v20 + 3) & 0xFFFFFFFC;
-                    rect.height = std::max(rect.height, 4);
+                    rect.height = (std::max)(rect.height, 4);
                 }
 
                 const void *src = texels;
@@ -1135,8 +1138,8 @@ void CGxDeviceGLL::ITexUpload(CGxTex *texId) {
                 mipmap->Unmap();
             }
 
-            width = std::max(width >> 1, 1u);
-            height = std::max(height >> 1, 1u);
+            width = (std::max)(width >> 1, 1u);
+            height = (std::max)(height >> 1, 1u);
         }
     }
 

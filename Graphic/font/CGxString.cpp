@@ -137,7 +137,7 @@ CGxString::~CGxString() {
 
 void CGxString::AddShadow(const C2Vector &offset, const CImVector &color) {
     this->m_shadowColor = color;
-    this->m_shadowColor.a = std::min(this->m_shadowColor.a, this->m_fontColor.a);
+    this->m_shadowColor.a = (std::min)(this->m_shadowColor.a, this->m_fontColor.a);
     this->m_shadowOffset = offset;
 
     this->m_flags |= 0x1;
@@ -364,7 +364,7 @@ CGxString::Initialize(float fontHeight, const C3Vector &position, float blockWid
                                 : fontHeight;
     this->m_requestedFontHeight = requestedFontHeight;
 
-    this->m_currentFontHeight = std::max(this->m_requestedFontHeight, 2.0f / GetScreenPixelHeight());
+    this->m_currentFontHeight = (std::max)(this->m_requestedFontHeight, 2.0f / GetScreenPixelHeight());
 
     return 1;
 }
@@ -601,7 +601,7 @@ void CGxString::SetColor(const CImVector &color) {
     }
 
     this->m_fontColor = color;
-    this->m_shadowColor.a = std::min(color.a, this->m_shadowColor.a);
+    this->m_shadowColor.a = (std::min)(color.a, this->m_shadowColor.a);
 
     if (!(this->m_flags & 0x8) || this->m_flags & 0x20 || this->m_intD4) {
         this->ClearInstanceData();

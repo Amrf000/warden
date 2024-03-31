@@ -4,9 +4,12 @@
 #include "Storm/Handle.h"
 
 
-DECLARE_HANDLE(HSRGN);
+struct HSRGN__;
+typedef struct HSRGN__ *HSRGN;
 
-DECLARE_HANDLE(HLOCKEDRGN);
+struct HLOCKEDRGN__;
+typedef struct HLOCKEDRGN__ *HLOCKEDRGN;
+
 
 struct RECTF {
     float left;

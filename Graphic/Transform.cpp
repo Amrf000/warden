@@ -42,10 +42,10 @@ void GxXformSetView(const C44Matrix &matrix) {
 }
 
 void GxXformSetViewport(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) {
-    minX = std::max(minX, 0.0f);
-    maxX = std::min(maxX, 1.0f);
-    minY = std::max(minY, 0.0f);
-    maxY = std::min(maxY, 1.0f);
+    minX = (std::max)(minX, 0.0f);
+    maxX = (std::min)(maxX, 1.0f);
+    minY = (std::max)(minY, 0.0f);
+    maxY = (std::min)(maxY, 1.0f);
 
     STORM_ASSERT(minX < maxX);
     STORM_ASSERT(minY < maxY);

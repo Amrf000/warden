@@ -34,6 +34,8 @@ public:
     C3Vector m_fogColor;
     C4Plane m_liquidPlane;
 
+    CM2Lighting() = default;
+
     // Member functions
     void AddAmbient(const C3Vector &ambColor);
 

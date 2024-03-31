@@ -1,6 +1,5 @@
 #include "CM2Model.h"
-#include "async/AsyncFileRead.h"
-#include "math/Types.h"
+#include "Storm/AsyncFileRead.h"
 #include "CM2Scene.h"
 #include "CM2Shared.h"
 #include "M2Animate.h"
@@ -159,7 +158,7 @@ void CM2Model::AnimateMT(const C44Matrix *view, const C3Vector &a3, const C3Vect
                     auto v234 = modelBone.sequence.uint10 - modelBone.sequence.uintC;
                     auto v235 = CMath::fuint(v234 * modelBone.sequence.float14);
                     v47 = modelBone.sequence.uint1C + v235;
-                    v47 = std::min(v47, v46.duration);
+                    v47 = (std::min)(v47, v46.duration);
                 } else {
                     if (modelBone.sequence.uintC - v45 > 0) {
                         v45 = modelBone.sequence.uintC;

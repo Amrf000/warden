@@ -6,8 +6,9 @@
 #include <cstdint>
 #include <NTempest/C44Matrix.h>
 #include <NTempest/C3Vector.h>
+#include <NTempest/CAaBox.h>
 
-class CAaBox;
+using namespace NTempest;
 
 class CM2Scene;
 

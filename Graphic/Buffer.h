@@ -33,7 +33,7 @@ char *GxBufLock(CGxBuf *buf);
 
 void GxBufUnlock(CGxBuf *, uint32_t);
 
-CGxPool *GxPoolCreate(EGxPoolTarget, EGxPoolUsage, uint32_t, EGxPoolHintBits, char *);
+CGxPool *GxPoolCreate(EGxPoolTarget, EGxPoolUsage, uint32_t, EGxPoolHintBits, const char *);
 
 void GxPrimIndexPtr(CGxBuf *);
 

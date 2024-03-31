@@ -123,8 +123,8 @@ void Blit_Dxt1_Dxt1(const C2iVector &size, const void *in, uint32_t inStride, vo
     const char *in_ = static_cast<const char *>(in);
     char *out_ = static_cast<char *>(out);
 
-    int32_t v6 = std::max(size.x, 4);
-    int32_t v7 = std::max(size.y, 4);
+    int32_t v6 = (std::max)(size.x, 4);
+    int32_t v7 = (std::max)(size.y, 4);
 
     memcpy(out_, in_, (4 * v6 * v7) >> 3);
 }
@@ -138,8 +138,8 @@ void Blit_Dxt3_Argb4444(const C2iVector &size, const void *in, uint32_t inStride
 }
 
 void Blit_Dxt35_Dxt35(const C2iVector &size, const void *in, uint32_t inStride, void *out, uint32_t outStride) {
-    int32_t v5 = std::max(size.x, 4);
-    int32_t v6 = std::max(size.y / 4, 1);
+    int32_t v5 = (std::max)(size.x, 4);
+    int32_t v6 = (std::max)(size.y / 4, 1);
 
     const char *in_ = static_cast<const char *>(in);
     char *out_ = static_cast<char *>(out);

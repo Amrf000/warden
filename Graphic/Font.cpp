@@ -668,7 +668,7 @@ IGxuFontGlyphRenderGlyph(FT_Face face, uint32_t pixelHeight, uint32_t code, uint
     auto glyph = face->glyph;
 
     uint32_t width = glyph->bitmap.width;
-    uint32_t height = std::min(static_cast<uint32_t>(glyph->bitmap.rows), pixelHeight);
+    uint32_t height = (std::min)(static_cast<uint32_t>(glyph->bitmap.rows), pixelHeight);
     size_t dataSize = glyph->bitmap.pitch * glyph->bitmap.rows;
     auto srcData = glyph->bitmap.buffer;
     uint32_t pitch = glyph->bitmap.pitch;

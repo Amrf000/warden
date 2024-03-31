@@ -1,4 +1,4 @@
-#include "model/M2Init.h"
+#include "M2Init.h"
 
 int32_t M2Init(uint8_t* base, uint32_t size, M2Data& data) {
     if (!M2Init<char>(base, size, data, data.name)) {

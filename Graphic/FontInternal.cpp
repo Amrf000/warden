@@ -35,7 +35,8 @@ InternalGetMaxCharsWithinWidth(CGxFont *face, const char *text, float height, fl
     float pixelSize = face->GetPixelSize();
     float pixelHeight = ScreenToPixelHeight(billboarded, height);
     float pixelScale = pixelHeight / pixelSize;
-    float pixelMaxWidth = CMath::fuint_pi((pixelSize * GetScreenPixelWidth() * maxWidth) / std::max(pixelHeight, 1.0f));
+    float pixelMaxWidth = CMath::fuint_pi(
+            (pixelSize * GetScreenPixelWidth() * maxWidth) / (std::max)(pixelHeight, 1.0f));
 
     const char *originalText = text;
     float lastWidth = 0.0f;
@@ -173,7 +174,7 @@ InternalGetTextExtent(CGxFont *font, const char *text, uint32_t numBytes, float 
         }
 
         if (quotedCode == CODE_NEWLINE || code == '\n') {
-            maxWidth = std::max(maxWidth, lastWidth + width);
+            maxWidth = (std::max)(maxWidth, lastWidth + width);
             lastWidth = 0.0f;
             width = 0.0f;
         } else if (quotedCode == CODE_TEXTURESTART) {
@@ -198,7 +199,7 @@ InternalGetTextExtent(CGxFont *font, const char *text, uint32_t numBytes, float 
     float pixelHeight = ScreenToPixelHeight(billboarded, height);
     float pixelScale = pixelHeight / pixelSize;
 
-    maxWidth = std::max(maxWidth, lastWidth + width);
+    maxWidth = (std::max)(maxWidth, lastWidth + width);
     maxWidth *= pixelScale;
 
     *extent = billboarded ? maxWidth : PixelToScreenWidth(maxWidth);

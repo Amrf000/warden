@@ -14,14 +14,11 @@
 #include "NTempest/CRect.h"
 #include "NTempest/CiRect.h"
 #include "NTempest/CBoundingBox.h"
+#include "CGxBatch.h"
+#include "Graphic/texture/CGxTex.h"
 
 using namespace NTempest;
 
-class CGxBatch;
-
-class CGxTex;
-
-class CGxTexFlags;
 
 struct CGxAppRenderState {
     CGxStateBom m_value;

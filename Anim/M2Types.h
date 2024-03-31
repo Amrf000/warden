@@ -2,7 +2,14 @@
 
 #include "M2Data.h"
 
+struct fixed16 {
+    int16_t n;
+
+    explicit operator float() const;
+};
+
 class CM2Model;
+
 class CShaderEffect;
 
 enum M2BLEND {
@@ -44,16 +51,16 @@ enum M2PASS {
 
 struct M2Element {
     int32_t type;
-    CM2Model* model;
+    CM2Model *model;
     uint32_t flags;
     float alpha;
     float float10;
     float float14;
     int32_t index;
     int32_t priorityPlane;
-    M2Batch* batch;
-    M2SkinSection* skinSection;
-    CShaderEffect* effect;
+    M2Batch *batch;
+    M2SkinSection *skinSection;
+    CShaderEffect *effect;
     uint32_t vertexPermute;
     uint32_t pixelPermute;
 };
