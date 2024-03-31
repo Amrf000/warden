@@ -3,22 +3,17 @@
 namespace NTempest {
     class CiRect {
     public:
-        CiRect() {}
+        CiRect();
 
-        CiRect(int miny,
-               int minx,
-               int maxy,
-               int maxx) : minx(minx), miny(miny), maxx(maxx), maxy(maxy) {}
+        CiRect(int miny, int minx, int maxy, int maxx);
 
-        int Center() {
-            return (this->maxx + this->minx) / 2;
-        }
+        int Center();
 
     public:
-        int miny;
-        int minx;
-        int maxy;
-        int maxx;
+        int minY;
+        int minX;
+        int maxY;
+        int maxX;
     };
 }
 

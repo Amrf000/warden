@@ -35,7 +35,15 @@ file(GLOB_RECURSE dir_src
         "Net/*.cpp"
 )
 find_package(OpenGL REQUIRED)
-add_executable(warden main.cpp ${dir_src})
+add_executable(warden main.cpp ${dir_src}
+        NTempest/C2iVector.cpp
+        NTempest/C4Plane.cpp
+        NTempest/C4Quaternion.cpp
+        NTempest/C4Vector.cpp
+        NTempest/C22uMatrix.cpp
+        NTempest/C33Matrix.cpp
+        NTempest/CiRect.cpp
+        NTempest/CAaSphere.cpp)
 
 target_include_directories(warden PRIVATE "/")
 target_include_directories(warden PRIVATE "externel/freetype-2.0.9/include")

@@ -968,7 +968,7 @@ void CGxDevice::TexMarkForUpdate(CGxTex *texId, const CiRect &updateRect, int32_
     texId->m_needsUpdate = 1;
 
     // If the bounds of the updateRect are invalid, default to { 0, 0, height, width }
-    if (updateRect.miny >= updateRect.maxy || updateRect.minx >= updateRect.maxx) {
+    if (updateRect.minY >= updateRect.maxY || updateRect.minx >= updateRect.maxX) {
         texId->m_updateRect = {
                 0,
                 0,
