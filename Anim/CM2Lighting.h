@@ -3,6 +3,7 @@
 #include <NTempest/C4Plane.h>
 #include <NTempest/CAaSphere.h>
 #include <NTempest/C3Vector.h>
+#include <cstdint>
 
 using namespace NTempest;
 

@@ -7,8 +7,6 @@ typedef struct objc_object NSWindow;
 typedef struct objc_object NSView;
 
 
-struct CGRect;
-
 class GLContext;
 
 class GLAbstractWindow {

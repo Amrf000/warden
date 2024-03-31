@@ -5,6 +5,7 @@
 #include "GLTypes.h"
 #include <list>
 #include <vector>
+#include <atomic>
 
 
 #define GLTFLAG_RENDERTARGET 0x1

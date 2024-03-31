@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cmath>
 
 namespace NTempest {
     class C4Vector {

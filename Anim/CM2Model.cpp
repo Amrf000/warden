@@ -1447,8 +1447,8 @@ void CM2Model::SetupLighting() {
         this->Animate();
 
         CAaSphere sphere;
-        sphere.c = this->GetPosition();
-        sphere.r = 0.0f;
+        sphere.position = this->GetPosition();
+        sphere.radius = 0.0f;
 
         this->m_lighting.Initialize(this->m_scene, sphere);
         this->m_scene->SelectLights(&this->m_lighting);

@@ -1,9 +1,8 @@
 #pragma once
 
+#include "C3Vector.h"
 
 namespace NTempest {
-    class C3Vector;
-
     class CAaSphere {
     public:
         long double SquaredD(CAaSphere *that);

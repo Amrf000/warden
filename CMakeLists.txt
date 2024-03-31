@@ -43,7 +43,11 @@ add_executable(warden main.cpp ${dir_src}
         NTempest/C22uMatrix.cpp
         NTempest/C33Matrix.cpp
         NTempest/CiRect.cpp
-        NTempest/CAaSphere.cpp)
+        NTempest/CAaSphere.cpp
+        NTempest/C2Vector.cpp
+        NTempest/CRect.cpp
+        NTempest/CMath.cpp
+        NTempest/C44Matrix.cpp)
 
 target_include_directories(warden PRIVATE "/")
 target_include_directories(warden PRIVATE "externel/freetype-2.0.9/include")

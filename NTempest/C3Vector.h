@@ -1,11 +1,11 @@
 #pragma once
 
-#include <cmath>
-#include "CImVector.h"
-#include "CMath.h"
-
 
 namespace NTempest {
+    class CImVector;
+
+    class C44Matrix;
+
     class C3Vector {
     public:
         C3Vector();
@@ -39,7 +39,6 @@ namespace NTempest {
         float z;
     };
 
-    class C44Matrix;
 
     C3Vector operator+(const C3Vector &l, const C3Vector &r);
 

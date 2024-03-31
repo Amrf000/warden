@@ -1,4 +1,5 @@
 #include "C4Vector.h"
+#include <cmath>
 
 using namespace NTempest;
 

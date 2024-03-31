@@ -1,5 +1,5 @@
 #include "CM2Shared.h"
-#include "async/AsyncFile.h"
+#include "Storm/AsyncFile.h"
 #include "Graphic/Buffer.h"
 #include "Graphic/Shader.h"
 #include "Graphic/Texture.h"
@@ -8,7 +8,6 @@
 #include "M2Data.h"
 #include "M2Init.h"
 #include "M2Types.h"
-#include "util/CStatus.h"
 #include "Storm/SFile.h"
 #include <cstring>
 

@@ -1,9 +1,8 @@
 #pragma once
 
+#include "C3Vector.h"
 
 namespace NTempest {
-    class C3Vector;
-
     class C4Plane {
     public:
         C4Plane(const C3Vector &a2, const C3Vector &a3, const C3Vector &a4);

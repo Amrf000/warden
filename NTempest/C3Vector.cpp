@@ -1,5 +1,8 @@
 #include "C3Vector.h"
 #include "C44Matrix.h"
+#include "CImVector.h"
+#include "CMath.h"
+#include <cmath>
 
 using namespace NTempest;
 

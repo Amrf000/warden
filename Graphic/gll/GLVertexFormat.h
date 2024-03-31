@@ -1,12 +1,13 @@
 #pragma once
 
-#include "gx/gll/GLTypes.h"
+
 #include <cstdint>
+#include "GLTypes.h"
 
 class GLVertexFormat {
-    public:
-        uint32_t m_Size;
-        GLVertexAttrib m_Attribs[16];
+public:
+    uint32_t m_Size;
+    GLVertexAttrib m_Attribs[16];
 };
 
 

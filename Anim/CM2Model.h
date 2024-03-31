@@ -119,11 +119,10 @@ public:
     void *ptr2D0 = nullptr;
 
     // Member functions
-    CM2Model()
-            : m_loaded(0), m_flag2(0), m_flag4(0), m_flag8(0), m_flag10(0), m_flag20(0), m_flag40(1), m_flag80(0),
-              m_flag100(1), m_flag200(1), m_flag400(0), m_flag800(0), m_flag1000(0), m_flag2000(0), m_flag4000(0),
-              m_flag8000(0), m_flag10000(0), m_flag20000(0), m_flag40000(0), m_flag80000(0), m_flag100000(0),
-              m_flag200000(0), m_flag400000(0) {};
+    CM2Model() : m_loaded(0), m_flag2(0), m_flag4(0), m_flag8(0), m_flag10(0), m_flag20(0), m_flag40(1), m_flag80(0),
+                 m_flag100(1), m_flag200(1), m_flag400(0), m_flag800(0), m_flag1000(0), m_flag2000(0), m_flag4000(0),
+                 m_flag8000(0), m_flag10000(0), m_flag20000(0), m_flag40000(0), m_flag80000(0), m_flag100000(0),
+                 m_flag200000(0), m_flag400000(0) {};
 
     void Animate();
 
