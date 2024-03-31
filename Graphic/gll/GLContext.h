@@ -5,11 +5,12 @@
 #include <map>
 #include <string>
 #include <vector>
+#include "Storm/Thread.h"
 
 
 typedef struct objc_object NSOpenGLContext;
 typedef struct objc_object NSOpenGLPixelFormat;
-
+typedef int CFDictionaryRef;
 
 class GLDevice;
 

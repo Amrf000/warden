@@ -10,7 +10,7 @@
 #include "M2Sort.h"
 #include <algorithm>
 #include <cassert>
-#include <NTempest/CMath.h>
+#include <NTempest/CMathi.h>
 
 uint32_t CM2Scene::s_optFlags = 0xFFFFFFFF;
 
@@ -41,7 +41,7 @@ void CM2Scene::ComputeElementShaders(M2Element *element) {
     if (material->blendMode == M2BLEND_OPAQUE) {
         v18 = 0;
     } else if (material->blendMode == M2BLEND_ALPHA_KEY) {
-        v18 = CMath::fuint(element->alpha * 224.0f);
+        v18 = CMathi::fuint(element->alpha * 224.0f);
     } else {
         v18 = 1;
     }

@@ -1,6 +1,6 @@
 #include "FreeType.h"
 #include "FreeTypeInternal.h"
-
+#include "freetype/ftmodule.h"
 
 FT_Library g_FTLibrary;
 

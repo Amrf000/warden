@@ -2,10 +2,10 @@
 
 constexpr size_t ALIGNMENT = 8;
 
-void* SMemAlloc(size_t bytes, const char* filename, int32_t linenumber, uint32_t flags) {
+void *SMemAlloc(size_t bytes, const char *filename, int32_t linenumber, uint32_t flags) {
     size_t alignedBytes = (bytes + (ALIGNMENT - 1)) & ~(ALIGNMENT - 1);
 
-    void* result;
+    void *result;
 
     if (flags & 0x8) {
         result = calloc(1, alignedBytes);
@@ -21,19 +21,19 @@ void* SMemAlloc(size_t bytes, const char* filename, int32_t linenumber, uint32_t
     }
 }
 
-void SMemFree(void* ptr) {
+void SMemFree(void *ptr) {
     if (ptr) {
         free(ptr);
     }
 }
 
-void SMemFree(void* ptr, const char* filename, int32_t linenumber, uint32_t flags) {
+void SMemFree(void *ptr, const char *filename, int32_t linenumber, uint32_t flags) {
     if (ptr) {
         free(ptr);
     }
 }
 
-void* SMemReAlloc(void* ptr, size_t bytes, const char* filename, int32_t linenumber, uint32_t flags) {
+void *SMemReAlloc(void *ptr, size_t bytes, const char *filename, int32_t linenumber, uint32_t flags) {
     if (flags == 0xB00BEEE5) {
         return nullptr;
     }
@@ -48,7 +48,7 @@ void* SMemReAlloc(void* ptr, size_t bytes, const char* filename, int32_t linenum
 
     size_t alignedBytes = (bytes + (ALIGNMENT - 1)) & ~(ALIGNMENT - 1);
 
-    void* result = realloc(ptr, alignedBytes);
+    void *result = realloc(ptr, alignedBytes);
 
     if (result) {
         if (flags & 0x8) {
@@ -64,3 +64,22 @@ void* SMemReAlloc(void* ptr, size_t bytes, const char* filename, int32_t linenum
         return nullptr;
     }
 }
+
+void *Blizzard::Memory::Allocate(uint32_t bytes) {
+    return SMemAlloc(bytes, __FILE__, __LINE__, 0x0);
+}
+
+void *
+Blizzard::Memory::Allocate(uint32_t bytes, uint32_t flags, const char *filename, uint32_t linenumber, const char *a5) {
+    // TODO
+    // - determine purpose of a5
+    // - flags manipulation
+
+    return SMemAlloc(bytes, filename, linenumber, flags);
+}
+
+void Blizzard::Memory::Free(void *ptr) {
+    SMemFree(ptr);
+}
+
+

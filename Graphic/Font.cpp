@@ -423,7 +423,7 @@ uint32_t GxuFontGetMaxCharsWithinWidthAndHeight(CGxFont *font, const char *text,
     }
 
     auto v24 = static_cast<float>(g_heightPixels) * a9;
-    auto v22 = CMath::fuint_pi(v24);
+    auto v22 = CMathi::fuint_pi(v24);
     auto v12 = static_cast<float>(v22) / static_cast<float>(g_heightPixels);
     bool v26 = true;
     auto v27 = v12;
@@ -739,7 +739,7 @@ float ScreenToPixelHeight(int32_t billboarded, float height) {
     }
 
     float pixelCoords = static_cast<double>(g_heightPixels) * height;
-    return CMath::fint_n(pixelCoords);
+    return CMathi::fint_n(pixelCoords);
 }
 
 float ScreenToPixelWidth(int32_t billboarded, float width) {
@@ -748,7 +748,7 @@ float ScreenToPixelWidth(int32_t billboarded, float width) {
     }
 
     float pixelCoords = static_cast<double>(g_widthPixels) * width;
-    return CMath::fint_n(pixelCoords);
+    return CMathi::fint_n(pixelCoords);
 }
 
 float Sub6C2280(FT_Face face, float height) {

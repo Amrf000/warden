@@ -174,7 +174,7 @@ void GxuXformCreateOrthoDepth(float minX, float maxX, float minY, float maxY, fl
 }
 
 void GxuXformCreateProjection_Exact(float fovyInRadians, float aspect, float minZ, float maxZ, C44Matrix &dst) {
-    STORM_ASSERT(fovyInRadians > 0.0f && fovyInRadians < CMath::PI);
+    STORM_ASSERT(fovyInRadians > 0.0f && fovyInRadians < CMathi::PI);
     STORM_ASSERT(aspect > 0.0f);
     STORM_ASSERT(minZ < maxZ);
 

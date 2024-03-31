@@ -5,7 +5,7 @@
 #include <cmath>
 #include <NTempest/C3Vector.h>
 #include <NTempest/C44Matrix.h>
-#include <NTempest/CMath.h>
+#include <NTempest/CMathi.h>
 #include <NTempest/CRect.h>
 
 using namespace NTempest;
@@ -16,10 +16,10 @@ const float CCamera::DEFAULT_FARZ = 5000.0f;
 const float CCamera::DEFAULT_NEARZ = 8.0f;
 
 float CAngle::ClampTo2Pi(float angle) {
-    double v1 = floor(static_cast<double>(CMath::OO_TWO_PI) * angle) * CMath::TWO_PI;
+    double v1 = floor(static_cast<double>(CMathi::OO_TWO_PI) * angle) * CMathi::TWO_PI;
 
     if (angle < 0.0f) {
-        v1 -= CMath::TWO_PI;
+        v1 -= CMathi::TWO_PI;
     }
 
     return angle - v1;

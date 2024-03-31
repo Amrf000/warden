@@ -1,13 +1,14 @@
 #pragma once
 
+#include <cstdint>
 #include "Graphic/Buffer.h"
 #include "NTempest/CRange.h"
 #include "NTempest/CiRange.h"
-#include <cstdint>
+#include "Type.h"
 #include <NTempest/CAaBox.h>
 #include <NTempest/C3Vector.h>
 
-struct fixed16;
+using namespace NTempest;
 
 /*
     M2Array has been modified from the implementation present in 12340. The

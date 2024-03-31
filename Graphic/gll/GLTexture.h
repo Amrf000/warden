@@ -3,6 +3,7 @@
 #include "GL.h"
 #include "GLObject.h"
 #include "GLTypes.h"
+#include "Storm/Thread.h"
 #include <list>
 #include <vector>
 #include <atomic>

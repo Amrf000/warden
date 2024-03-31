@@ -2,12 +2,14 @@
 
 
 #include <cstdint>
+#include "CGRect.h"
 
 typedef struct objc_object NSWindow;
 typedef struct objc_object NSView;
 
 
 class GLContext;
+
 
 class GLAbstractWindow {
 public:

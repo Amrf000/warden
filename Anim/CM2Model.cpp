@@ -1,15 +1,16 @@
 #include "CM2Model.h"
 #include "Storm/AsyncFileRead.h"
+#include <cmath>
+#include <new>
+#include "Type.h"
 #include "CM2Scene.h"
 #include "CM2Shared.h"
 #include "M2Animate.h"
 #include "M2Data.h"
 #include "M2Model.h"
-#include <cmath>
-#include <new>
 #include <common/DataMgr.h>
 #include <common/ObjectAlloc.h>
-#include <NTempest/CMath.h>
+#include <NTempest/CMathi.h>
 
 uint32_t CM2Model::s_loadingSequence = 0xFFFFFFFF;
 uint8_t *CM2Model::s_sequenceBase;
@@ -156,7 +157,7 @@ void CM2Model::AnimateMT(const C44Matrix *view, const C3Vector &a3, const C3Vect
             if (v46.flags & 0x1) {
                 if (modelBone.sequence.uint10 - v45 <= 0) {
                     auto v234 = modelBone.sequence.uint10 - modelBone.sequence.uintC;
-                    auto v235 = CMath::fuint(v234 * modelBone.sequence.float14);
+                    auto v235 = CMathi::fuint(v234 * modelBone.sequence.float14);
                     v47 = modelBone.sequence.uint1C + v235;
                     v47 = (std::min)(v47, v46.duration);
                 } else {
@@ -166,14 +167,14 @@ void CM2Model::AnimateMT(const C44Matrix *view, const C3Vector &a3, const C3Vect
 
                     if (v46.duration) {
                         auto v234 = v45 - modelBone.sequence.uintC;
-                        auto v235 = CMath::fuint(v234 * modelBone.sequence.float14);
+                        auto v235 = CMathi::fuint(v234 * modelBone.sequence.float14);
                         v47 = (modelBone.sequence.uint1C + v235) % v46.duration;
                     }
                 }
             } else {
                 if (v46.duration) {
                     auto v234 = v45 - modelBone.sequence.uintC;
-                    auto v235 = CMath::fuint(v234 * modelBone.sequence.float14);
+                    auto v235 = CMathi::fuint(v234 * modelBone.sequence.float14);
                     v47 = (modelBone.sequence.uint1C + v235) % v46.duration;
                 }
             }

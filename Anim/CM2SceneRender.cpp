@@ -8,7 +8,7 @@
 #include "CM2Model.h"
 #include "CM2Shared.h"
 #include "M2Types.h"
-#include <NTempest/CMath.h>
+#include <NTempest/CMathi.h>
 
 C44Matrix CM2SceneRender::s_identity;
 
@@ -317,9 +317,9 @@ void CM2SceneRender::SetupLighting() {
                 float y = this->m_curLighting->m_fogColor.y;
                 float z = this->m_curLighting->m_fogColor.z;
 
-                fogColor.b = z <= 0.0f ? 0x00 : z >= 1.0f ? 0xFF : CMath::fuint_n(z * 255.0f);
-                fogColor.g = y <= 0.0f ? 0x00 : y >= 1.0f ? 0xFF : CMath::fuint_n(y * 255.0f);
-                fogColor.r = x <= 0.0f ? 0x00 : x >= 1.0f ? 0xFF : CMath::fuint_n(x * 255.0f);
+                fogColor.b = z <= 0.0f ? 0x00 : z >= 1.0f ? 0xFF : CMathi::fuint_n(z * 255.0f);
+                fogColor.g = y <= 0.0f ? 0x00 : y >= 1.0f ? 0xFF : CMathi::fuint_n(y * 255.0f);
+                fogColor.r = x <= 0.0f ? 0x00 : x >= 1.0f ? 0xFF : CMathi::fuint_n(x * 255.0f);
                 fogColor.a = 0xFF;
 
                 break;

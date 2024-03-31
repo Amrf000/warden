@@ -35,7 +35,7 @@ InternalGetMaxCharsWithinWidth(CGxFont *face, const char *text, float height, fl
     float pixelSize = face->GetPixelSize();
     float pixelHeight = ScreenToPixelHeight(billboarded, height);
     float pixelScale = pixelHeight / pixelSize;
-    float pixelMaxWidth = CMath::fuint_pi(
+    float pixelMaxWidth = CMathi::fuint_pi(
             (pixelSize * GetScreenPixelWidth() * maxWidth) / (std::max)(pixelHeight, 1.0f));
 
     const char *originalText = text;

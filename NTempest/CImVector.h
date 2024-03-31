@@ -2,7 +2,7 @@
 
 #include <cstdint>
 #include <cstdlib>
-#include "CMath.h"
+#include "CMathi.h"
 
 namespace NTempest {
     class CImVector {
@@ -32,10 +32,10 @@ namespace NTempest {
         }
 
         void Set(float a, float r, float g, float b) {
-            uint8_t a_ = CMath::fuint_n(a * 255.0f);
-            uint8_t r_ = CMath::fuint_n(r * 255.0f);
-            uint8_t g_ = CMath::fuint_n(g * 255.0f);
-            uint8_t b_ = CMath::fuint_n(b * 255.0f);
+            uint8_t a_ = CMathi::fuint_n(a * 255.0f);
+            uint8_t r_ = CMathi::fuint_n(r * 255.0f);
+            uint8_t g_ = CMathi::fuint_n(g * 255.0f);
+            uint8_t b_ = CMathi::fuint_n(b * 255.0f);
 
             this->value = CImVector::MakeARGB(a_, r_, g_, b_);
         }

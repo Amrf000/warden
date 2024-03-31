@@ -2,8 +2,8 @@
 #include <cstring>
 #include <limits>
 #include "SFile.h"
-#include <storm/Memory.h>
-#include <storm/String.h>
+#include <Storm/Memory.h>
+#include <Storm/String.h>
 
 // TODO Proper implementation
 int32_t SFile::Close(SFile *file) {

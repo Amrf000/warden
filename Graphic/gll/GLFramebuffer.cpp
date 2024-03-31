@@ -2,6 +2,7 @@
 #include "GLDevice.h"
 #include "GLMipmap.h"
 #include "GLPool.h"
+#include "Storm/Debug.h"
 
 
 GLFramebuffer *GLFramebuffer::Create(bool a1) {

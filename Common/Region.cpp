@@ -1,11 +1,10 @@
 #include "Region.h"
-#include <limits>
 #include "Common/region/RGN.h"
 #include "Storm/thread/CCritSect.h"
 #include "TSGrowableArray.h"
 #include "TSExportTableSyncReuse.h"
 #include "region/Types.h"
-
+#include <limits>
 
 static TSExportTableSyncReuse<RGN, HSRGN, HLOCKEDRGN, CCritSect> s_rgntable;
 
@@ -34,10 +33,10 @@ int32_t CompareRects(const RECTF *rect1, const RECTF *rect2) {
 }
 
 void DeleteRect(RECTF *rect) {
-    rect->left = std::numeric_limits<float>::max();
-    rect->bottom = std::numeric_limits<float>::max();
-    rect->right = std::numeric_limits<float>::max();
-    rect->top = std::numeric_limits<float>::max();
+    rect->left = (std::numeric_limits<float>::max)();
+    rect->bottom = (std::numeric_limits<float>::max)();
+    rect->right = (std::numeric_limits<float>::max)();
+    rect->top = (std::numeric_limits<float>::max)();
 }
 
 void FragmentSourceRectangles(TSGrowableArray<SOURCE> *sourceArray, uint32_t firstIndex, uint32_t lastIndex,
@@ -215,10 +214,10 @@ void SRgnGetBoundingRectf(HSRGN handle, RECTF *rect) {
     STORM_ASSERT(handle);
     STORM_ASSERT(rect);
 
-    rect->left = std::numeric_limits<float>::max();
-    rect->bottom = std::numeric_limits<float>::max();
-    rect->right = std::numeric_limits<float>::min();
-    rect->top = std::numeric_limits<float>::min();
+    rect->left = (std::numeric_limits<float>::max)();
+    rect->bottom = (std::numeric_limits<float>::max)();
+    rect->right = (std::numeric_limits<float>::min)();
+    rect->top = (std::numeric_limits<float>::min)();
 
     HLOCKEDRGN lockedHandle;
     auto rgn = s_rgntable.Lock(handle, &lockedHandle, 0);

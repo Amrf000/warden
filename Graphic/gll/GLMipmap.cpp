@@ -2,6 +2,7 @@
 #include "GLCommand.h"
 #include "GLDevice.h"
 #include "GLFramebuffer.h"
+#include "Storm/Debug.h"
 
 
 int32_t GLMipmap::GetDepthBits() {

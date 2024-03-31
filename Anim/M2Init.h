@@ -2,6 +2,7 @@
 
 #include "M2Data.h"
 #include "CM2Model.h"
+#include "Type.h"
 
 int32_t M2Init(uint8_t *base, uint32_t size, M2Data &data);
 

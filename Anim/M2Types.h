@@ -2,11 +2,6 @@
 
 #include "M2Data.h"
 
-struct fixed16 {
-    int16_t n;
-
-    explicit operator float() const;
-};
 
 class CM2Model;
 

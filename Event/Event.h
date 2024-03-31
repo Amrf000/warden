@@ -8,6 +8,7 @@
 #include "Common/TSGrowableArray.h"
 #include "Storm/thread/SCritSect.h"
 #include "Common/TSGetLink.h"
+#include "Storm/thread/SThread.h"
 #include <cstdint>
 #include <storm/Thread.h>
 

@@ -24,7 +24,7 @@ CRect::CRect() {
 
 CRect::CRect(float miny, float minx, float maxy, float maxx) : minY(miny), minX(minx), maxY(maxy), maxX(maxx) {}
 
-bool CRect::operator==(const CRect &rect) {
+bool CRect::operator==(CRect &rect) {
     return this->minX == rect.minX && this->minY == rect.minY && this->maxX == rect.maxX &&
            this->maxY == rect.maxY;
 }
@@ -53,7 +53,7 @@ CRect *CRect::Clamp(C2Vector &a2) {
     return this;
 }
 
-bool NTempest::operator==(const CRect &rectA, const CRect &rectB) {
-    return rectA.minX == rectB.minX && rectA.minY == rectB.minY && rectA.maxX == rectB.maxX &&
-           rectA.maxY == rectB.maxY;
-}
+//bool NTempest::operator==(const CRect &rectA, const CRect &rectB) {
+//    return rectA.minX == rectB.minX && rectA.minY == rectB.minY && rectA.maxX == rectB.maxX &&
+//           rectA.maxY == rectB.maxY;
+//}

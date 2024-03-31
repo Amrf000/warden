@@ -1,4 +1,5 @@
 #include "GLObject.h"
+#include "Storm/Debug.h"
 
 
 void GLObject::AddRefTwin() {

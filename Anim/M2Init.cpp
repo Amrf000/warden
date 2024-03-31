@@ -1,6 +1,11 @@
 #include "M2Init.h"
+#include <NTempest/C3Vector.h>
+#include <NTempest/C2Vector.h>
+#include "Type.h"
+using namespace NTempest;
 
-int32_t M2Init(uint8_t* base, uint32_t size, M2Data& data) {
+
+int32_t M2Init(uint8_t *base, uint32_t size, M2Data &data) {
     if (!M2Init<char>(base, size, data, data.name)) {
         return 0;
     }
@@ -134,43 +139,43 @@ int32_t M2Init(uint8_t* base, uint32_t size, M2Data& data) {
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, char& value) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, char &value) {
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, fixed16& value) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, fixed16 &value) {
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, float& value) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, float &value) {
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, uint8_t value) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, uint8_t value) {
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, ubyte4 value) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, ubyte4 value) {
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, uint16_t value) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, uint16_t value) {
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, uint32_t value) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, uint32_t value) {
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, C2Vector& value) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, C2Vector &value) {
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, C3Vector& value) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, C3Vector &value) {
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Attachment& attachment) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2Attachment &attachment) {
     if (!M2Init<uint8_t>(base, size, data, attachment.visibilityTrack)) {
         return 0;
     }
@@ -178,15 +183,15 @@ int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Attachment& a
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Batch& batch) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2Batch &batch) {
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Bounds& bounds) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2Bounds &bounds) {
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Camera& camera) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2Camera &camera) {
     if (!M2Init<M2SplineKey<C3Vector>>(base, size, data, camera.positionTrack)) {
         return 0;
     }
@@ -202,7 +207,7 @@ int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Camera& camer
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Color& color) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2Color &color) {
     if (!M2Init<C3Vector>(base, size, data, color.colorTrack)) {
         return 0;
     }
@@ -214,7 +219,7 @@ int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Color& color)
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2CompBone& bone) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2CompBone &bone) {
     if (!M2Init<C3Vector>(base, size, data, bone.translationTrack)) {
         return 0;
     }
@@ -230,11 +235,11 @@ int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2CompBone& bon
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2CompQuat& value) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2CompQuat &value) {
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Event& event) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2Event &event) {
     if (!M2Init(base, size, data, event.eventTrack)) {
         return 0;
     }
@@ -242,7 +247,7 @@ int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Event& event)
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Light& light) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2Light &light) {
     if (!M2Init<C3Vector>(base, size, data, light.ambientColorTrack)) {
         return 0;
     }
@@ -274,7 +279,7 @@ int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Light& light)
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Loop& loop) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2Loop &loop) {
     if (!M2Init(base, size, data, loop.length)) {
         return 0;
     }
@@ -282,11 +287,11 @@ int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Loop& loop) {
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Material& material) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2Material &material) {
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Particle& particle) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2Particle &particle) {
     if (!M2Init<char>(base, size, data, particle.geometryMdl)) {
         return 0;
     }
@@ -362,7 +367,7 @@ int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Particle& par
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Ribbon& ribbon) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2Ribbon &ribbon) {
     if (!M2Init<uint16_t>(base, size, data, ribbon.textureIndices)) {
         return 0;
     }
@@ -398,7 +403,7 @@ int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Ribbon& ribbo
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Sequence& sequence) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2Sequence &sequence) {
     if (sequence.flags & 0x1) {
         sequence.flags |= 0x80;
     }
@@ -428,7 +433,7 @@ int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Sequence& seq
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2SequenceTimes& track) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2SequenceTimes &track) {
     if (!M2Init<uint32_t>(base, size, data, track.times)) {
         return 0;
     }
@@ -436,7 +441,7 @@ int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2SequenceTimes
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2SkinProfile& skinProfile) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2SkinProfile &skinProfile) {
     if (!M2Init<uint16_t>(base, size, data, skinProfile.vertices)) {
         return 0;
     }
@@ -460,11 +465,11 @@ int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2SkinProfile& 
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2SkinSection& skinSection) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2SkinSection &skinSection) {
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Texture& texture) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2Texture &texture) {
     if (!M2Init<char>(base, size, data, texture.filename)) {
         return 0;
     }
@@ -472,7 +477,7 @@ int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Texture& text
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2TextureTransform& transform) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2TextureTransform &transform) {
     if (!M2Init<C3Vector>(base, size, data, transform.translationTrack)) {
         return 0;
     }
@@ -488,7 +493,7 @@ int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2TextureTransf
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2TextureWeight& weight) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2TextureWeight &weight) {
     if (!M2Init<fixed16>(base, size, data, weight.weightTrack)) {
         return 0;
     }
@@ -496,7 +501,7 @@ int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2TextureWeight
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2TrackBase& track) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2TrackBase &track) {
     if (CM2Model::s_loadingSequence == 0xFFFFFFFF) {
         if (track.loopIndex == 0xFFFF) {
             if (track.sequenceTimes.count) {
@@ -509,7 +514,7 @@ int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2TrackBase& tr
             }
 
             for (int32_t i = 0; i < track.sequenceTimes.count; i++) {
-                auto& keys = track.sequenceTimes[i];
+                auto &keys = track.sequenceTimes[i];
 
                 if (!M2InitSequenceKeyFrames<uint32_t>(base, size, data, i, keys.times)) {
                     return 0;
@@ -522,9 +527,10 @@ int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2TrackBase& tr
         }
     } else {
         if (CM2Model::s_loadingSequence < track.sequenceTimes.count) {
-            auto& keys = track.sequenceTimes[CM2Model::s_loadingSequence];
+            auto &keys = track.sequenceTimes[CM2Model::s_loadingSequence];
 
-            if (!M2InitKeyFrameData<uint32_t>(CM2Model::s_sequenceBase, CM2Model::s_sequenceBaseSize, data, CM2Model::s_loadingSequence, keys.times)) {
+            if (!M2InitKeyFrameData<uint32_t>(CM2Model::s_sequenceBase, CM2Model::s_sequenceBaseSize, data,
+                                              CM2Model::s_loadingSequence, keys.times)) {
                 return 0;
             }
         }
@@ -533,6 +539,6 @@ int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2TrackBase& tr
     return 1;
 }
 
-int32_t M2Init(uint8_t* base, uint32_t size, const M2Data& data, M2Vertex& vertex) {
+int32_t M2Init(uint8_t *base, uint32_t size, const M2Data &data, M2Vertex &vertex) {
     return 1;
 }

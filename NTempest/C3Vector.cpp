@@ -1,7 +1,7 @@
 #include "C3Vector.h"
 #include "C44Matrix.h"
 #include "CImVector.h"
-#include "CMath.h"
+#include "CMathi.h"
 #include <cmath>
 
 using namespace NTempest;
@@ -34,7 +34,7 @@ float C3Vector::SquaredMag() const {
 
 
 float C3Vector::Mag() const {
-    return CMath::sqrt(this->SquaredMag());
+    return CMathi::sqrt(this->SquaredMag());
 }
 
 C3Vector *C3Vector::ProjectionOnPlane(const C3Vector &a2, const C3Vector &a3) {

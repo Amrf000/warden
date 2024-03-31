@@ -211,7 +211,7 @@ void CGxString::CreateGeometry() {
     bool a10 = true;
     float blockWidth = this->m_blockWidth;
 
-    auto v611 = static_cast<float>(CMath::fuint_pi(GetScreenPixelHeight() * this->m_spacing));
+    auto v611 = static_cast<float>(CMathi::fuint_pi(GetScreenPixelHeight() * this->m_spacing));
     auto v51 = ScreenToPixelHeight(0, this->m_currentFontHeight);
     auto spacing = this->m_flags & 0x80 ? this->m_spacing : v611 / static_cast<float>(GetScreenPixelHeight());
     auto v59 = this->m_flags & 0x80 ? this->m_currentFontHeight + this->m_spacing : v611 + v51;

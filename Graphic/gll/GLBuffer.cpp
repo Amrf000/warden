@@ -1,6 +1,8 @@
 #include "GLBuffer.h"
 #include "GLDevice.h"
 #include "GLPool.h"
+#include "Storm/Debug.h"
+#include "Storm/Memory.h"
 
 
 bool GLBuffer::m_UsingVBO = 1;

@@ -1,5 +1,4 @@
-#ifndef STORM_THREAD_C_CRIT_SECT_HPP
-#define STORM_THREAD_C_CRIT_SECT_HPP
+#pragma once
 
 #include <cstdint>
 #include <windows.h>
@@ -25,4 +24,4 @@ private:
     CRITICAL_SECTION m_critsect;
 };
 
-#endif
+

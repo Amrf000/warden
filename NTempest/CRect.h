@@ -12,7 +12,7 @@ namespace NTempest {
 
         CRect(float miny, float minx, float maxy, float maxx);
 
-        bool operator==(const CRect &rect);
+        bool operator==(CRect &rect);
 
         bool IsPointInside(const C2Vector &pt);
 
@@ -25,7 +25,7 @@ namespace NTempest {
         float maxX;
     };
 
-    bool operator==(const CRect &rectA, const CRect &rectB);
+    //bool operator==(const CRect &rectA, const CRect &rectB);
 }
 
 

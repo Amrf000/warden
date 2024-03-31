@@ -3,6 +3,7 @@
 #include "CM2Model.h"
 #include "M2Data.h"
 #include "M2Model.h"
+#include "Type.h"
 
 struct M2SequenceFallback {
     uint16_t uint0;

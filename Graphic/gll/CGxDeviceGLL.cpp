@@ -1,6 +1,8 @@
 #include "CGxDeviceGLL.h"
+#include "CGxDevice.h"
 #include "event/Input.h"
 #include "GL.h"
+#include "Graphic/Window.h"
 #include <cmath>
 #include <cstdio>
 #include <cstring>
