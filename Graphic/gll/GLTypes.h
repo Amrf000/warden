@@ -2,9 +2,11 @@
 
 #include <cstdint>
 #include <windows.h>
-#include <gl/gl.h>
-#include "externel/opengl/glcorearb.h"  // download from https://www.khronos.org/registry/OpenGL/api/GL/glcorearb.h
-#include "externel/opengl/wglext.h"     // download from https://www.khronos.org/registry/OpenGL/api/GL/wglext.h
+//#include <gl/gl.h>
+//#include "opengl/glcorearb.h"  // download from https://www.khronos.org/registry/OpenGL/api/GL/glcorearb.h
+//#include "opengl/wglext.h"     // download from https://www.khronos.org/registry/OpenGL/api/GL/wglext.h
+//#include "opengl/glext.h"
+#include "GL/glew.h"
 
 class GLBuffer;
 
@@ -377,5 +379,12 @@ struct GLVertexAttrib {
     int32_t type;
     uint32_t offset;
 };
+
+//PFNGLMULTITEXCOORD1FARBPROC glMultiTexCoord1fARB = NULL;
+//PFNGLMULTITEXCOORD2FARBPROC glMultiTexCoord2fARB = NULL;
+//PFNGLMULTITEXCOORD3FARBPROC glMultiTexCoord3fARB = NULL;
+//PFNGLMULTITEXCOORD4FARBPROC glMultiTexCoord4fARB = NULL;
+//PFNGLACTIVETEXTUREARBPROC glActiveTextureARB = NULL;
+//PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTextureARB = NULL;
 
 

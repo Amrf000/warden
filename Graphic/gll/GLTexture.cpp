@@ -6,7 +6,8 @@
 #include "Storm/Debug.h"
 #include "Storm/Memory.h"
 #include <deque>
-
+#include "../texture/CGxTex.h"
+#include "gl/glew.h"
 
 Blizzard::Thread::TLSSlot GLTexture::m_Bindings[4];
 

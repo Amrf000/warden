@@ -6,10 +6,10 @@
 #include <Common/Prop.h>
 #include <Storm/Time.h>
 
-CAsyncObject* AsyncFileReadAllocObject() {
+CAsyncObject *AsyncFileReadAllocObject() {
     AsyncFileRead::s_queueLock.Enter();
 
-    CAsyncObject* object = AsyncFileRead::s_asyncFileReadFreeList.Head();
+    CAsyncObject *object = AsyncFileRead::s_asyncFileReadFreeList.Head();
 
     if (!object) {
         object = AsyncFileRead::s_asyncFileReadFreeList.NewNode(1, 0, 0x0);
@@ -37,7 +37,7 @@ CAsyncObject* AsyncFileReadAllocObject() {
     return object;
 }
 
-void AsyncFileReadDestroyObject(CAsyncObject* object) {
+void AsyncFileReadDestroyObject(CAsyncObject *object) {
     AsyncFileRead::s_queueLock.Enter();
 
     if (object->isCurrent) {
@@ -65,8 +65,8 @@ void AsyncFileReadDestroyObject(CAsyncObject* object) {
 }
 
 void AsyncFileReadInitialize(uint32_t threadSleep, uint32_t handlerTimeout) {
-    AsyncFileRead::s_threadSleep = std::min(threadSleep, 100u);
-    AsyncFileRead::s_handlerTimeout = std::max(handlerTimeout, 20u);
+    AsyncFileRead::s_threadSleep = (std::min)(threadSleep, 100u);
+    AsyncFileRead::s_handlerTimeout = (std::max)(handlerTimeout, 20u);
 
     EventRegisterEx(EVENT_ID_POLL, &AsyncFileReadPollHandler, nullptr, 0.0f);
     if (SFile::IsStreamingMode()) {
@@ -85,8 +85,8 @@ void AsyncFileReadInitialize(uint32_t threadSleep, uint32_t handlerTimeout) {
 
     int32_t numQueues = SFile::IsStreamingMode() != 0 ? 3 : 1;
     for (int32_t i = 0; i < numQueues; i++) {
-        CAsyncQueue* queue = AsyncFileReadCreateQueue();
-        const char* queueName = AsyncFileRead::s_asyncQueueNames[i];
+        CAsyncQueue *queue = AsyncFileReadCreateQueue();
+        const char *queueName = AsyncFileRead::s_asyncQueueNames[i];
 
         AsyncFileRead::s_asyncQueues[i] = queue;
         AsyncFileReadCreateThread(queue, queueName);
@@ -100,8 +100,8 @@ void AsyncFileReadInitialize(uint32_t threadSleep, uint32_t handlerTimeout) {
     // - Something related to AsyncFileRead::s_userQueueLock
 }
 
-void AsyncFileReadObject(CAsyncObject* object, int32_t a2) {
-    CAsyncQueue* queue = AsyncFileRead::s_asyncQueues[0];
+void AsyncFileReadObject(CAsyncObject *object, int32_t a2) {
+    CAsyncQueue *queue = AsyncFileRead::s_asyncQueues[0];
 
     if (SFile::IsStreamingMode()) {
         // TODO

@@ -33,17 +33,23 @@ file(GLOB_RECURSE dir_src
         "Event/*.cpp"
         "Net/*.h"
         "Net/*.cpp"
+        "UI/*.h"
+        "UI/*.cpp"
 )
 find_package(OpenGL REQUIRED)
-add_executable(warden main.cpp ${dir_src}
-        Storm/lock/win32Critical_Section.cpp
-        Storm/lock/win32Critical_Section.h
-        externel/opengl/glext.h
-        externel/opengl/glxext.h)
+link_directories(${CMAKE_SOURCE_DIR}/build/lib/Debug/)
+add_executable(warden main.cpp ${dir_src})
 
 target_include_directories(warden PRIVATE "/")
 target_include_directories(warden PRIVATE "externel/freetype-2.0.9/include")
 target_include_directories(warden PRIVATE "externel/")
+target_include_directories(warden PRIVATE "externel/glew-2.1.0/include")
 include_directories(${OPENGL_INCLUDE_DIRS})
-
+add_subdirectory(${PROJECT_SOURCE_DIR}/externel/glew-2.1.0/build/cmake)
+add_subdirectory(${PROJECT_SOURCE_DIR}/externel/freetype-2.0.9)
+#add_definitions(
+#        -DGLEW_STATIC
+#)
+message("${CMAKE_SOURCE_DIR}/build/lib/Debug/")
 target_link_libraries(warden ${OPENGL_LIBRARIES})
+target_link_libraries(warden glew32d)

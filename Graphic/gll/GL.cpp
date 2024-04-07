@@ -1,6 +1,6 @@
 #include "GL.h"
 #include "GLTypes.h"
-#include "opengl/glext.h"
+
 
 TextureFormatInfo k_TextureFormatInfo[GLTF_NUM_TEXTURE_FORMATS] = {
         {0, 0, 0,                                                                              0, 0,  "GLTF INVALID!!"},

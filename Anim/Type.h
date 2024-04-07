@@ -8,6 +8,3 @@ struct fixed16 {
     explicit operator float() const;
 };
 
-fixed16::operator float() const {
-    return this->n / 32767.0f;
-}

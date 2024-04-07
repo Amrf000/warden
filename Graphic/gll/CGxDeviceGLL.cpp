@@ -4,6 +4,8 @@
 #include "GL.h"
 #include "Graphic/Window.h"
 #include "Graphic/Blit.h"
+#include "Storm/Debug.h"
+#include "Storm/View.h"
 #include <cmath>
 #include <cstdio>
 #include <cstring>

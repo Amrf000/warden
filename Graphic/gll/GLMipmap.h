@@ -5,6 +5,7 @@
 #include <vector>
 #include "GL.h"
 #include "GLTypes.h"
+#include "GL/glew.h"
 
 class GLFramebuffer;
 

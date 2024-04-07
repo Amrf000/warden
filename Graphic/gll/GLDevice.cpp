@@ -2,7 +2,7 @@
 #include "GLPool.h"
 #include "GLUtil.h"
 #include "Storm/Debug.h"
-#include "opengl/glext.h"
+#include "Storm/Autorelease.h"
 #include <algorithm>
 #include <cmath>
 #include <cstring>
@@ -2311,6 +2311,8 @@ void GLDevice::SetDepthWriteMask(bool enable) {
     }
 }
 
+HWND mainDisplay;
+
 void GLDevice::SetDisplay(uint32_t width, uint32_t height, GLTextureFormat a4, GLTextureFormat a5, uint32_t a6, bool a7,
                           bool a8, uint32_t a9) {
     uint32_t v9 = a9;
@@ -2324,12 +2326,18 @@ void GLDevice::SetDisplay(uint32_t width, uint32_t height, GLTextureFormat a4, G
         uint32_t v10;
 
         if (a7) {
-            CGDirectDisplayID mainDisplay = CGMainDisplayID();
-            CGRect bounds = CGDisplayBounds(mainDisplay);
-            CGFloat boundsWidth = CGRectGetWidth(bounds);
-            CGFloat boundsHeight = CGRectGetHeight(bounds);
+            RECT rect;
+            if (GetWindowRect(mainDisplay, &rect)) {
+                int boundsWidth = rect.right - rect.left;
+                int boundsHeight = rect.bottom - rect.top;
 
-            v10 = std::floor(boundsWidth) * std::floor(boundsHeight);
+//            CGDirectDisplayID mainDisplay = CGMainDisplayID();
+//            CGRect bounds = CGDisplayBounds(mainDisplay);
+//            CGFloat boundsWidth = CGRectGetWidth(bounds);
+//            CGFloat boundsHeight = CGRectGetHeight(bounds);
+
+                v10 = std::floor(boundsWidth) * std::floor(boundsHeight);
+            }
         } else {
             v10 = width * height;
         }
@@ -2775,7 +2783,7 @@ void GLDevice::Swap() {
         this->m_FrameNumber++;
         this->m_DrawCount = 0;
     } else {
-        glFlushRenderAPPLE();
+        glFlush();//RenderAPPLE
         this->m_DrawCount = 0;
     }
 }

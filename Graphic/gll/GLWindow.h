@@ -13,7 +13,6 @@ typedef struct objc_object NSEvent;
 
 class GLContext;
 
-class Class;
 
 struct GLWindowCallbacks {
     void (*OnResized)(int32_t, int32_t, bool);
@@ -37,7 +36,7 @@ public:
     NSWindow *m_Window = nullptr;
     bool m_Shown = 0;
     GLLayerView *m_View = nullptr;
-    Class m_ViewClass;
+    std::string m_ViewClass;
     GLFullscreenWindow *m_FullscreenWindow = nullptr;
     GLWindowCallbacks *m_Callbacks;
     GLWindowCallbacks *m_ActiveCallbacks;
@@ -61,7 +60,7 @@ public:
 
     void SetOpenGLContext(GLContext *);
 
-    void SetViewClass(Class);
+    void SetViewClass(const std::string &);
 
     void Show(void);
 

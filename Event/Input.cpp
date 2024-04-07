@@ -2,20 +2,16 @@
 #include "event/Event.h"
 #include "event/EvtContext.h"
 #include "event/Queue.h"
-#include "gx/Window.h"
-#include <common/Time.h>
+#include "NTempest/CRect.h"
+#include "NTempest/C2iVector.h"
+#include "Graphic/Window.h"
+#include "Common/Prop.h"
+#include "NTempest/C2Vector.h"
 #include <storm/String.h>
 #include <storm/Unicode.h>
-#include <NTempest/Rect.h>
-#include <NTempest/Vector.h>
-
-#if defined(WHOA_SYSTEM_WIN)
 #include <windows.h>
-#endif
 
-#if defined(WHOA_SYSTEM_MAC)
-#include "app/mac/MacClient.h"
-#endif
+using namespace NTempest;
 
 namespace Input {
     CRect s_boundingRect;

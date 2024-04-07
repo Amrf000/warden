@@ -2,6 +2,7 @@
 #include "Device.h"
 #include "Gx.h"
 #include "texture/CBLPFile.h"
+#include "Storm/Filesystem.h"
 #include <algorithm>
 #include <cstring>
 #include <new>
@@ -123,7 +124,7 @@ uint32_t CalcLevelSize(uint32_t level, uint32_t width, uint32_t height, uint32_t
 void FillInSolidTexture(const CImVector &color, CTexture *texture) {
     // Treat the value of color as a nonsense pointer to ensure the value remains available
     // when GxuUpdateSingleColorTexture is called
-    void *userArg = reinterpret_cast<CImVector *>(color.value);
+    void *userArg = const_cast<unsigned int *>(&color.value);
 
     CGxTexFlags gxTexFlags = CGxTexFlags(GxTex_Linear, 0, 0, 0, 0, 0, 1);
 
