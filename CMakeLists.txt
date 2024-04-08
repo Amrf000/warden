@@ -37,7 +37,8 @@ file(GLOB_RECURSE dir_src
         "UI/*.cpp"
 )
 find_package(OpenGL REQUIRED)
-link_directories(${CMAKE_SOURCE_DIR}/build/lib/Debug/)
+link_directories(${CMAKE_SOURCE_DIR}/build/Debug/)
+#link_directories(${CMAKE_SOURCE_DIR}build/externel/freetype-2.0.9/Debug/)
 add_executable(warden main.cpp ${dir_src})
 
 target_include_directories(warden PRIVATE "/")
@@ -52,4 +53,20 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/externel/freetype-2.0.9)
 #)
 message("${CMAKE_SOURCE_DIR}/build/lib/Debug/")
 target_link_libraries(warden ${OPENGL_LIBRARIES})
-target_link_libraries(warden glew32d)
+target_link_libraries(warden glew32d freetype-2.0)
+set_target_properties(warden PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+        ${CMAKE_SOURCE_DIR}/build)
+set_target_properties(freetype-2.0 PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+        ${CMAKE_SOURCE_DIR}/build)
+set_target_properties(freetype-2.0 PROPERTIES ARCHIVE_OUTPUT_DIRECTORY
+        ${CMAKE_SOURCE_DIR}/build)
+set_target_properties(glew PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+        ${CMAKE_SOURCE_DIR}/build)
+set_target_properties(glew PROPERTIES ARCHIVE_OUTPUT_DIRECTORY
+        ${CMAKE_SOURCE_DIR}/build)
+set_target_properties(glew PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+        ${CMAKE_SOURCE_DIR}/build)
+#set_target_properties(glew_s PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+#        ${CMAKE_SOURCE_DIR}/build)
+#set_target_properties(glew_s PROPERTIES ARCHIVE_OUTPUT_DIRECTORY
+#        ${CMAKE_SOURCE_DIR}/build)

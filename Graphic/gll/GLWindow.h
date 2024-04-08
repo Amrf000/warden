@@ -3,6 +3,7 @@
 
 #include "GLAbstractWindow.h"
 #include "CGRect.h"
+#include <string>
 
 typedef struct objc_object GLLayerView;
 typedef struct objc_object GLFullscreenWindow;

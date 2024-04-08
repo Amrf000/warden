@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 #include "Storm/Thread.h"
+#include "GLTypes.h"
+#include "GLAbstractWindow.h"
 
 
 typedef struct objc_object NSOpenGLContext;
