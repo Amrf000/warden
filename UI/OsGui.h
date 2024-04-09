@@ -1,14 +1,13 @@
-#ifndef CLIENT_GUI_OS_GUI_HPP
-#define CLIENT_GUI_OS_GUI_HPP
+#pragma once
 
 #include <cstdint>
 
-void* OsGuiGetWindow(int32_t type);
+void *OsGuiGetWindow(int32_t type);
 
 bool OsGuiIsModifierKeyDown(int32_t key);
 
-int32_t OsGuiProcessMessage(void* message);
+int32_t OsGuiProcessMessage(void *message);
 
-void OsGuiSetGxWindow(void* window);
+void OsGuiSetGxWindow(void *window);
 
-#endif
+

@@ -1,5 +1,4 @@
-#ifndef STORM_ERROR_HPP
-#define STORM_ERROR_HPP
+#pragma once
 
 #include <cstdint>
 #include <WinError.h>
@@ -38,4 +37,4 @@ void SErrSetLastError(uint32_t errorcode);
 
 uint32_t SErrGetLastError();
 
-#endif
+

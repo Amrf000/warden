@@ -35,6 +35,8 @@ file(GLOB_RECURSE dir_src
         "Net/*.cpp"
         "UI/*.h"
         "UI/*.cpp"
+        "Game/*.h"
+        "Game/*.cpp"
 )
 find_package(OpenGL REQUIRED)
 link_directories(${CMAKE_SOURCE_DIR}/build/Debug/)
@@ -45,9 +47,11 @@ target_include_directories(warden PRIVATE "/")
 target_include_directories(warden PRIVATE "externel/freetype-2.0.9/include")
 target_include_directories(warden PRIVATE "externel/")
 target_include_directories(warden PRIVATE "externel/glew-2.1.0/include")
+target_include_directories(warden PRIVATE "externel/lua-5.1.3/src")
 include_directories(${OPENGL_INCLUDE_DIRS})
 add_subdirectory(${PROJECT_SOURCE_DIR}/externel/glew-2.1.0/build/cmake)
 add_subdirectory(${PROJECT_SOURCE_DIR}/externel/freetype-2.0.9)
+add_subdirectory(${PROJECT_SOURCE_DIR}/externel/lua-5.1.3)
 #add_definitions(
 #        -DGLEW_STATIC
 #)
