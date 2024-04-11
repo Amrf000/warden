@@ -1,9 +1,7 @@
 #pragma once
 
-#include "ui/CSimpleFrame.hpp"
-#include <tempest/Vector.hpp>
+#include "ui/CSimpleFrame.h"
 
-class CRect;
 
 class CRenderBatch;
 

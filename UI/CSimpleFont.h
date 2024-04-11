@@ -8,9 +8,6 @@
 
 class CSimpleFont;
 
-class CStatus;
-
-class XMLNode;
 
 class SIMPLEFONT : public TSHashObject<SIMPLEFONT, HASHKEY_STRI> {
 public:

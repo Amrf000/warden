@@ -1,11 +1,17 @@
 #pragma once
 
+
+#include "Types.h"
+#include "Storm/xml/XMLNode.h"
+#include <cstdint>
+#include "NTempest/CRect.h"
+#include "NTempest/C2Vector.h"
 #include "CRenderBatch.h"
+#include "Agile/CStatus.h"
 #include "CScriptRegion.h"
 #include "CSimpleRegion.h"
-#include "Types.h"
-#include <cstdint>
 
+using namespace NTempest;
 
 class CBackdropGenerator;
 

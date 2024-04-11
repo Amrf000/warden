@@ -5,10 +5,6 @@
 #include "Types.h"
 
 
-class CStatus;
-
-class XMLNode;
-
 struct CONTENTNODE : TSLinkedNode<CONTENTNODE> {
     CSimpleFontString *string;
 

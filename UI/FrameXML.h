@@ -4,14 +4,13 @@
 #include "Common/Hashkey.h"
 #include "Common/TSHashObject.h"
 #include "Common/TSHashTable.h"
+#include "Storm/MD5.h"
+#include "Storm/xml/XMLNode.h"
+#include "Agile/CStatus.h"
+#include "Storm/xml/XMLTree.h"
 
 class CSimpleFrame;
 
-class CStatus;
-
-class XMLNode;
-
-class XMLTree;
 
 class FrameFactoryNode : public TSHashObject<FrameFactoryNode, HASHKEY_STRI> {
 public:

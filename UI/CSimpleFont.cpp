@@ -3,7 +3,7 @@
 #include "FrameXML.h"
 #include "LoadXML.h"
 #include "Types.h"
-
+#include "Storm/Luaex.h"
 
 TSHashTable<SIMPLEFONT, HASHKEY_STRI> CSimpleFont::s_fontList;
 int32_t CSimpleFont::s_metatable;
