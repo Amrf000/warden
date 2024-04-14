@@ -3,9 +3,9 @@
 #include "storm/Memory.h"
 #include "TSGetLink.h"
 #include "TSLink.h"
-#include <cstddef>
 #include <cstdint>
 #include <typeinfo>
+#include "offset_of.h"
 
 #define STORM_LIST(T) TSList<T, TSGetLink<T>>
 

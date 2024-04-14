@@ -4,7 +4,6 @@
 
 struct lua_State;
 
-class CSimpleFrame;
 
 enum DRAWLAYER {
     DRAWLAYER_BACKGROUND = 0,
@@ -92,6 +91,8 @@ enum TextureImageMode {
     ImageMode_UI = 0,
     ImageMode_Desaturate = 1
 };
+
+class CSimpleFrame;
 
 struct FRAMEPRIORITY {
     CSimpleFrame *frame;

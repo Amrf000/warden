@@ -6,7 +6,8 @@
 #include "CSimpleTexture.h"
 #include "CSimpleTop.h"
 #include "LoadXML.h"
-
+#include "Storm/Time.h"
+#include "Storm/Luaex.h"
 
 int32_t CSimpleButton::s_metatable;
 int32_t CSimpleButton::s_objectType;

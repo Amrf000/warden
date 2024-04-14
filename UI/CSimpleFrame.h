@@ -10,22 +10,12 @@
 #include "Agile/CStatus.h"
 #include "CScriptRegion.h"
 #include "CSimpleRegion.h"
+#include "CSimpleTop.h"
+#include "CSimpleTitleRegion.h"
+#include "CBackdropGenerator.h"
 
 using namespace NTempest;
 
-class CBackdropGenerator;
-
-class CCharEvent;
-
-class CKeyEvent;
-
-class CMouseEvent;
-
-class CSimpleTitleRegion;
-
-class CSimpleTop;
-
-struct lua_State;
 
 class CSimpleFrame : public CScriptRegion {
 public:

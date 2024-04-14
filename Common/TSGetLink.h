@@ -1,10 +1,10 @@
 #pragma once
 
 
-#include <cstddef>
 #include <cstdint>
 #include "TSLink.h"
 #include "TSLinkedNode.h"
+#include "offset_of.h"
 
 template<class T>
 class TSGetLink {

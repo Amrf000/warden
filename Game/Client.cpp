@@ -14,6 +14,8 @@
 #include "Storm/StormInit.h"
 #include "UI/FrameScript.h"
 #include "UI/FrameXML.h"
+#include "Net/Poll.h"
+#include "Storm/db/Db.h"
 
 CVar *Client::g_accountListVar;
 HEVENTCONTEXT Client::g_clientEventContext;

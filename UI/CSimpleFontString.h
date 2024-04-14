@@ -4,9 +4,6 @@
 #include "ui/CSimpleFontable.h"
 #include "ui/CSimpleRegion.h"
 
-class CRenderBatch;
-
-class CSimpleFrame;
 
 class CSimpleFontString : public CSimpleRegion, public CSimpleFontable {
 public:

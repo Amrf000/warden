@@ -1,7 +1,7 @@
 #include "event/EvtContext.h"
 #include "Storm/Time.h"
 #include "Common/Prop.h"
-
+#include "Common/offset_of.h"
 
 EvtContext::EvtContext(uint32_t flags, uint32_t idleTime, uint32_t schedWeight, void *callContext,
                        int32_t startWatchdog) :

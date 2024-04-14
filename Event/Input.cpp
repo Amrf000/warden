@@ -9,6 +9,7 @@
 #include "NTempest/C2Vector.h"
 #include <storm/String.h>
 #include <storm/Unicode.h>
+#include "Common/offset_of.h"
 #include <windows.h>
 
 using namespace NTempest;

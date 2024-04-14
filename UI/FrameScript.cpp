@@ -6,6 +6,7 @@
 #include "Storm/Luaex.h"
 #include "Agile/CStatus.h"
 #include "Storm/SFile.h"
+#include "LuaMemory.h"
 
 const char *g_glueScriptEvents[41];
 const char *g_scriptEvents[722];

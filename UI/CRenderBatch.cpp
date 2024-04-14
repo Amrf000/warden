@@ -1,6 +1,7 @@
 #include "ui/CRenderBatch.h"
 #include "ui/CSimpleFontString.h"
 #include "ui/CSimpleTexture.h"
+#include "Graphic/Coordinate.h"
 #include <cstdlib>
 
 

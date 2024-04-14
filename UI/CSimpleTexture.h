@@ -4,15 +4,11 @@
 #include "ui/CSimpleRegion.h"
 #include "ui/Types.h"
 #include "NTempest/CRect.h"
+#include "NTempest/C3Vector.h"
+#include "Graphic/shader/CGxShader.h"
 
 using namespace NTempest;
 
-class CGxShader;
-
-
-class CRenderBatch;
-
-class CSimpleFrame;
 
 class CSimpleTexture : public CSimpleRegion {
 public:

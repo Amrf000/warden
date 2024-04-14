@@ -1,6 +1,7 @@
 #include "ui/CSimpleModelScript.h"
 #include "ui/CSimpleModel.h"
 #include "Storm/Unimplemented.h"
+#include "Storm/Luaex.h"
 #include <cstdint>
 
 int32_t CSimpleModel_SetModel(lua_State *L) {

@@ -5,6 +5,8 @@
 #include <cstdint>
 #include "Storm/Luaex.h"
 #include "Storm/Unimplemented.h"
+#include "Graphic/Coordinate.h"
+#include "Storm/StringTo.h"
 
 int32_t CScriptRegion_IsProtected(lua_State *L) {
     WHOA_UNIMPLEMENTED(0);

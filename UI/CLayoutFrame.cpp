@@ -2,6 +2,8 @@
 #include "ui/CFramePoint.h"
 #include "ui/FrameXML.h"
 #include "ui/LoadXML.h"
+#include "Graphic/Coordinate.h"
+#include "Common/math/Utils.h"
 
 
 STORM_EXPLICIT_LIST(CLayoutFrame, resizeLink) LayoutFrame::s_resizePendingList;

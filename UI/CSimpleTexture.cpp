@@ -6,6 +6,7 @@
 #include "ui/FrameXML.h"
 #include "ui/LoadXML.h"
 #include "ui/Util.h"
+#include "Graphic/Coordinate.h"
 #include <algorithm>
 #include <climits>
 
@@ -444,7 +445,7 @@ void CSimpleTexture::PostLoadXML(XMLNode *node, CStatus *status) {
 
 void CSimpleTexture::SetAlpha(float alpha) {
     // Clamp
-    alpha = std::max(0.0f, std::min(alpha, 1.0f));
+    alpha = (std::max)(0.0f, std::min(alpha, 1.0f));
 
     CImVector color = {0};
     this->GetVertexColor(color);

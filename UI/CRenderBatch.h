@@ -10,20 +10,14 @@
 #include "Common/TSGrowableArray.h"
 #include "Common/TSGetLink.h"
 #include "Common/TSList.h"
+#include "Graphic/texture/CTexture.h"
+#include "Graphic/texture/CGxTex.h"
+#include "Graphic/shader/CGxShader.h"
+#include "CSimpleFontString.h"
+#include "CSimpleTexture.h"
 
 using namespace NTempest;
 
-class CGxShader;
-
-class CGxStringBatch;
-
-class CGxTex;
-
-class CSimpleFontString;
-
-class CSimpleTexture;
-
-class CTexture;
 
 class RENDERCALLBACKNODE : public TSLinkedNode<RENDERCALLBACKNODE> {
 public:

@@ -3,6 +3,7 @@
 #include "event/EvtThread.h"
 #include "Storm/Time.h"
 #include <storm/Atomic.h>
+#include "Common/offset_of.h"
 
 HEVENTCONTEXT AttachContextToThread(EvtContext *context) {
     SInterlockedIncrement(&Event::s_threadListContention);

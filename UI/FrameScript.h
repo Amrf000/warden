@@ -18,8 +18,6 @@ using namespace NTempest;
 #define NUM_GLUE_SCRIPT_EVENTS 41
 
 
-class CSimpleFrame;
-
 class CStatus;
 
 class FrameScript_Object;

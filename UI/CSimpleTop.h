@@ -7,7 +7,7 @@
 #include "ui/FrameScript.h"
 #include "Common/CSimpleSortedArray.h"
 #include "Graphic/Screen.h"
-
+#include "Common/TSExplicitList.h"
 
 enum MOVERESIZE_REASON {
     MOVERESIZE_REASON0 = 0,

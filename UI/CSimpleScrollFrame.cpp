@@ -2,7 +2,8 @@
 #include "CRenderBatch.h"
 #include "CSimpleScrollFrameScript.h"
 #include "FrameXML.h"
-
+#include "Graphic/Coordinate.h"
+#include "Storm/Luaex.h"
 #include <cmath>
 #include <limits>
 

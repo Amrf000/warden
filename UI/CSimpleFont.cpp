@@ -4,6 +4,9 @@
 #include "LoadXML.h"
 #include "Types.h"
 #include "Storm/Luaex.h"
+#include "Storm/StringTo.h"
+#include "Graphic/Coordinate.h"
+#include "Graphic/Font.h"
 
 TSHashTable<SIMPLEFONT, HASHKEY_STRI> CSimpleFont::s_fontList;
 int32_t CSimpleFont::s_metatable;

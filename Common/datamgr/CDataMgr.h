@@ -2,9 +2,9 @@
 
 #include <NTempest/C3Vector.h>
 #include "Agile/CHandleObject.h"
-#include "CBaseManaged.h"
 #include "Common/TSFixedArray.h"
 #include "Common/TSExplicitList.h"
+#include "CBaseManaged.h"
 #include "TManaged.h"
 
 using namespace NTempest;

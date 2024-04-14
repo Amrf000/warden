@@ -1,6 +1,14 @@
 #include "CSimpleModel.h"
 #include "CSimpleModelScript.h"
-
+#include "Anim/Model2.h"
+#include "Graphic/Coordinate.h"
+#include "Graphic/Transform.h"
+#include "Graphic/Draw.h"
+#include "LoadXML.h"
+#include "Common/math/Utils.h"
+#include "Graphic/shader/CShaderEffect.h"
+#include "Anim/CM2Shared.h"
+#include "CSimpleFrame.h"
 
 int32_t CSimpleModel::s_metatable;
 int32_t CSimpleModel::s_objectType;
@@ -78,10 +86,10 @@ void CSimpleModel::RenderModel(void *arg) {
     DDCToNDC(viewRect.minX, viewRect.minY, &viewRect.minX, &viewRect.minY);
     DDCToNDC(viewRect.maxX, viewRect.maxY, &viewRect.maxX, &viewRect.maxY);
 
-    viewRect.minX = std::max(0.0f, std::min(viewRect.minX, 1.0f));
-    viewRect.maxX = std::max(0.0f, std::min(viewRect.maxX, 1.0f));
-    viewRect.minY = std::max(0.0f, std::min(viewRect.minY, 1.0f));
-    viewRect.maxY = std::max(0.0f, std::min(viewRect.maxY, 1.0f));
+    viewRect.minX = (std::max)(0.0f, (std::min)(viewRect.minX, 1.0f));
+    viewRect.maxX = (std::max)(0.0f, (std::min)(viewRect.maxX, 1.0f));
+    viewRect.minY = (std::max)(0.0f, (std::min)(viewRect.minY, 1.0f));
+    viewRect.maxY = (std::max)(0.0f, (std::min)(viewRect.maxY, 1.0f));
 
     // Handle zero width or zero height
     if (AreEqual(viewRect.minX, viewRect.maxX, WHOA_EPSILON_1) ||

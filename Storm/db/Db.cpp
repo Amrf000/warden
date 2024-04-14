@@ -1,6 +1,6 @@
 #include "Db.h"
 #include "WowClientDB_Base.h"
-
+#include "WowClientDB.h"
 
 WowClientDB<AchievementRec> g_achievementDB;
 WowClientDB<Cfg_CategoriesRec> g_cfg_CategoriesDB;

@@ -2,6 +2,7 @@
 #include "ui/CScriptObject.h"
 #include "ui/CScriptRegionScript.h"
 #include "ui/CSimpleTop.h"
+#include "Storm/Luaex.h"
 
 int32_t CScriptRegion::s_objectType;
 const char *CScriptRegion::s_objectTypeName = "Region";

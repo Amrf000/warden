@@ -2,6 +2,7 @@
 #include "ui/CSimpleFrame.h"
 #include "ui/FrameScript.h"
 #include "Storm/Unimplemented.h"
+#include "Storm/Luaex.h"
 #include "Graphic/Coordinate.h"
 #include <algorithm>
 #include <cstdint>

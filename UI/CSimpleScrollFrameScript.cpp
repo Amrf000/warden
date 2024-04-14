@@ -1,5 +1,8 @@
 #include "ui/CSimpleScrollFrameScript.h"
 #include "ui/CSimpleScrollFrame.h"
+#include "Storm/Unimplemented.h"
+#include "Storm/Luaex.h"
+#include "Graphic/Coordinate.h"
 #include <cstdint>
 
 int32_t CSimpleScrollFrame_SetScrollChild(lua_State *L) {

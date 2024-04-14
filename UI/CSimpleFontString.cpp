@@ -9,6 +9,9 @@
 #include "ui/LoadXML.h"
 #include "ui/Types.h"
 #include "ui/Util.h"
+#include "Storm/StringTo.h"
+#include "Graphic/Coordinate.h"
+#include "Common/math/Utils.h"
 
 
 int32_t CSimpleFontString::s_count;

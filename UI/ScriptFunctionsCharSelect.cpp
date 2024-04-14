@@ -3,6 +3,8 @@
 #include "ui/Types.h"
 #include "Storm/Unimplemented.h"
 #include "Storm/Luaex.h"
+#include "Storm/db/Db.h"
+#include "Glue/CCharacterSelection.h"
 #include <cstdint>
 
 int32_t Script_SetCharSelectModelFrame(lua_State *L) {

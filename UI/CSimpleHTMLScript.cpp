@@ -1,5 +1,7 @@
 #include "ui/CSimpleHTMLScript.h"
 #include "ui/CSimpleHTML.h"
+#include "Storm/Unimplemented.h"
+#include "Storm/Luaex.h"
 #include <cstdint>
 
 int32_t CSimpleHTML_SetFontObject(lua_State *L) {

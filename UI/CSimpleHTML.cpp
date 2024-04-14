@@ -3,6 +3,7 @@
 #include "CSimpleFontString.h"
 #include "CSimpleHTMLScript.h"
 #include "CSimpleTop.h"
+#include "Storm/SFile.h"
 
 
 int32_t CSimpleHTML::s_metatable;

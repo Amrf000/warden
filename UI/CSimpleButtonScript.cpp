@@ -4,6 +4,8 @@
 #include "ui/CSimpleTexture.h"
 #include "Storm/Unimplemented.h"
 #include "Storm/Luaex.h"
+#include "Graphic/Coordinate.h"
+#include "Storm/StringTo.h"
 #include <cstdint>
 
 int32_t CSimpleButton_SetStateTexture(lua_State *L, CSimpleButtonState state, const char *method) {

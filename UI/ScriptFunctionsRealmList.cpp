@@ -3,7 +3,11 @@
 #include "ui/Types.h"
 #include "Storm/Unimplemented.h"
 #include "Storm/Luaex.h"
-#include <cstdint>
+#include "Storm/String.h"
+#include "Storm/db/Db.h"
+#include "Glue/CRealmList.h"
+#include "Game/ClientServices.h"
+#include "Storm/StringTo.h"
 
 
 int32_t Script_RequestRealmList(lua_State *L) {

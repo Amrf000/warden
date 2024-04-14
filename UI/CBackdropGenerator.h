@@ -5,12 +5,9 @@
 #include "NTempest/CImVector.h"
 #include "NTempest/CRect.h"
 #include "Agile/CStatus.h"
+#include "CSimpleTexture.h"
 
 using namespace NTempest;
-
-class CSimpleFrame;
-
-class CSimpleTexture;
 
 
 class CBackdropGenerator {

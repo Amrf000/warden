@@ -1,6 +1,8 @@
 #include "ui/CSimpleFontStringScript.h"
 #include "ui/CSimpleFont.h"
 #include "ui/CSimpleFontString.h"
+#include "Storm/Unimplemented.h"
+#include "Storm/Luaex.h"
 #include <cstdint>
 
 int32_t CSimpleFontString_IsObjectType(lua_State *L) {

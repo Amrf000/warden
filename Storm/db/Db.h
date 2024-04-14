@@ -6,6 +6,7 @@
 #include "rec/ChrRacesRec.h"
 #include "WowClientDB.h"
 
+
 extern WowClientDB<AchievementRec> g_achievementDB;
 extern WowClientDB<Cfg_CategoriesRec> g_cfg_CategoriesDB;
 extern WowClientDB<Cfg_ConfigsRec> g_cfg_ConfigsDB;

@@ -52,6 +52,7 @@ include_directories(${OPENGL_INCLUDE_DIRS})
 add_subdirectory(${PROJECT_SOURCE_DIR}/externel/glew-2.1.0/build/cmake)
 add_subdirectory(${PROJECT_SOURCE_DIR}/externel/freetype-2.0.9)
 add_subdirectory(${PROJECT_SOURCE_DIR}/externel/lua-5.1.3)
+add_subdirectory(${PROJECT_SOURCE_DIR}/externel/expat-2.0.1)
 #add_definitions(
 #        -DGLEW_STATIC
 #)

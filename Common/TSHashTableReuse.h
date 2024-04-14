@@ -3,8 +3,8 @@
 #include "TSHashObjectChunk.h"
 #include "TSHashTable.h"
 #include "TSExplicitList.h"
-#include <cstddef>
 #include <cstdint>
+#include "offset_of.h"
 
 template<class T, class TKey>
 class TSHashTableReuse : public TSHashTable<T, TKey> {

@@ -3,6 +3,9 @@
 #include "ui/CSimpleRender.h"
 #include "ui/CSimpleTexture.h"
 #include "ui/CSimpleTitleRegion.h"
+#include "Graphic/Device.h"
+#include "Graphic/Coordinate.h"
+#include "Graphic/Font.h"
 #include <cstring>
 
 

@@ -1,9 +1,8 @@
 #pragma once
 
 #include "M2Data.h"
+#include "CM2Model.h"
 
-
-class CM2Model;
 
 class CShaderEffect;
 

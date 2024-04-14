@@ -1,20 +1,11 @@
 #include "CSimpleFrame.h"
 #include "event/Event.h"
 #include "event/Input.h"
-#include "CBackdropGenerator.h"
-#include "CScriptRegion.h"
-#include "CSimpleFontString.h"
-#include "CSimpleFrameScript.h"
-#include "CSimpleRender.h"
 #include "CSimpleScrollFrame.h"
-#include "CSimpleTitleRegion.h"
-#include "CSimpleTexture.h"
-#include "CSimpleTop.h"
 #include "FrameScript_Object.h"
 #include "FrameXML.h"
-#include "LoadXML.h"
+#include "Storm/Luaex.h"
 #include <algorithm>
-
 
 
 int32_t CSimpleFrame::s_metatable;
@@ -29,17 +20,17 @@ int32_t CSimpleFrame::GetObjectType() {
 }
 
 void CSimpleFrame::CreateScriptMetaTable() {
-    lua_State* L = FrameScript_GetContext();
+    lua_State *L = FrameScript_GetContext();
     int32_t ref = FrameScript_Object::CreateScriptMetaTable(L, &CSimpleFrame::RegisterScriptMethods);
     CSimpleFrame::s_metatable = ref;
 }
 
-void CSimpleFrame::RegisterScriptMethods(lua_State* L) {
+void CSimpleFrame::RegisterScriptMethods(lua_State *L) {
     CScriptRegion::RegisterScriptMethods(L);
     FrameScript_Object::FillScriptMethodTable(L, SimpleFrameMethods, NUM_SIMPLE_FRAME_SCRIPT_METHODS);
 }
 
-CSimpleFrame::CSimpleFrame(CSimpleFrame* parent) : CScriptRegion() {
+CSimpleFrame::CSimpleFrame(CSimpleFrame *parent) : CScriptRegion() {
     // TODO
     // other constructor logic
 
@@ -48,11 +39,11 @@ CSimpleFrame::CSimpleFrame(CSimpleFrame* parent) : CScriptRegion() {
 
     this->SetParent(parent);
 
-    this->m_drawenabled[DRAWLAYER_BACKGROUND]           = 1;
-    this->m_drawenabled[DRAWLAYER_BACKGROUND_BORDER]    = 1;
-    this->m_drawenabled[DRAWLAYER_ARTWORK]              = 1;
-    this->m_drawenabled[DRAWLAYER_ARTWORK_OVERLAY]      = 1;
-    this->m_drawenabled[DRAWLAYER_HIGHLIGHT]            = 0;
+    this->m_drawenabled[DRAWLAYER_BACKGROUND] = 1;
+    this->m_drawenabled[DRAWLAYER_BACKGROUND_BORDER] = 1;
+    this->m_drawenabled[DRAWLAYER_ARTWORK] = 1;
+    this->m_drawenabled[DRAWLAYER_ARTWORK_OVERLAY] = 1;
+    this->m_drawenabled[DRAWLAYER_HIGHLIGHT] = 0;
 
     this->Show();
 }
@@ -67,7 +58,7 @@ CSimpleFrame::~CSimpleFrame() {
     // TODO
 }
 
-void CSimpleFrame::AddFrameRegion(CSimpleRegion* region, uint32_t drawlayer) {
+void CSimpleFrame::AddFrameRegion(CSimpleRegion *region, uint32_t drawlayer) {
     region->SetLayoutScale(this->m_layoutScale, 0);
     this->m_drawlayers[drawlayer].LinkToTail(region);
     this->NotifyDrawLayerChanged(drawlayer);
@@ -83,10 +74,10 @@ void CSimpleFrame::EnableDrawLayer(uint32_t drawlayer) {
     this->NotifyDrawLayerChanged(drawlayer);
 }
 
-void CSimpleFrame::LoadXML(XMLNode* node, CStatus* status) {
-    const char* inherits = node->GetAttributeByName("inherits");
+void CSimpleFrame::LoadXML(XMLNode *node, CStatus *status) {
+    const char *inherits = node->GetAttributeByName("inherits");
 
-    const char** v68 = &inherits;
+    const char **v68 = &inherits;
     char inheritName[1024];
 
     if (inherits && *inherits) {
@@ -97,10 +88,10 @@ void CSimpleFrame::LoadXML(XMLNode* node, CStatus* status) {
                 break;
             }
 
-            const char* tainted;
+            const char *tainted;
             bool locked;
 
-            XMLNode* inheritNode = FrameXML_AcquireHashNode(inheritName, tainted, locked);
+            XMLNode *inheritNode = FrameXML_AcquireHashNode(inheritName, tainted, locked);
 
             if (inheritNode) {
                 if (locked) {
@@ -125,7 +116,7 @@ void CSimpleFrame::LoadXML(XMLNode* node, CStatus* status) {
 
     // hidden
 
-    const char* hidden = node->GetAttributeByName("hidden");
+    const char *hidden = node->GetAttributeByName("hidden");
 
     if (hidden && *hidden) {
         if (StringToBOOL(hidden)) {
@@ -137,7 +128,7 @@ void CSimpleFrame::LoadXML(XMLNode* node, CStatus* status) {
 
     // toplevel
 
-    const char* toplevel = node->GetAttributeByName("toplevel");
+    const char *toplevel = node->GetAttributeByName("toplevel");
 
     if (toplevel && *toplevel) {
         this->SetFrameFlag(0x1, StringToBOOL(toplevel));
@@ -145,7 +136,7 @@ void CSimpleFrame::LoadXML(XMLNode* node, CStatus* status) {
 
     // movable
 
-    const char* movable = node->GetAttributeByName("movable");
+    const char *movable = node->GetAttributeByName("movable");
 
     if (movable && *movable) {
         this->SetFrameFlag(0x100, StringToBOOL(movable));
@@ -153,7 +144,7 @@ void CSimpleFrame::LoadXML(XMLNode* node, CStatus* status) {
 
     // dontSavePosition
 
-    const char* dontSavePosition = node->GetAttributeByName("dontSavePosition");
+    const char *dontSavePosition = node->GetAttributeByName("dontSavePosition");
 
     if (dontSavePosition && *dontSavePosition) {
         this->SetFrameFlag(0x80000, StringToBOOL(dontSavePosition));
@@ -161,7 +152,7 @@ void CSimpleFrame::LoadXML(XMLNode* node, CStatus* status) {
 
     // resizable
 
-    const char* resizable = node->GetAttributeByName("resizable");
+    const char *resizable = node->GetAttributeByName("resizable");
 
     if (resizable && *resizable) {
         this->SetFrameFlag(0x200, StringToBOOL(resizable));
@@ -169,7 +160,7 @@ void CSimpleFrame::LoadXML(XMLNode* node, CStatus* status) {
 
     // frameStrata
 
-    const char* frameStrata = node->GetAttributeByName("frameStrata");
+    const char *frameStrata = node->GetAttributeByName("frameStrata");
 
     if (frameStrata && *frameStrata) {
         FRAME_STRATA strata;
@@ -178,17 +169,17 @@ void CSimpleFrame::LoadXML(XMLNode* node, CStatus* status) {
             this->SetFrameStrata(strata);
         } else {
             status->Add(
-                STATUS_WARNING,
-                "Frame %s: Unknown frame strata: %s",
-                this->GetName() || "<unnamed>",
-                frameStrata
+                    STATUS_WARNING,
+                    "Frame %s: Unknown frame strata: %s",
+                    this->GetName() || "<unnamed>",
+                    frameStrata
             );
         }
     }
 
     // frameLevel
 
-    const char* frameLevel = node->GetAttributeByName("frameLevel");
+    const char *frameLevel = node->GetAttributeByName("frameLevel");
 
     if (frameLevel && *frameLevel) {
         int32_t level = SStrToInt(frameLevel);
@@ -197,10 +188,10 @@ void CSimpleFrame::LoadXML(XMLNode* node, CStatus* status) {
             this->SetFrameLevel(level, 1);
         } else {
             status->Add(
-                STATUS_WARNING,
-                "Frame %s: Unknown frame level: %s",
-                this->GetName() || "<unnamed>",
-                frameLevel
+                    STATUS_WARNING,
+                    "Frame %s: Unknown frame level: %s",
+                    this->GetName() || "<unnamed>",
+                    frameLevel
             );
         }
     }
@@ -209,7 +200,7 @@ void CSimpleFrame::LoadXML(XMLNode* node, CStatus* status) {
 
     // enableMouse
 
-    const char* enableMouse = node->GetAttributeByName("enableMouse");
+    const char *enableMouse = node->GetAttributeByName("enableMouse");
 
     if (enableMouse && *enableMouse && StringToBOOL(enableMouse)) {
         this->EnableEvent(SIMPLE_EVENT_MOUSE, -1);
@@ -217,7 +208,7 @@ void CSimpleFrame::LoadXML(XMLNode* node, CStatus* status) {
 
     // enableKeyboard
 
-    const char* enableKeyboard = node->GetAttributeByName("enableKeyboard");
+    const char *enableKeyboard = node->GetAttributeByName("enableKeyboard");
 
     if (enableKeyboard && *enableKeyboard && StringToBOOL(enableKeyboard)) {
         this->EnableEvent(SIMPLE_EVENT_CHAR, -1);
@@ -230,7 +221,7 @@ void CSimpleFrame::LoadXML(XMLNode* node, CStatus* status) {
 
     // depth
 
-    const char* depth = node->GetAttributeByName("depth");
+    const char *depth = node->GetAttributeByName("depth");
 
     if (depth && *depth) {
         float d = SStrToFloat(depth);
@@ -243,7 +234,7 @@ void CSimpleFrame::LoadXML(XMLNode* node, CStatus* status) {
 
     // Children
 
-    XMLNode* child = node->m_child;
+    XMLNode *child = node->m_child;
 
     while (child) {
         if (!SStrCmpI(child->GetName(), "TitleRegion", 0x7FFFFFFFu)) {
@@ -278,19 +269,19 @@ void CSimpleFrame::LoadXML(XMLNode* node, CStatus* status) {
     }
 }
 
-void CSimpleFrame::PostLoadXML(XMLNode* node, CStatus* status) {
+void CSimpleFrame::PostLoadXML(XMLNode *node, CStatus *status) {
     this->m_loading = 0;
 
     if (this->m_visible) {
         this->SetDeferredResize(0);
 
-        CSimpleTitleRegion* titleRegion = this->m_titleRegion;
+        CSimpleTitleRegion *titleRegion = this->m_titleRegion;
 
         if (titleRegion) {
             titleRegion->SetDeferredResize(0);
         }
 
-        CSimpleRegion* region = this->m_regions.Head();
+        CSimpleRegion *region = this->m_regions.Head();
 
         while (region) {
             region->SetDeferredResize(0);
@@ -339,7 +330,7 @@ void CSimpleFrame::RegisterForEvents(int32_t a2) {
     }
 }
 
-void CSimpleFrame::RunOnCharScript(const char* chr) {
+void CSimpleFrame::RunOnCharScript(const char *chr) {
     if (this->m_onChar.luaRef) {
         auto L = FrameScript_GetContext();
         lua_pushstring(L, chr);
@@ -363,7 +354,7 @@ void CSimpleFrame::RunOnHideScript() {
     }
 }
 
-void CSimpleFrame::RunOnKeyDownScript(const char* key) {
+void CSimpleFrame::RunOnKeyDownScript(const char *key) {
     if (this->m_onKeyDown.luaRef) {
         auto L = FrameScript_GetContext();
         lua_pushstring(L, key);
@@ -372,7 +363,7 @@ void CSimpleFrame::RunOnKeyDownScript(const char* key) {
     }
 }
 
-void CSimpleFrame::RunOnKeyUpScript(const char* key) {
+void CSimpleFrame::RunOnKeyUpScript(const char *key) {
     if (this->m_onKeyUp.luaRef) {
         auto L = FrameScript_GetContext();
         lua_pushstring(L, key);
@@ -396,7 +387,7 @@ void CSimpleFrame::RunOnLoadScript() {
     }
 }
 
-void CSimpleFrame::RunOnMouseDownScript(const char* btn) {
+void CSimpleFrame::RunOnMouseDownScript(const char *btn) {
     if (this->m_onMouseDown.luaRef) {
         auto L = FrameScript_GetContext();
         lua_pushstring(L, btn);
@@ -405,7 +396,7 @@ void CSimpleFrame::RunOnMouseDownScript(const char* btn) {
     }
 }
 
-void CSimpleFrame::RunOnMouseUpScript(const char* btn) {
+void CSimpleFrame::RunOnMouseUpScript(const char *btn) {
     if (this->m_onMouseUp.luaRef) {
         auto L = FrameScript_GetContext();
         lua_pushstring(L, btn);
@@ -444,14 +435,14 @@ void CSimpleFrame::RunOnUpdateScript(float elapsedSec) {
     }
 }
 
-void CSimpleFrame::PreLoadXML(XMLNode* node, CStatus* status) {
-    const char* name = node->GetAttributeByName("name");
+void CSimpleFrame::PreLoadXML(XMLNode *node, CStatus *status) {
+    const char *name = node->GetAttributeByName("name");
 
     if (name && *name) {
         this->SetName(name);
     }
 
-    const char* id = node->GetAttributeByName("id");
+    const char *id = node->GetAttributeByName("id");
 
     if (id && *id) {
         int32_t idNum = SStrToInt(id);
@@ -465,13 +456,13 @@ void CSimpleFrame::PreLoadXML(XMLNode* node, CStatus* status) {
 
     this->SetDeferredResize(1);
 
-    CSimpleTitleRegion* titleRegion = this->m_titleRegion;
+    CSimpleTitleRegion *titleRegion = this->m_titleRegion;
 
     if (titleRegion) {
         titleRegion->SetDeferredResize(1);
     }
 
-    CSimpleRegion* region = this->m_regions.Head();
+    CSimpleRegion *region = this->m_regions.Head();
 
     while (region) {
         region->SetDeferredResize(1);
@@ -479,12 +470,12 @@ void CSimpleFrame::PreLoadXML(XMLNode* node, CStatus* status) {
     }
 }
 
-int32_t CSimpleFrame::GetBoundsRect(CRect& bounds) {
+int32_t CSimpleFrame::GetBoundsRect(CRect &bounds) {
     if (this->IsResizePending()) {
         this->Resize(1);
     }
 
-    CRect rect = { 0.0f, 0.0f, 0.0f, 0.0f };
+    CRect rect = {0.0f, 0.0f, 0.0f, 0.0f};
 
     if (this->GetRect(&rect)) {
         bounds.minX = rect.minX >= bounds.minX ? bounds.minX : rect.minX;
@@ -517,7 +508,7 @@ int32_t CSimpleFrame::GetBoundsRect(CRect& bounds) {
     return bounds.maxY > bounds.minY && bounds.maxX > bounds.minX;
 }
 
-int32_t CSimpleFrame::GetHitRect(CRect& rect) {
+int32_t CSimpleFrame::GetHitRect(CRect &rect) {
     if (!(this->CLayoutFrame::m_flags & 0x1)) {
         return 0;
     }
@@ -527,7 +518,7 @@ int32_t CSimpleFrame::GetHitRect(CRect& rect) {
     return 1;
 }
 
-FrameScript_Object::ScriptIx* CSimpleFrame::GetScriptByName(const char* name, FrameScript_Object::ScriptData& data) {
+FrameScript_Object::ScriptIx *CSimpleFrame::GetScriptByName(const char *name, FrameScript_Object::ScriptData &data) {
     auto parentScript = FrameScript_Object::GetScriptByName(name, data);
 
     if (parentScript) {
@@ -631,8 +622,8 @@ int32_t CSimpleFrame::GetScriptMetaTable() {
 
 bool CSimpleFrame::IsA(int32_t type) {
     return type == CSimpleFrame::s_objectType
-        || type == CScriptRegion::s_objectType
-        || type == CScriptObject::s_objectType;
+           || type == CScriptRegion::s_objectType
+           || type == CScriptObject::s_objectType;
 }
 
 void CSimpleFrame::EnableEvent(CSimpleEventType eventType, int32_t priority) {
@@ -693,65 +684,67 @@ int32_t CSimpleFrame::HideThis() {
     return 1;
 }
 
-void CSimpleFrame::LoadXML_Attributes(XMLNode* node, CStatus* status) {
+void CSimpleFrame::LoadXML_Attributes(XMLNode *node, CStatus *status) {
     // TODO
 }
 
-void CSimpleFrame::LoadXML_Backdrop(XMLNode* node, CStatus* status) {
+void CSimpleFrame::LoadXML_Backdrop(XMLNode *node, CStatus *status) {
     auto m = SMemAlloc(sizeof(CBackdropGenerator), __FILE__, __LINE__, 0x0);
-    auto backdrop = new (m) CBackdropGenerator();
+    auto backdrop = new(m) CBackdropGenerator();
 
     backdrop->LoadXML(node, status);
     this->SetBackdrop(backdrop);
 }
 
-void CSimpleFrame::LoadXML_Layers(XMLNode* node, CStatus* status) {
+void CSimpleFrame::LoadXML_Layers(XMLNode *node, CStatus *status) {
     if (!node->m_child) {
         return;
     }
 
-    XMLNode* layerNode = node->m_child;
+    XMLNode *layerNode = node->m_child;
 
     while (layerNode) {
         if (SStrCmpI(layerNode->GetName(), "Layer", 0x7FFFFFFFu)) {
-            const char* layerNodeName = layerNode->GetName();
-            const char* nodeName = node->GetName();
-            const char* frameName = this->GetName();
+            const char *layerNodeName = layerNode->GetName();
+            const char *nodeName = node->GetName();
+            const char *frameName = this->GetName();
 
             if (!frameName) {
                 frameName = "<unnamed>";
             }
 
-            status->Add(STATUS_WARNING, "Frame %s: Unknown child node in %s element: %s", frameName, nodeName, layerNodeName);
+            status->Add(STATUS_WARNING, "Frame %s: Unknown child node in %s element: %s", frameName, nodeName,
+                        layerNodeName);
         } else {
             int32_t drawlayer = 2;
 
-            const char* levelStr = layerNode->GetAttributeByName("level");
+            const char *levelStr = layerNode->GetAttributeByName("level");
 
             if (levelStr && *levelStr) {
                 StringToDrawLayer(levelStr, drawlayer);
             }
 
-            XMLNode* layerChild;
+            XMLNode *layerChild;
 
             for (layerChild = layerNode->m_child; layerChild; layerChild = layerChild->m_next) {
                 if (SStrCmpI(layerChild->GetName(), "Texture", 0x7FFFFFFFu)) {
                     if (SStrCmpI(layerChild->GetName(), "FontString", 0x7FFFFFFFu)) {
-                        const char* layerChildName = layerChild->GetName();
-                        const char* layerNodeName = layerNode->GetName();
-                        const char* frameName = this->GetName();
+                        const char *layerChildName = layerChild->GetName();
+                        const char *layerNodeName = layerNode->GetName();
+                        const char *frameName = this->GetName();
 
                         if (!frameName) {
                             frameName = "<unnamed>";
                         }
 
-                        status->Add(STATUS_WARNING, "Frame %s: Unknown child node in %s element: %s", frameName, layerNodeName, layerChildName);
+                        status->Add(STATUS_WARNING, "Frame %s: Unknown child node in %s element: %s", frameName,
+                                    layerNodeName, layerChildName);
                     } else {
-                        CSimpleFontString* layerString = LoadXML_String(layerChild, this, status);
+                        CSimpleFontString *layerString = LoadXML_String(layerChild, this, status);
                         layerString->SetFrame(this, drawlayer, layerString->m_shown);
                     }
                 } else {
-                    CSimpleTexture* layerTexture = LoadXML_Texture(layerChild, this, status);
+                    CSimpleTexture *layerTexture = LoadXML_Texture(layerChild, this, status);
                     layerTexture->SetFrame(this, drawlayer, layerTexture->m_shown);
                 }
             }
@@ -761,15 +754,15 @@ void CSimpleFrame::LoadXML_Layers(XMLNode* node, CStatus* status) {
     }
 }
 
-void CSimpleFrame::LoadXML_Scripts(XMLNode* root, CStatus* status) {
-    lua_State* L = FrameScript_GetContext();
+void CSimpleFrame::LoadXML_Scripts(XMLNode *root, CStatus *status) {
+    lua_State *L = FrameScript_GetContext();
 
-    const char* scriptName;
-    const char* scriptBody;
+    const char *scriptName;
+    const char *scriptBody;
     ScriptData scriptData;
-    ScriptIx* script;
+    ScriptIx *script;
 
-    XMLNode* node = root->m_child;
+    XMLNode *node = root->m_child;
 
     while (node) {
         scriptName = node->GetName();
@@ -787,13 +780,13 @@ void CSimpleFrame::LoadXML_Scripts(XMLNode* root, CStatus* status) {
 
                 SStrPrintf(compileName, 1024, "*:%s", scriptName);
 
-                void* scriptFunction = SMemAlloc(sizeof(ScriptFunction), __FILE__, __LINE__, 0);
+                void *scriptFunction = SMemAlloc(sizeof(ScriptFunction), __FILE__, __LINE__, 0);
 
                 if (scriptFunction) {
                     int32_t luaRef = FrameScript_CompileFunction(compileName, scriptData.wrapper, scriptBody, status);
 
-                    scriptFunction = new (scriptFunction) ScriptFunction();
-                    static_cast<ScriptFunction*>(scriptFunction)->luaRef = luaRef;
+                    scriptFunction = new(scriptFunction) ScriptFunction();
+                    static_cast<ScriptFunction *>(scriptFunction)->luaRef = luaRef;
                 } else {
                     scriptFunction = nullptr;
                 }
@@ -801,12 +794,12 @@ void CSimpleFrame::LoadXML_Scripts(XMLNode* root, CStatus* status) {
                 node->m_userData = scriptFunction;
             }
 
-            const char* functionLookup = node->GetAttributeByName("function");
+            const char *functionLookup = node->GetAttributeByName("function");
 
             // Set script to already defined function with matching name
             if (functionLookup && *functionLookup) {
                 int32_t luaRef;
-                const char* frameName;
+                const char *frameName;
 
                 lua_pushstring(L, functionLookup);
                 lua_rawget(L, LUA_GLOBALSINDEX);
@@ -820,18 +813,19 @@ void CSimpleFrame::LoadXML_Scripts(XMLNode* root, CStatus* status) {
                         frameName = "<unnamed>";
                     }
 
-                    status->Add(STATUS_WARNING, "Frame %s: Unknown function %s in element %s", frameName, functionLookup, scriptName);
+                    status->Add(STATUS_WARNING, "Frame %s: Unknown function %s in element %s", frameName,
+                                functionLookup, scriptName);
 
                     script->luaRef = 0;
                 } else {
                     script->luaRef = luaRef;
                 }
-            // Set script to function compiled from body of script element
-            // eg. <OnLoad>foo();</OnLoad>
+                // Set script to function compiled from body of script element
+                // eg. <OnLoad>foo();</OnLoad>
             } else if (node->m_userData) {
-                lua_rawgeti(L, LUA_REGISTRYINDEX, static_cast<ScriptFunction*>(node->m_userData)->luaRef);
+                lua_rawgeti(L, LUA_REGISTRYINDEX, static_cast<ScriptFunction *>(node->m_userData)->luaRef);
                 script->luaRef = luaL_ref(L, LUA_REGISTRYINDEX);
-            // Disable script
+                // Disable script
             } else {
                 script->luaRef = 0;
             }
@@ -846,7 +840,8 @@ void CSimpleFrame::LoadXML_Scripts(XMLNode* root, CStatus* status) {
                 this->m_eventmask |= 1u;
             }
 
-            if ((!SStrCmpI(node->GetName(), "OnKeyDown", 0x7FFFFFFFu) || !SStrCmpI(node->GetName(), "OnKeyUp", 0x7FFFFFFFu)) && !(this->m_eventmask & 2)) {
+            if ((!SStrCmpI(node->GetName(), "OnKeyDown", 0x7FFFFFFFu) ||
+                 !SStrCmpI(node->GetName(), "OnKeyUp", 0x7FFFFFFFu)) && !(this->m_eventmask & 2)) {
                 if (this->m_visible) {
                     this->m_top->RegisterForEvent(this, SIMPLE_EVENT_KEY, 0, -1);
                 }
@@ -854,7 +849,11 @@ void CSimpleFrame::LoadXML_Scripts(XMLNode* root, CStatus* status) {
                 this->m_eventmask |= 2u;
             }
 
-            if ((!SStrCmpI(node->GetName(), "OnEnter", 0x7FFFFFFFu) || !SStrCmpI(node->GetName(), "OnLeave", 0x7FFFFFFFu) || !SStrCmpI(node->GetName(), "OnMouseDown", 0x7FFFFFFFu) || !SStrCmpI(node->GetName(), "OnMouseUp", 0x7FFFFFFFu) || !SStrCmpI(node->GetName(), "OnDragStart", 0x7FFFFFFFu)) && !(this->m_eventmask & 4)) {
+            if ((!SStrCmpI(node->GetName(), "OnEnter", 0x7FFFFFFFu) ||
+                 !SStrCmpI(node->GetName(), "OnLeave", 0x7FFFFFFFu) ||
+                 !SStrCmpI(node->GetName(), "OnMouseDown", 0x7FFFFFFFu) ||
+                 !SStrCmpI(node->GetName(), "OnMouseUp", 0x7FFFFFFFu) ||
+                 !SStrCmpI(node->GetName(), "OnDragStart", 0x7FFFFFFFu)) && !(this->m_eventmask & 4)) {
                 if (this->m_visible) {
                     this->m_top->RegisterForEvent(this, SIMPLE_EVENT_MOUSE, 0, -1);
                 }
@@ -870,7 +869,7 @@ void CSimpleFrame::LoadXML_Scripts(XMLNode* root, CStatus* status) {
                 this->m_eventmask |= 8u;
             }
         } else {
-            const char* frameName = this->GetName();
+            const char *frameName = this->GetName();
 
             if (!frameName) {
                 frameName = "<unnamed>";
@@ -921,7 +920,7 @@ void CSimpleFrame::NotifyScrollParent() {
     parent = parent->m_parent;
 
     if (parent && parent->m_intAC != 3) {
-        static_cast<CSimpleScrollFrame*>(parent)->m_updateScrollChild = 1;
+        static_cast<CSimpleScrollFrame *>(parent)->m_updateScrollChild = 1;
     }
 }
 
@@ -935,7 +934,7 @@ void CSimpleFrame::OnFrameRender() {
 
             if (!batch) {
                 auto mem = SMemAlloc(sizeof(CRenderBatch), __FILE__, __LINE__, 0x0);
-                batch = new (mem) CRenderBatch();
+                batch = new(mem) CRenderBatch();
                 this->m_batch[layer] = batch;
             }
 
@@ -960,31 +959,32 @@ void CSimpleFrame::OnFrameRender() {
     }
 
     for (auto child = this->m_children.Head(); child; child = this->m_children.Link(child)->Next()) {
-        if (child->frame->m_visible  && !(child->frame->m_flags & 0x4000)) {
+        if (child->frame->m_visible && !(child->frame->m_flags & 0x4000)) {
             child->frame->OnFrameRender();
         }
     }
 }
 
-void CSimpleFrame::OnFrameRender(CRenderBatch* batch, uint32_t layer) {
+void CSimpleFrame::OnFrameRender(CRenderBatch *batch, uint32_t layer) {
     if (!this->m_drawenabled[layer]) {
         return;
     }
 
-    for (auto region = this->m_drawlayers[layer].Head(); region; region = this->m_drawlayers[layer].Link(region)->Next()) {
+    for (auto region = this->m_drawlayers[layer].Head(); region; region = this->m_drawlayers[layer].Link(
+            region)->Next()) {
         region->Draw(batch);
     }
 }
 
-void CSimpleFrame::OnFrameSizeChanged(const CRect& rect) {
+void CSimpleFrame::OnFrameSizeChanged(const CRect &rect) {
     CLayoutFrame::OnFrameSizeChanged(rect);
 
     this->SetHitRect();
 
     if (
-        fabs(rect.maxX - rect.minX - (this->m_rect.maxX - this->m_rect.minX)) >= WHOA_EPSILON_1
-        || fabs(rect.maxY - rect.minY - (this->m_rect.maxY - this->m_rect.minY)) >= WHOA_EPSILON_1
-    ) {
+            fabs(rect.maxX - rect.minX - (this->m_rect.maxX - this->m_rect.minX)) >= WHOA_EPSILON_1
+            || fabs(rect.maxY - rect.minY - (this->m_rect.maxY - this->m_rect.minY)) >= WHOA_EPSILON_1
+            ) {
         if (this->m_backdrop) {
             this->m_backdrop->Generate(&this->m_rect);
         }
@@ -1004,7 +1004,7 @@ void CSimpleFrame::OnFrameSizeChanged(float width, float height) {
     this->NotifyScrollParent();
 }
 
-int32_t CSimpleFrame::OnLayerChar(const CCharEvent& evt) {
+int32_t CSimpleFrame::OnLayerChar(const CCharEvent &evt) {
     if (!this->m_visible) {
         return 0;
     }
@@ -1059,7 +1059,7 @@ void CSimpleFrame::OnLayerHide() {
     this->NotifyScrollParent();
 }
 
-int32_t CSimpleFrame::OnLayerKeyDown(const CKeyEvent& evt) {
+int32_t CSimpleFrame::OnLayerKeyDown(const CKeyEvent &evt) {
     if (!this->m_visible) {
         return 0;
     }
@@ -1068,24 +1068,24 @@ int32_t CSimpleFrame::OnLayerKeyDown(const CKeyEvent& evt) {
         return 0;
     }
 
-    const char* keyName = KeyCodeToString(evt.key);
+    const char *keyName = KeyCodeToString(evt.key);
     this->RunOnKeyDownScript(keyName);
 
     return 1;
 }
 
-int32_t CSimpleFrame::OnLayerKeyUp(const CKeyEvent& evt) {
+int32_t CSimpleFrame::OnLayerKeyUp(const CKeyEvent &evt) {
     if (!this->m_visible || !this->m_onKeyUp.luaRef) {
         return 0;
     }
 
-    const char* keyName = KeyCodeToString(evt.key);
+    const char *keyName = KeyCodeToString(evt.key);
     this->RunOnKeyUpScript(keyName);
 
     return 1;
 }
 
-int32_t CSimpleFrame::OnLayerMouseDown(const CMouseEvent& evt, const char* btn) {
+int32_t CSimpleFrame::OnLayerMouseDown(const CMouseEvent &evt, const char *btn) {
     if (!btn) {
         if (this->m_lookForDrag & evt.button) {
             this->m_mouseDown = 1;
@@ -1110,7 +1110,7 @@ int32_t CSimpleFrame::OnLayerMouseDown(const CMouseEvent& evt, const char* btn) 
     return 0;
 }
 
-int32_t CSimpleFrame::OnLayerMouseUp(const CMouseEvent& evt, const char* btn) {
+int32_t CSimpleFrame::OnLayerMouseUp(const CMouseEvent &evt, const char *btn) {
     if (!btn) {
         if (this->m_lookForDrag & evt.button) {
             this->m_mouseDown = 0;
@@ -1146,8 +1146,8 @@ void CSimpleFrame::OnLayerShow() {
     // this->sub48FEA0();
 }
 
-int32_t CSimpleFrame::OnLayerTrackUpdate(const CMouseEvent& evt) {
-    C2Vector pt = { evt.x, evt.y };
+int32_t CSimpleFrame::OnLayerTrackUpdate(const CMouseEvent &evt) {
+    C2Vector pt = {evt.x, evt.y};
 
     if (this->m_mouseDown && !this->m_dragging) {
         // TODO
@@ -1186,15 +1186,15 @@ void CSimpleFrame::OnScreenSizeChanged() {
     }
 }
 
-void CSimpleFrame::ParentFrame(CSimpleFrame* frame) {
-    SIMPLEFRAMENODE* node = this->m_children.NewNode(2, 0, 0x8);
+void CSimpleFrame::ParentFrame(CSimpleFrame *frame) {
+    SIMPLEFRAMENODE *node = this->m_children.NewNode(2, 0, 0x8);
     node->frame = frame;
 }
 
-void CSimpleFrame::PostLoadXML_Frames(XMLNode *node, CStatus* status) {
+void CSimpleFrame::PostLoadXML_Frames(XMLNode *node, CStatus *status) {
     // Call this function with all inherited nodes
 
-    const char* inheritNames = node->GetAttributeByName("inherits");
+    const char *inheritNames = node->GetAttributeByName("inherits");
 
     if (inheritNames && *inheritNames) {
         char inheritName[1024];
@@ -1206,10 +1206,10 @@ void CSimpleFrame::PostLoadXML_Frames(XMLNode *node, CStatus* status) {
                 break;
             }
 
-            const char* tainted;
+            const char *tainted;
             bool locked;
 
-            XMLNode* inheritNode = FrameXML_AcquireHashNode(inheritName, tainted, locked);
+            XMLNode *inheritNode = FrameXML_AcquireHashNode(inheritName, tainted, locked);
 
             if (inheritNode && !locked) {
                 // TODO
@@ -1246,10 +1246,10 @@ void CSimpleFrame::PostLoadXML_Frames(XMLNode *node, CStatus* status) {
 
     // Create child frames
 
-    XMLNode* framesNode = node->GetChildByName("Frames");
+    XMLNode *framesNode = node->GetChildByName("Frames");
 
     if (framesNode) {
-        XMLNode* frameNode;
+        XMLNode *frameNode;
 
         for (frameNode = framesNode->m_child; frameNode; frameNode = frameNode->m_next) {
             FrameXML_CreateFrame(frameNode, this, status);
@@ -1261,18 +1261,18 @@ void CSimpleFrame::PreOnAnimUpdate() {
     // TODO
 }
 
-void CSimpleFrame::RegisterRegion(CSimpleRegion* region) {
+void CSimpleFrame::RegisterRegion(CSimpleRegion *region) {
     STORM_ASSERT(region);
 
     this->m_regions.LinkToTail(region);
 }
 
-void CSimpleFrame::RemoveFrameRegion(CSimpleRegion* region, uint32_t drawlayer) {
+void CSimpleFrame::RemoveFrameRegion(CSimpleRegion *region, uint32_t drawlayer) {
     this->m_drawlayers[drawlayer].UnlinkNode(region);
     this->NotifyDrawLayerChanged(drawlayer);
 }
 
-void CSimpleFrame::SetBackdrop(CBackdropGenerator* backdrop) {
+void CSimpleFrame::SetBackdrop(CBackdropGenerator *backdrop) {
     if (this->m_backdrop) {
         delete this->m_backdrop;
     }
@@ -1333,13 +1333,13 @@ void CSimpleFrame::SetFrameFlag(int32_t flag, int32_t on) {
 }
 
 void CSimpleFrame::SetFrameLevel(int32_t level, int32_t shiftChildren) {
-    level = std::max(level, 0);
+    level = (std::max)(level, 0);
 
     if (this->m_level == level) {
         return;
     }
 
-    int32_t delta = std::min(level - this->m_level, 128);
+    int32_t delta = (std::min)(level - this->m_level, 128);
 
     if (this->m_visible) {
         this->m_top->HideFrame(this, 1);
@@ -1398,7 +1398,7 @@ void CSimpleFrame::SetHitRect() {
     this->m_hitRect.maxY = this->m_rect.maxY - this->m_hitOffset.maxY * this->m_layoutScale;
 }
 
-void CSimpleFrame::SetParent(CSimpleFrame* parent) {
+void CSimpleFrame::SetParent(CSimpleFrame *parent) {
     if (this->m_parent == parent) {
         return;
     }
@@ -1516,8 +1516,8 @@ int32_t CSimpleFrame::ShowThis() {
     return 1;
 }
 
-int32_t CSimpleFrame::TestHitRect(const C2Vector& pt) {
-    if (!(static_cast<CLayoutFrame*>(this)->m_flags & 0x1)) {
+int32_t CSimpleFrame::TestHitRect(const C2Vector &pt) {
+    if (!(static_cast<CLayoutFrame *>(this)->m_flags & 0x1)) {
         return 0;
     }
 
@@ -1525,7 +1525,7 @@ int32_t CSimpleFrame::TestHitRect(const C2Vector& pt) {
         return this->m_hitRect.IsPointInside(pt);
     }
 
-    CSimpleFrame* parent = this->m_parent;
+    CSimpleFrame *parent = this->m_parent;
     while (parent && parent->m_flags & 0x2000) {
         parent = parent->m_parent;
     }
@@ -1573,7 +1573,7 @@ void CSimpleFrame::UnregisterForEvents(int32_t a2) {
     }
 }
 
-void CSimpleFrame::UnregisterRegion(CSimpleRegion* region) {
+void CSimpleFrame::UnregisterRegion(CSimpleRegion *region) {
     STORM_ASSERT(region);
 
     this->m_regions.UnlinkNode(region);

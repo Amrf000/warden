@@ -3,6 +3,7 @@
 #include "ui/CSimpleTexture.h"
 #include "ui/LoadXML.h"
 #include "ui/Util.h"
+#include "Storm/StringTo.h"
 
 
 CBackdropGenerator::CBackdropGenerator() {

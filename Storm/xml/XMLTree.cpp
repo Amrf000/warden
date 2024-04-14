@@ -1,6 +1,7 @@
-
-
 #include "XMLTree.h"
+#include "Storm/Memory.h"
+#include "XMLNode.h"
+#include "expat-2.0.1/lib/expat.h"
 
 XML_Parser XMLTreeParser;
 void *XMLNodeFreeList = nullptr;

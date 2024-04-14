@@ -5,15 +5,10 @@
 
 #include "NTempest/C2Vector.h"
 #include "Storm/xml/XMLNode.h"
+#include "CSimpleAnimGroup.h"
 
 using namespace NTempest;
 
-class CSimpleAnimGroup;
-
-class CSimpleFrame;
-
-
-struct lua_State;
 
 class CScriptRegion : public CScriptObject, public CLayoutFrame {
 public:

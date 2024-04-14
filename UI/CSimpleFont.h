@@ -3,6 +3,7 @@
 #include "CSimpleFontable.h"
 #include "CSimpleFontStringAttributes.h"
 #include "FrameScript_Object.h"
+#include "Storm/xml/XMLNode.h"
 #include <cstdint>
 
 

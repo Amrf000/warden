@@ -1,10 +1,16 @@
 #include "CSimpleEditBox.h"
 #include "CSimpleEditBoxScript.h"
+#include "CSimpleFont.h"
 #include "CSimpleFontedFrameFont.h"
 #include "CSimpleFontString.h"
 #include "CSimpleTexture.h"
 #include "CSimpleTop.h"
 #include "LoadXML.h"
+#include "Graphic/Coordinate.h"
+#include "Storm/Luaex.h"
+#include "Storm/StringTo.h"
+#include "Graphic/Gx.h"
+#include "Storm/Unicode.h"
 #include <cstring>
 
 
@@ -314,7 +320,7 @@ int32_t CSimpleEditBox::GetNumToLen(int32_t offset, int32_t amount, bool a4) {
             do {
                 do {
                     v8 = *((uint8_t *) textInfo + 2);
-                    v9 = (uint16_t) * textInfo;
+                    v9 = (uint16_t) *textInfo;
                     v10 = *textInfo & 0xFF000000;
 
                     len += v9;
@@ -353,7 +359,7 @@ int32_t CSimpleEditBox::GetNumToLen(int32_t offset, int32_t amount, bool a4) {
                 }
 
                 v14 = *((uint8_t *) textInfo + 2);
-                len += (uint16_t) * textInfo;
+                len += (uint16_t) *textInfo;
             } while (v14 == 2 || v14 == 6 || v14 == 8 || (a4 && (*textInfo & 0x80000000) != 0 && v14 != 5));
 
             if (textInfo > this->m_textInfo) {
@@ -553,7 +559,7 @@ void CSimpleEditBox::Insert(const char *a2, const char *a3, int32_t a4, int32_t 
 
     if (a5) {
         this->m_highlightLeft = v31;
-        this->m_highlightRight = std::min(this->m_textLength, this->m_cursorPos);
+        this->m_highlightRight = (std::min)(this->m_textLength, this->m_cursorPos);
         this->m_dirtyFlags |= 2u;
     }
 
@@ -611,7 +617,7 @@ void CSimpleEditBox::LoadXML(XMLNode *node, CStatus *status) {
 
     const char *blinkSpeedAttr = node->GetAttributeByName("blinkSpeed");
     if (blinkSpeedAttr && *blinkSpeedAttr) {
-        float blinkSpeed = std::max(SStrToFloat(blinkSpeedAttr), 0.0f);
+        float blinkSpeed = (std::max)(SStrToFloat(blinkSpeedAttr), 0.0f);
         this->m_cursorBlinkSpeed = blinkSpeed;
     }
 
@@ -642,7 +648,7 @@ void CSimpleEditBox::LoadXML(XMLNode *node, CStatus *status) {
 
     const char *historyLinesAttr = node->GetAttributeByName("historyLines");
     if (historyLinesAttr && *historyLinesAttr) {
-        int32_t historyLines = std::max(SStrToInt(historyLinesAttr), 0);
+        int32_t historyLines = (std::max)(SStrToInt(historyLinesAttr), 0);
         this->SetHistoryLines(historyLines);
     }
 
@@ -997,7 +1003,7 @@ void CSimpleEditBox::RunOnTextChangedScript(int32_t changed) {
 
 void CSimpleEditBox::SetCursorPosition(int32_t position) {
     if (position >= 0) {
-        this->m_cursorPos = std::min(this->m_textLength, position);
+        this->m_cursorPos = (std::min)(this->m_textLength, position);
     } else {
         this->m_cursorPos = 0;
     }

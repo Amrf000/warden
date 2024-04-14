@@ -1,8 +1,8 @@
 #pragma once
 
 #include "TSLink.h"
-#include <cstddef>
 #include <cstdint>
+#include "offset_of.h"
 
 template<class T>
 class TSGetExplicitLink {

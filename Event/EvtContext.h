@@ -12,6 +12,7 @@
 #include "Common/instance/TSingletonInstanceId.h"
 #include "Common/prop/Types.h"
 #include <storm/Thread.h>
+#include "Common/offset_of.h"
 
 class EvtContext : public TSingletonInstanceId<EvtContext, offsetof(TInstanceId<EvtContext>, m_id)> {
 public:

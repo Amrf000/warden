@@ -5,7 +5,7 @@
 #include "event/Queue.h"
 #include "event/Scheduler.h"
 #include <common/Prop.h>
-
+#include "Common/offset_of.h"
 
 SEvent Event::s_startEvent = SEvent(1, 0);
 SEvent Event::s_shutdownEvent = SEvent(1, 0);
