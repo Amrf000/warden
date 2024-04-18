@@ -1,6 +1,7 @@
 #pragma once
 
 #include "net/connection/WowConnection.h"
+#include "Storm/thread/SSemaphore.h"
 #include <cstdint>
 
 

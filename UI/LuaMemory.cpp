@@ -1,12 +1,13 @@
 #include "ui/LuaMemory.h"
 #include "ui/FrameScript.h"
+#include "Storm/mempool/MemPool.h"
 #include <cstring>
 #include <new>
 
 
-void* luaM_initPool() {
-    void* m = SMemAlloc(sizeof(MemPool*) * 9, __FILE__, __LINE__, 0x0);
-    MemPool** pools = (MemPool**)m;
+void *luaM_initPool() {
+    void *m = SMemAlloc(sizeof(MemPool *) * 9, __FILE__, __LINE__, 0x0);
+    MemPool **pools = (MemPool **) m;
 
     uint32_t v2 = 0;
 
@@ -15,7 +16,7 @@ void* luaM_initPool() {
 
     do {
         auto poolMem = SMemAlloc(sizeof(MemPool), __FILE__, __LINE__, 0x0);
-        auto v4 = new (poolMem) MemPool();
+        auto v4 = new(poolMem) MemPool();
 
         pools[v2] = v4;
 
@@ -30,8 +31,8 @@ void* luaM_initPool() {
     return pools;
 }
 
-void* luaM_reallocPool(void* ud, void* ptr, size_t osize, size_t nsize) {
-    void* result; // eax
+void *luaM_reallocPool(void *ud, void *ptr, size_t osize, size_t nsize) {
+    void *result; // eax
     signed int v5; // esi
     signed int v6; // edx
     signed int v7; // ecx
@@ -41,7 +42,7 @@ void* luaM_reallocPool(void* ud, void* ptr, size_t osize, size_t nsize) {
     size_t v11; // eax
     signed int v12; // [esp+Ch] [ebp-4h]
 
-    MemPool** mempool = (MemPool**)ud;
+    MemPool **mempool = (MemPool **) ud;
 
     result = ptr;
 
@@ -62,7 +63,7 @@ void* luaM_reallocPool(void* ud, void* ptr, size_t osize, size_t nsize) {
         v5 = v7;
     }
 
-LABEL_7:
+    LABEL_7:
     if (nsize) {
         v8 = 0;
 
@@ -74,7 +75,7 @@ LABEL_7:
 
         v6 = v8;
 
-LABEL_18:
+        LABEL_18:
         if (v5 == v6) {
             if (v5 < 0) {
                 result = SMemReAlloc(ptr, nsize, ".\\src\\lmemPool.cpp", 311, 0);

@@ -12,3 +12,5 @@ namespace Client {
 }
 
 int32_t InitializeGlobal();
+
+void WowClientInit();

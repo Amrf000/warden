@@ -1,6 +1,7 @@
 #include "CSimpleSlider.h"
 #include "CSimpleSliderScript.h"
 #include "Storm/Luaex.h"
+#include "Common/math/Utils.h"
 
 int32_t CSimpleSlider::s_metatable;
 int32_t CSimpleSlider::s_objectType;

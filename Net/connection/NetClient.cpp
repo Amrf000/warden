@@ -1,5 +1,7 @@
 #include "net/connection/NetClient.h"
 #include "net/connection/WowConnection.h"
+#include "Storm/String.h"
+#include "Storm/Error.h"
 #include <cstdlib>
 #include <cstring>
 #include <new>

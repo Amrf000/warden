@@ -1,6 +1,7 @@
 #include "ui/CSimpleEditBoxScript.h"
 #include "ui/CSimpleEditBox.h"
 #include "Storm/Unimplemented.h"
+#include "Storm/Luaex.h"
 #include <cstdint>
 
 int32_t CSimpleEditBox_SetFontObject(lua_State *L) {

@@ -16,6 +16,7 @@
 #include "UI/FrameXML.h"
 #include "Net/Poll.h"
 #include "Storm/db/Db.h"
+#include "ClientServices.h"
 
 CVar *Client::g_accountListVar;
 HEVENTCONTEXT Client::g_clientEventContext;
@@ -447,3 +448,4 @@ void WowClientInit() {
 
     EventRegister(EVENT_ID_POLL, &PollNet);
 }
+

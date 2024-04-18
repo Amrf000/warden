@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.27)
 project(warden)
 
 set(CMAKE_CXX_STANDARD 20)
-
+add_definitions(-DWIN32_LEAN_AND_MEAN)
 if (WIN32)
     add_compile_options(/wd4819)
 endif ()

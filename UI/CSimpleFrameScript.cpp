@@ -211,7 +211,7 @@ int32_t CSimpleFrame_SetAlpha(lua_State *L) {
     }
 
     float alpha = lua_tonumber(L, 2);
-    alpha = std::max(std::min(alpha, 1.0f), 0.0f);
+    alpha = (std::max)((std::min)(alpha, 1.0f), 0.0f);
     frame->SetFrameAlpha(static_cast<uint8_t>(alpha * 255.0f));
 
     return 0;

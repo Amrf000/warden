@@ -1,24 +1,17 @@
 #include "net/connection/WowConnection.h"
 #include "net/connection/WowConnectionNet.h"
 #include "net/connection/WowConnectionResponse.h"
+#include "Storm/Time.h"
 #include <algorithm>
 #include <cstring>
 #include <new>
 
-#if defined(WHOA_SYSTEM_MAC) || defined(WHOA_SYSTEM_LINUX)
-#include <arpa/inet.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <netdb.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#endif
 
-#if defined(WHOA_SYSTEM_WIN)
+
+
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#endif
+
 
 uint64_t WowConnection::s_countTotalBytes;
 int32_t WowConnection::s_destroyed;
@@ -171,12 +164,10 @@ void WowConnection::CheckAccept() {
         // TODO
         // RegisterSocket(sock);
 
-#if defined(WHOA_SYSTEM_WIN)
+
         u_long mode = 1;
         ioctlsocket(sock, FIONBIO, &mode);
-#elif defined(WHOA_SYSTEM_MAC) || defined(WHOA_SYSTEM_LINUX)
-        fcntl(sock, F_SETFL, O_NONBLOCK);
-#endif
+
 
         auto connMem = SMemAlloc(sizeof(WowConnection), __FILE__, __LINE__, 0x0);
         auto conn = new(connMem) WowConnection(sock, reinterpret_cast<sockaddr_in *>(&addr), this->m_response);

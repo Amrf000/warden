@@ -5,6 +5,10 @@
 #include "FrameScript_Object.h"
 #include "FrameXML.h"
 #include "Storm/Luaex.h"
+#include "Common/math/Utils.h"
+#include "Storm/StringTo.h"
+#include "CSimpleFrameScript.h"
+#include "LoadXML.h"
 #include <algorithm>
 
 

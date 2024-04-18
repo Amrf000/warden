@@ -381,8 +381,8 @@ void CSimpleScrollFrame::UpdateScrollChildRect(float w, float h) {
     float rangeY = this->m_scrollRange.y;
 
     CRect childBounds = {
-            std::numeric_limits<float>::max(),
-            std::numeric_limits<float>::max(),
+            (std::numeric_limits<float>::max)(),
+            (std::numeric_limits<float>::max)(),
             0.0f,
             0.0f
     };
@@ -391,10 +391,10 @@ void CSimpleScrollFrame::UpdateScrollChildRect(float w, float h) {
 
     auto ooScale = 1.0f / this->m_layoutScale;
 
-    auto v7 = std::max(childBounds.maxX - childBounds.minX - w, 0.0f);
+    auto v7 = (std::max)(childBounds.maxX - childBounds.minX - w, 0.0f);
     this->m_scrollRange.x = v7 * ooScale;
 
-    auto v12 = std::max(childBounds.maxY - childBounds.minY - h, 0.0f);
+    auto v12 = (std::max)(childBounds.maxY - childBounds.minY - h, 0.0f);
     this->m_scrollRange.y = v12 * ooScale;
 
     if (
