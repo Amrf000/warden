@@ -194,11 +194,9 @@ void ConsoleDeviceInitialize(const char *title) {
 
     // TODO proper api selection
     EGxApi api = GxApi_OpenGl;
-#if defined(WHOA_SYSTEM_WIN)
-    api = GxApi_D3d9;
-#elif defined(WHOA_SYSTEM_MAC)
+
     api = GxApi_GLL;
-#endif
+
 
     CGxDevice *device = GxDevCreate(api, OsWindowProc, format);
 

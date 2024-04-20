@@ -93,24 +93,12 @@ void CGxDevice::Log(const CGxFormat &format) {
     // TODO
 }
 
-#if defined(WHOA_SYSTEM_WIN)
-CGxDevice* CGxDevice::NewD3d() {
-    auto m = SMemAlloc(sizeof(CGxDeviceD3d), __FILE__, __LINE__, 0x0);
-    return new (m) CGxDeviceD3d();
-}
 
-CGxDevice* CGxDevice::NewD3d9Ex() {
-    // TODO
-    return nullptr;
-}
-#endif
-
-#if defined(WHOA_SYSTEM_MAC)
-CGxDevice* CGxDevice::NewGLL() {
+CGxDevice *CGxDevice::NewGLL() {
     auto m = SMemAlloc(sizeof(CGxDeviceGLL), __FILE__, __LINE__, 0x0);
-    return new (m) CGxDeviceGLL();
+    return new(m) CGxDeviceGLL();
 }
-#endif
+
 
 CGxDevice *CGxDevice::NewOpenGl() {
     // TODO

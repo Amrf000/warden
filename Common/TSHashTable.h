@@ -101,7 +101,7 @@ uint32_t TSHashTable<T, TKey>::ComputeSlot(uint32_t hashval) {
 
 template<class T, class TKey>
 int32_t TSHashTable<T, TKey>::GetLinkOffset() {
-    return offsetof(T, m_linktoslot);
+    return STRUCT_OFFSET(T, m_linktoslot);
 }
 
 template<class T, class TKey>

@@ -22,7 +22,7 @@ HEVENTCONTEXT AttachContextToThread(EvtContext *context) {
     }
 
     if (thread) {
-        TSingletonInstanceId<EvtContext, offsetof(EvtContext, m_id)>::s_idTable.Insert(context);
+        TSingletonInstanceId<EvtContext, STRUCT_OFFSET(EvtContext, m_id)>::s_idTable.Insert(context);
 
         uint32_t v13 = OsGetAsyncTimeMs();
 

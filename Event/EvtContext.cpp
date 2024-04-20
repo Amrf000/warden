@@ -5,7 +5,7 @@
 
 EvtContext::EvtContext(uint32_t flags, uint32_t idleTime, uint32_t schedWeight, void *callContext,
                        int32_t startWatchdog) :
-        TSingletonInstanceId<EvtContext, offsetof(TInstanceId<EvtContext>, m_id)>(),
+        TSingletonInstanceId<EvtContext, STRUCT_OFFSET(TInstanceId<EvtContext>, m_id)>(),
         m_critsect(),
         m_schedNextWakeTime(),
         m_queueHandlerList(),
@@ -29,5 +29,5 @@ EvtContext::EvtContext(uint32_t flags, uint32_t idleTime, uint32_t schedWeight, 
     this->m_startWatchdog = startWatchdog;
 }
 
-EvtContextQueue::EvtContextQueue() : TSPriorityQueue<EvtContext>(offsetof(EvtContext, m_schedNextWakeTime)) {
+EvtContextQueue::EvtContextQueue() : TSPriorityQueue<EvtContext>(STRUCT_OFFSET(EvtContext, m_schedNextWakeTime)) {
 }

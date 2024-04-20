@@ -2,6 +2,7 @@
 #include "Storm/String.h"
 #include "UI/CSimpleModelFFX.h"
 #include "Anim/CM2Model.h"
+#include "Anim/CM2Shared.h"
 
 TSGrowableArray<CharacterSelectionDisplay> CCharacterSelection::s_characterList;
 CSimpleModelFFX *CCharacterSelection::s_modelFrame;

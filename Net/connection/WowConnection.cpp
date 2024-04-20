@@ -152,11 +152,9 @@ void WowConnection::CheckAccept() {
 
             getpeername(sock, reinterpret_cast<sockaddr *>(&verifyAddr), &verifyAddrLen);
             if (!WowConnection::s_verifyAddr(&verifyAddr)) {
-#if defined(WHOA_SYSTEM_WIN)
+
                 closesocket(sock);
-#elif defined(WHOA_SYSTEM_MAC) || defined(WHOA_SYSTEM_LINUX)
-                close(sock);
-#endif
+
                 continue;
             }
         }
@@ -242,11 +240,9 @@ void WowConnection::CheckConnect() {
 }
 
 void WowConnection::CloseSocket(int32_t sock) {
-#if defined(WHOA_SYSTEM_WIN)
+
     closesocket(sock);
-#elif defined(WHOA_SYSTEM_MAC) || defined(WHOA_SYSTEM_LINUX)
-    close(sock);
-#endif
+
 
     if (sock >= 0) {
         // TODO
@@ -416,11 +412,9 @@ void WowConnection::DoMessageReads() {
             bytesToRead = headerSize - this->m_readBytes;
         }
 
-#if defined(WHOA_SYSTEM_WIN)
-        int32_t bytesRead;
-#elif defined(WHOA_SYSTEM_MAC) || defined(WHOA_SYSTEM_LINUX)
+
         ssize_t bytesRead;
-#endif
+
 
         if (bytesToRead <= 0) {
             bytesRead = 0;
@@ -433,15 +427,11 @@ void WowConnection::DoMessageReads() {
                     break;
                 }
 
-#if defined(WHOA_SYSTEM_WIN)
+
                 if (WSAGetLastError() != WSAEINTR) {
                     break;
                 }
-#elif defined(WHOA_SYSTEM_MAC) || defined(WHOA_SYSTEM_LINUX)
-                if (errno != EINTR) {
-                    break;
-                }
-#endif
+
             }
 
             if (bytesRead <= 0) {
@@ -517,11 +507,9 @@ void WowConnection::DoReads() {
 void WowConnection::DoStreamReads() {
     uint32_t startTime = OsGetAsyncTimeMsPrecise();
     uint8_t buf[4096];
-#if defined(WHOA_SYSTEM_WIN)
-    int32_t bytesRead;
-#elif defined(WHOA_SYSTEM_MAC) || defined(WHOA_SYSTEM_LINUX)
+
     ssize_t bytesRead;
-#endif
+
 
     while (1) {
         while (1) {
@@ -531,15 +519,11 @@ void WowConnection::DoStreamReads() {
                 break;
             }
 
-#if defined(WHOA_SYSTEM_WIN)
+
             if (WSAGetLastError() != WSAEINTR) {
                 break;
             }
-#elif defined(WHOA_SYSTEM_MAC) || defined(WHOA_SYSTEM_LINUX)
-            if (errno != EINTR) {
-                break;
-            }
-#endif
+
         }
 
         if (bytesRead <= 0) {
@@ -562,11 +546,9 @@ void WowConnection::DoStreamReads() {
     }
 
     bool shouldDisconnect = false;
-#if defined(WHOA_SYSTEM_WIN)
+
     shouldDisconnect = bytesRead >= 0 || WSAGetLastError() != WSAEWOULDBLOCK;
-#elif defined(WHOA_SYSTEM_MAC) || defined(WHOA_SYSTEM_LINUX)
-    shouldDisconnect = bytesRead >= 0 || errno != EAGAIN;
-#endif
+
 
     if (shouldDisconnect) {
         this->AcquireResponseRef();
@@ -777,11 +759,9 @@ WC_SEND_RESULT WowConnection::Send(CDataStore *msg, int32_t a3) {
     }
 
     uint32_t written;
-#if defined(WHOA_SYSTEM_WIN)
+
     written = send(this->m_sock, reinterpret_cast<char*>(sn->data), sn->size, 0x0);
-#elif defined(WHOA_SYSTEM_MAC)
-    written = write(this->m_sock, sn->data, sn->size);
-#endif
+
 
     if (written == sn->size) {
         if (!snOnStack) {
@@ -808,7 +788,7 @@ WC_SEND_RESULT WowConnection::SendRaw(uint8_t *data, int32_t len, bool a4) {
     if (len > 0 && this->m_connState == WOWC_CONNECTED) {
         STORM_ASSERT(this->m_sock >= 0);
 
-#if defined (WHOA_SYSTEM_WIN)
+
         if (this->m_sendList.Head()) {
             // TODO
         } else {
@@ -823,20 +803,7 @@ WC_SEND_RESULT WowConnection::SendRaw(uint8_t *data, int32_t len, bool a4) {
                 // TODO
             }
         }
-#elif defined(WHOA_SYSTEM_MAC) || defined(WHOA_SYSTEM_LINUX)
-        if (this->m_sendList.Head()) {
-            // TODO
-        } else {
-            auto written = write(this->m_sock, data, len);
 
-            if (written <= 0) {
-                // TODO
-            } else if (written == len) {
-                this->m_lock.Leave();
-                return WC_SEND_SENT;
-            }
-        }
-#endif
     }
 
     this->m_lock.Leave();
@@ -920,15 +887,10 @@ void WowConnection::StartConnect() {
         return;
     }
 
-#if defined(WHOA_SYSTEM_WIN)
+
     u_long argp = 1;
     ioctlsocket(this->m_sock, FIONBIO, &argp);
-#elif defined(WHOA_SYSTEM_MAC)
-    fcntl(this->m_sock, F_SETFL, O_NONBLOCK);
 
-    uint32_t opt = 1;
-    setsockopt(this->m_sock, SOL_SOCKET, 4130, &opt, sizeof(opt));
-#endif
 
     sockaddr_in addr;
     addr.sin_family = AF_INET;
@@ -947,19 +909,13 @@ void WowConnection::StartConnect() {
         return;
     }
 
-#if defined(WHOA_SYSTEM_WIN)
+
     if (WSAGetLastError() == WSAEWOULDBLOCK) {
         this->m_lock.Leave();
 
         return;
     }
-#elif defined(WHOA_SYSTEM_MAC)
-    if (errno == EAGAIN || errno == EINTR || errno == EINPROGRESS) {
-        this->m_lock.Leave();
 
-        return;
-    }
-#endif
 
     WowConnection::s_network->Remove(this);
     this->CloseSocket(this->m_sock);

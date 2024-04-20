@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include "CSimpleFrame.h"
 
 struct lua_State;
 
@@ -92,7 +93,6 @@ enum TextureImageMode {
     ImageMode_Desaturate = 1
 };
 
-class CSimpleFrame;
 
 struct FRAMEPRIORITY {
     CSimpleFrame *frame;

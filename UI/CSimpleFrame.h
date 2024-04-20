@@ -3,7 +3,6 @@
 
 #include "Types.h"
 #include "Storm/xml/XMLNode.h"
-#include <cstdint>
 #include "NTempest/CRect.h"
 #include "NTempest/C2Vector.h"
 #include "CRenderBatch.h"

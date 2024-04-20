@@ -18,12 +18,6 @@ using namespace NTempest;
 #define NUM_GLUE_SCRIPT_EVENTS 41
 
 
-class CStatus;
-
-class FrameScript_Object;
-
-struct lua_State;
-
 struct SIMPLEFRAMENODE : TSLinkedNode<SIMPLEFRAMENODE> {
     CSimpleFrame *frame;
 };

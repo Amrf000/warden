@@ -52,13 +52,9 @@ int32_t Input::s_queueHead;
 int32_t Input::s_queueTail;
 int32_t Input::s_windowFocused;
 
-#if defined(WHOA_SYSTEM_WIN)
-int32_t Input::s_savedMouseSpeed;
-#endif
 
-#if defined(WHOA_SYSTEM_MAC)
-double Input::s_savedMouseSpeed;
-#endif
+int32_t Input::s_savedMouseSpeed;
+
 
 void PostChar(EvtContext *context, int32_t ch, int32_t repeat) {
     EVENT_DATA_CHAR data;
@@ -364,7 +360,7 @@ void EventSetMouseMode(MOUSEMODE mode, uint32_t holdButton) {
 
     auto contextId = *reinterpret_cast<uint32_t *>(PropGet(PROP_EVENTCONTEXT));
     int32_t findMask;
-    auto context = TSingletonInstanceId<EvtContext, offsetof(EvtContext, m_id)>::s_idTable.Ptr(
+    auto context = TSingletonInstanceId<EvtContext, STRUCT_OFFSET(EvtContext, m_id)>::s_idTable.Ptr(
             contextId,
             0,
             &findMask
@@ -374,7 +370,7 @@ void EventSetMouseMode(MOUSEMODE mode, uint32_t holdButton) {
         IEvtInputSetMouseMode(context, mode, holdButton);
 
         if (findMask != -1) {
-            TSingletonInstanceId<EvtContext, offsetof(EvtContext, m_id)>::s_idTable.Unlock(
+            TSingletonInstanceId<EvtContext, STRUCT_OFFSET(EvtContext, m_id)>::s_idTable.Unlock(
                     findMask & (INSTANCE_TABLE_SLOT_COUNT - 1),
                     findMask >= INSTANCE_TABLE_SLOT_COUNT
             );
@@ -627,22 +623,13 @@ const char *KeyCodeToString(KEY key) {
 }
 
 void OsInputInitialize() {
-#if defined(WHOA_SYSTEM_WIN)
+
     Input::s_numlockState = GetAsyncKeyState(144);
     int32_t mouseSpeed = 10;
     SystemParametersInfoA(SPI_GETMOUSESPEED, 0, &mouseSpeed, 0);
     Input::s_savedMouseSpeed = mouseSpeed;
-#endif
 
-#if defined(WHOA_SYSTEM_MAC)
-    // Legacy Carbon input handling
-    // if (!byte_143EFE0) {
-    //     Carbon_OsInputRegisterHICommandHandler(0x71756974, sub_A4F230);
-    // }
 
-    MacClient::SetMouseCoalescingEnabled(true);
-    Input::s_savedMouseSpeed = MacClient::GetMouseSpeed();
-#endif
 }
 
 bool OsInputIsUsingCocoaEventLoop() {

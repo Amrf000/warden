@@ -1,10 +1,10 @@
 #pragma once
 
 #include "event/Event.h"
-#include "ui/CFrameStrata.h"
-#include "ui/CLayoutFrame.h"
-#include "ui/CSimpleFrame.h"
-#include "ui/FrameScript.h"
+#include "UI/CFrameStrata.h"
+#include "UI/CLayoutFrame.h"
+#include "UI/CSimpleFrame.h"
+#include "UI/FrameScript.h"
 #include "Common/CSimpleSortedArray.h"
 #include "Graphic/Screen.h"
 #include "Common/TSExplicitList.h"

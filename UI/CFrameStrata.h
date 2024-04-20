@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ui/CRenderBatch.h"
-#include "ui/CSimpleFrame.h"
 #include "Common/TSExplicitList.h"
+#include "CRenderBatch.h"
+#include "CSimpleFrame.h"
 #include <cstdint>
 
 

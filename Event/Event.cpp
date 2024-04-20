@@ -87,7 +87,7 @@ void EventPostCloseEx(HEVENTCONTEXT contextHandle) {
     if (contextHandle) {
         uint32_t contextId = *reinterpret_cast<uint32_t *>(contextHandle);
         int32_t findMask;
-        EvtContext *context = TSingletonInstanceId<EvtContext, offsetof(EvtContext, m_id)>::s_idTable.Ptr(
+        EvtContext *context = TSingletonInstanceId<EvtContext, STRUCT_OFFSET(EvtContext, m_id)>::s_idTable.Ptr(
                 contextId,
                 0,
                 &findMask
@@ -103,7 +103,7 @@ void EventPostCloseEx(HEVENTCONTEXT contextHandle) {
             context->m_critsect.Leave();
 
             if (findMask != -1) {
-                TSingletonInstanceId<EvtContext, offsetof(EvtContext, m_id)>::s_idTable.Unlock(
+                TSingletonInstanceId<EvtContext, STRUCT_OFFSET(EvtContext, m_id)>::s_idTable.Unlock(
                         findMask & (INSTANCE_TABLE_SLOT_COUNT - 1),
                         findMask >= INSTANCE_TABLE_SLOT_COUNT
                 );
@@ -129,7 +129,7 @@ void EventRegisterEx(EVENTID id, EVENTHANDLERFUNC handler, void *param, float pr
     uint32_t contextId = *reinterpret_cast<uint32_t *>(hContext);
     int32_t findMask;
 
-    EvtContext *context = TSingletonInstanceId<EvtContext, offsetof(EvtContext, m_id)>::s_idTable.Ptr(
+    EvtContext *context = TSingletonInstanceId<EvtContext, STRUCT_OFFSET(EvtContext, m_id)>::s_idTable.Ptr(
             contextId,
             0,
             &findMask
@@ -139,7 +139,7 @@ void EventRegisterEx(EVENTID id, EVENTHANDLERFUNC handler, void *param, float pr
         IEvtQueueRegister(context, id, handler, param, priority);
 
         if (findMask != -1) {
-            TSingletonInstanceId<EvtContext, offsetof(EvtContext, m_id)>::s_idTable.Unlock(
+            TSingletonInstanceId<EvtContext, STRUCT_OFFSET(EvtContext, m_id)>::s_idTable.Unlock(
                     findMask & (INSTANCE_TABLE_SLOT_COUNT - 1),
                     findMask >= INSTANCE_TABLE_SLOT_COUNT
             );

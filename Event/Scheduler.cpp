@@ -114,40 +114,13 @@ void IEvtSchedulerInitialize(int32_t threadCount, int32_t netServer) {
 }
 
 void IEvtSchedulerProcess() {
-#if defined(WHOA_SYSTEM_WIN)
+
     Event::s_startEvent.Set();
 
-    SchedulerThreadProc(reinterpret_cast<void*>(1));
+    SchedulerThreadProc(reinterpret_cast<void *>(1));
 
     Event::s_mainThread = 0;
-#endif
 
-#if defined(WHOA_SYSTEM_MAC)
-    Event::s_startEvent.Set();
-
-    if (OsInputIsUsingCocoaEventLoop()) {
-        PropSelectContext(0);
-
-        Event::s_startEvent.Wait(0xFFFFFFFF);
-
-        uintptr_t v0 = SGetCurrentThreadId();
-        char v2[64];
-        SStrPrintf(v2, 64, "Engine %x", v0);
-
-        OsCallInitialize(v2);
-
-        RunCocoaEventLoop();
-
-        DestroySchedulerThread(Event::s_mainThread);
-        OsCallDestroy();
-
-        Event::s_mainThread = 0;
-    } else {
-        // Legacy
-        // sub_890180(1);
-        // dword_141B3C8 = 0;
-    }
-#endif
 }
 
 void IEvtSchedulerShutdown() {

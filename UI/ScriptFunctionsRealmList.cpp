@@ -8,7 +8,7 @@
 #include "Glue/CRealmList.h"
 #include "Game/ClientServices.h"
 #include "Storm/StringTo.h"
-
+#include "Storm/db/WowClientDB.h"
 
 int32_t Script_RequestRealmList(lua_State *L) {
     WHOA_UNIMPLEMENTED(0);

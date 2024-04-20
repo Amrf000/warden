@@ -55,13 +55,9 @@ public:
 
     static void Log(const CGxFormat &format);
 
-#if defined(WHOA_SYSTEM_WIN)
-    static CGxDevice* NewD3d();
-    static CGxDevice* NewD3d9Ex();
-#endif
-#if defined(WHOA_SYSTEM_MAC)
-    static CGxDevice* NewGLL();
-#endif
+
+    static CGxDevice *NewGLL();
+
 
     static CGxDevice *NewOpenGl();
 

@@ -25,7 +25,7 @@ public:
 class EvtTimerQueue : public TSPriorityQueue<EvtTimer> {
 public:
     EvtTimerQueue()
-            : TSPriorityQueue<EvtTimer>(offsetof(EvtTimer, targetTime)) {};
+            : TSPriorityQueue<EvtTimer>(STRUCT_OFFSET(EvtTimer, targetTime)) {};
 };
 
 

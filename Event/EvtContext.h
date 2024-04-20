@@ -14,7 +14,7 @@
 #include <storm/Thread.h>
 #include "Common/offset_of.h"
 
-class EvtContext : public TSingletonInstanceId<EvtContext, offsetof(TInstanceId<EvtContext>, m_id)> {
+class EvtContext : public TSingletonInstanceId<EvtContext, STRUCT_OFFSET(TInstanceId<EvtContext>, m_id)> {
 public:
     // Types
     enum SCHEDSTATE {
@@ -36,10 +36,10 @@ public:
     uint32_t m_schedWeight;
     uint32_t m_schedSmoothWeight;
     int32_t m_schedRebalance;
-    TSExplicitList<EvtHandler, offsetof(EvtHandler, link)> m_queueHandlerList[EVENTIDS];
-    TSExplicitList<EvtMessage, offsetof(EvtMessage, link)> m_queueMessageList;
+    TSExplicitList<EvtHandler, STRUCT_OFFSET(EvtHandler, link)> m_queueHandlerList[EVENTIDS];
+    TSExplicitList<EvtMessage, STRUCT_OFFSET(EvtMessage, link)> m_queueMessageList;
     uint32_t m_queueSyncButtonState;
-    TSExplicitList<EvtKeyDown, offsetof(EvtKeyDown, link)> m_queueSyncKeyDownList;
+    TSExplicitList<EvtKeyDown, STRUCT_OFFSET(EvtKeyDown, link)> m_queueSyncKeyDownList;
     // TODO
     // EvtIdTable<EvtTimer*> m_timerIdTable;
     EvtTimerQueue m_timerQueue;

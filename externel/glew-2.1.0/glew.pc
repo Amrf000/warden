@@ -1,6 +1,6 @@
-prefix=C:/Program Files/warden
+prefix=C:/Program Files (x86)/warden
 exec_prefix=${prefix}
-libdir=C:/Program Files/warden/lib
+libdir=C:/Program Files (x86)/warden/lib
 includedir=${prefix}/include
 
 Name: glew

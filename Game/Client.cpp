@@ -17,6 +17,7 @@
 #include "Net/Poll.h"
 #include "Storm/db/Db.h"
 #include "ClientServices.h"
+#include "CWorld.h"
 
 CVar *Client::g_accountListVar;
 HEVENTCONTEXT Client::g_clientEventContext;

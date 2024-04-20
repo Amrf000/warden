@@ -7,9 +7,10 @@
 #include "Storm/db/Db.h"
 #include "Graphic/Coordinate.h"
 #include "Game/ClientServices.h"
+#include "Net/connection/ClientConnection.h"
 #include "Game/Client.h"
 #include "Storm/CVar.h"
-#include <cstdint>
+
 
 int32_t Script_IsShiftKeyDown(lua_State *L) {
     WHOA_UNIMPLEMENTED(0);
