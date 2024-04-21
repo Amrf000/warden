@@ -20,8 +20,8 @@ class GLContext {
 public:
     // Types
     struct Context {
-        NSOpenGLContext *context;
-        NSOpenGLPixelFormat *pixelFormat;
+        HGLRC *context;// NSOpenGLContext
+        int pixelFormat;//NSOpenGLPixelFormat *
         int32_t sampleCount;
 
         ~Context();
@@ -40,17 +40,17 @@ public:
     };
 
     // Static variables
-    static NSOpenGLContext *s_MainContext;
+    static HGLRC s_MainContext;// NSOpenGLContext *
     static Blizzard::Thread::TLSSlot s_CurrentContext;
     static Blizzard::Thread::TLSSlot s_CurrentGLContext;
     static CFDictionaryRef s_DesktopMode;
 
     // Static functions
-    static NSOpenGLContext *GetNSOpenGLCurrentContext(void);
+    static HGLRC GetNSOpenGLCurrentContext(void);//NSOpenGLContext *
 
-    static NSOpenGLContext *GetCurrentContext(void);
+    static HGLRC GetCurrentContext(void);//NSOpenGLContext *
 
-    static void SetCurrentContext(NSOpenGLContext *);
+    static void SetCurrentContext(HGLRC);//NSOpenGLContext *
 
     static GLContext *GetCurrentGLContext(void);
 

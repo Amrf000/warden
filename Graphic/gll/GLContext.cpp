@@ -3,29 +3,30 @@
 #include "Storm/Autorelease.h"
 
 
-NSOpenGLContext* GLContext::s_MainContext;
+HGLRC GLContext::s_MainContext;//NSOpenGLContext*
 Blizzard::Thread::TLSSlot GLContext::s_CurrentContext;
 Blizzard::Thread::TLSSlot GLContext::s_CurrentGLContext;
 CFDictionaryRef GLContext::s_DesktopMode;
 
-void* Sub2A1E0(void* ptr) {
-    NSOpenGLContext** ptrptr = new NSOpenGLContext*;
+// https://github.com/bkaradzic/bgfx/blob/932302d8f460e514b933deba8c0e575a00f0bcd6/src/glcontext_wgl.cpp
+void *Sub2A1E0(void *ptr) {
+    HGLRC *ptrptr = new HGLRC; // NSOpenGLContext** NSOpenGLContext*
     *ptrptr = nullptr;
     return ptrptr;
 }
 
-void Sub2A200(void* ptr) {
-    delete static_cast<NSOpenGLContext**>(ptr);
+void Sub2A200(void *ptr) {
+    delete static_cast<HGLRC *>(ptr);//NSOpenGLContext**
 }
 
-void* Sub720A0(void* ptr) {
-    GLContext** ptrptr = new GLContext*;
+void *Sub720A0(void *ptr) {
+    GLContext **ptrptr = new GLContext *;
     *ptrptr = nullptr;
     return ptrptr;
 }
 
-void Sub720C0(void* ptr) {
-    delete static_cast<GLContext**>(ptr);
+void Sub720C0(void *ptr) {
+    delete static_cast<GLContext **>(ptr);
 }
 
 GLContext::Context::~Context() {
@@ -35,45 +36,45 @@ GLContext::Context::~Context() {
         this->context->clearDrawable();
 
         if (GLContext::GetCurrentContext() == context) {
-            [NSOpenGLContext clearCurrentContext];
+            NSOpenGLContext->clearCurrentContext();
             GLContext::SetCurrentContext(nullptr);
         }
 
-       this->context->release();
+        this->context->release();
     }
 
-   this->pixelFormat->release();
+    this->pixelFormat->release();
 }
 
-NSOpenGLContext *GLContext::GetNSOpenGLCurrentContext(void) {
-    return [NSOpenGLContext currentContext];
+HGLRC GLContext::GetNSOpenGLCurrentContext(void) {//NSOpenGLContext *
+    return NSOpenGLContext->currentContext;
 }
 
-NSOpenGLContext *GLContext::GetCurrentContext(void) {
-    return *static_cast<NSOpenGLContext**>(
+HGLRC GLContext::GetCurrentContext(void) {//NSOpenGLContext *
+    return *static_cast<HGLRC *>(//NSOpenGLContext**
             Blizzard::Thread::RegisterLocalStorage(&GLContext::s_CurrentContext, Sub2A1E0, 0, Sub2A200)
     );
 }
 
-void GLContext::SetCurrentContext(NSOpenGLContext *context) {
-    *static_cast<NSOpenGLContext**>(
+void GLContext::SetCurrentContext(HGLRC context) { //NSOpenGLContext *
+    *static_cast<HGLRC *>(//NSOpenGLContext**
             Blizzard::Thread::RegisterLocalStorage(&GLContext::s_CurrentContext, Sub2A1E0, 0, Sub2A200)
     ) = context;
 }
 
 GLContext *GLContext::GetCurrentGLContext(void) {
-    return *static_cast<GLContext**>(
+    return *static_cast<GLContext **>(
             Blizzard::Thread::RegisterLocalStorage(&GLContext::s_CurrentGLContext, Sub720A0, 0, Sub720C0)
     );
 }
 
 void GLContext::SetCurrentGLContext(GLContext *context) {
-    *static_cast<GLContext**>(
+    *static_cast<GLContext **>(
             Blizzard::Thread::RegisterLocalStorage(&GLContext::s_CurrentGLContext, Sub720A0, 0, Sub720C0)
     ) = context;
 }
 
-GLContext::GLContext(GLDevice* a2, const char* a3) {
+GLContext::GLContext(GLDevice *a2, const char *a3) {
     this->m_Context = nullptr;
     this->m_Window = nullptr;
     this->m_Windowed = false;
@@ -124,7 +125,7 @@ void GLContext::MakeCurrent(bool a2) {
     BLIZZARD_ASSERT(this->m_Context->context != nullptr);
 
     if (a2) {
-        NSOpenGLContext* v6 = GLContext::GetNSOpenGLCurrentContext();
+        NSOpenGLContext *v6 = GLContext::GetNSOpenGLCurrentContext();
         GLContext::SetCurrentContext(v6);
     }
 
@@ -152,7 +153,7 @@ void GLContext::MakeCurrent(bool a2) {
         // GLFence::RecreateAllFences();
         // this->ToggleMTGL(mtglEnabled);
 
-        GLDevice* device = GLDevice::Get();
+        GLDevice *device = GLDevice::Get();
 
         if (device && this->m_Contexts.size() > 1) {
             device->ApplyGLStates(device->m_States, 1);
@@ -174,7 +175,7 @@ void GLContext::SetContextFormat(GLTextureFormat a2, uint32_t sampleCount) {
             this->m_Window->SetOpenGLContext(this);
         }
     } else {
-        auto& context = this->m_Contexts[v61];
+        auto &context = this->m_Contexts[v61];
 
         CGDirectDisplayID v6 = CGMainDisplayID();
 
@@ -182,12 +183,12 @@ void GLContext::SetContextFormat(GLTextureFormat a2, uint32_t sampleCount) {
                 NSOpenGLPFADoubleBuffer,
                 NSOpenGLPFANoRecovery,
                 NSOpenGLPFAAccelerated,
-                NSOpenGLPFADepthSize,       0,
-                NSOpenGLPFAStencilSize,     0,
-                NSOpenGLPFAColorSize,       32,
+                NSOpenGLPFADepthSize, 0,
+                NSOpenGLPFAStencilSize, 0,
+                NSOpenGLPFAColorSize, 32,
                 NSOpenGLPFAWindow,
                 NSOpenGLPFAFullScreen,
-                NSOpenGLPFAScreenMask,      CGDisplayIDToOpenGLDisplayMask(v6),
+                NSOpenGLPFAScreenMask, CGDisplayIDToOpenGLDisplayMask(v6),
                 0, 0, 0, 0, 0
         };
 
@@ -213,7 +214,7 @@ void GLContext::SetContextFormat(GLTextureFormat a2, uint32_t sampleCount) {
                 break;
 
             default:
-                BLIZZARD_ASSERT(false);
+            BLIZZARD_ASSERT(false);
                 break;
         }
 
@@ -233,16 +234,19 @@ void GLContext::SetContextFormat(GLTextureFormat a2, uint32_t sampleCount) {
 
         context.sampleCount = sampleCount;
 
-        context.pixelFormat = [[NSOpenGLPixelFormat alloc]
-        initWithAttributes: formatAttributes
-        ];
+        context.pixelFormat = NSOpenGLPixelFormat->alloc();
+        initWithAttributes:
+        formatAttributes;
+
 
         BLIZZARD_ASSERT(context.pixelFormat != nullptr);
 
-        context.context = [[NSOpenGLContext alloc]
-        initWithFormat: context.pixelFormat
-        shareContext: GLContext::s_MainContext
-        ];
+        context.context = NSOpenGLContext->alloc();
+        initWithFormat:
+        context.pixelFormat;
+        shareContext:
+        GLContext::s_MainContext;
+
 
         BLIZZARD_ASSERT(context.context != nullptr);
 
@@ -272,7 +276,7 @@ void GLContext::SetFullscreenMode(uint32_t, uint32_t, uint32_t, bool) {
 // TODO
 }
 
-void GLContext::SetWindow(GLAbstractWindow* a2, bool a3) {
+void GLContext::SetWindow(GLAbstractWindow *a2, bool a3) {
     if (!a2) {
         if (this->m_Window) {
             this->m_Window->SetOpenGLContext(nullptr);
