@@ -1,38 +1,57 @@
 #pragma once
 
-#include <AppKit/AppKit.h>
-#include <ApplicationServices/ApplicationServices.h>
-#include <Foundation/Foundation.h>
 
 class GLWindow;
 
-@interface GLLayerView : NSView <NSWindowDelegate>
+class GLLayerView {
+public:
+    CGDirectDisplayID m_display;
+    GLWindow *m_GLWindow;
+    NSOpenGLContext *m_savedContext;
+    NSCursor *m_cursor;
+public:
+    bool acceptsFirstResponder();
 
-@property CGDirectDisplayID m_display;
-@property GLWindow* m_GLWindow;
-@property (retain) NSOpenGLContext* m_savedContext;
-@property (retain) NSCursor* m_cursor;
+    void drawRect(NSRect dirtyRect);
 
-- (BOOL)acceptsFirstResponder;
-- (void)drawRect:(NSRect)dirtyRect;
-- (id)initWithFrame:(NSRect)frame glWindow:(GLWindow*)window;
-- (void)keyDown:(NSEvent*)event;
-- (void)keyUp:(NSEvent*)event;
-- (void)mouseDown:(NSEvent*)event;
-- (void)mouseDragged:(NSEvent*)event;
-- (void)mouseMoved:(NSEvent*)event;
-- (void)mouseUp:(NSEvent*)event;
-- (void)otherMouseDown:(NSEvent*)event;
-- (void)otherMouseDragged:(NSEvent*)event;
-- (void)otherMouseUp:(NSEvent*)event;
-- (void)rightMouseDown:(NSEvent*)event;
-- (void)rightMouseDragged:(NSEvent*)event;
-- (void)rightMouseUp:(NSEvent*)event;
-- (void)scrollWheel:(NSEvent*)event;
-- (void)viewDidChangeBackingProperties;
-- (void)viewDidEndLiveResize;
-- (void)update;
+    int initWithFrame(NSRect frame, GLWindow window);
 
-@end
+    void keyDown(NSEvent *event);
+
+    void keyUp(NSEvent *event);
+
+    void mouseDown(NSEvent *event);
+
+    void mouseDragged(NSEvent *event);
+
+    void mouseMoved(NSEvent *event);
+
+    void mouseUp(NSEvent *event);
+
+    void otherMouseDown(NSEvent *event);
+
+    void otherMouseDragged(NSEvent *event);
+
+    void otherMouseUp(NSEvent *event);
+
+    void rightMouseDown(NSEvent *event);
+
+    void rightMouseDragged(NSEvent *event);
+
+    void rightMouseUp(NSEvent *event);
+
+    void scrollWheel(NSEvent *event);
+
+    void viewDidChangeBackingProperties();
+
+    void viewDidEndLiveResize();
+
+    void update();
+};
+
+
+
+
+
 
 

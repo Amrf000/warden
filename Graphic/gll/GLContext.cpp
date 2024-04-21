@@ -125,7 +125,7 @@ void GLContext::MakeCurrent(bool a2) {
     BLIZZARD_ASSERT(this->m_Context->context != nullptr);
 
     if (a2) {
-        NSOpenGLContext *v6 = GLContext::GetNSOpenGLCurrentContext();
+        HGLRC v6 = GLContext::GetNSOpenGLCurrentContext();
         GLContext::SetCurrentContext(v6);
     }
 

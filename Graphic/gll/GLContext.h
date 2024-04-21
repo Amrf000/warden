@@ -10,7 +10,7 @@
 #include "GLAbstractWindow.h"
 
 
-typedef struct objc_object NSOpenGLContext;
+//typedef struct objc_object NSOpenGLContext;
 typedef struct objc_object NSOpenGLPixelFormat;
 typedef int CFDictionaryRef;
 
