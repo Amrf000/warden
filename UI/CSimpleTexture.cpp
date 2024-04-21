@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <climits>
 #include <Storm/StringTo.h>
+#include "Graphic/CGxDevice.h"
 
 
 CGxShader *CSimpleTexture::s_imageModePixelShaders[2] = {};

@@ -9,6 +9,8 @@
 #include "Graphic/shader/CShaderEffect.h"
 #include "Anim/CM2Shared.h"
 #include "CSimpleFrame.h"
+#include "NTempest/CMath.h"
+using namespace NTempest;
 
 int32_t CSimpleModel::s_metatable;
 int32_t CSimpleModel::s_objectType;

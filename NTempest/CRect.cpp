@@ -57,3 +57,6 @@ CRect *CRect::Clamp(C2Vector &a2) {
 //    return rectA.minX == rectB.minX && rectA.minY == rectB.minY && rectA.maxX == rectB.maxX &&
 //           rectA.maxY == rectB.maxY;
 //}
+bool CRect::Sub4826D0() const {
+    return this->maxY < 0.0f || this->minY > 1.0f || this->maxX < 0.0f || this->minX > 1.0f;
+}

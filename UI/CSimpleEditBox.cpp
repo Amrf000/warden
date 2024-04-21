@@ -12,6 +12,7 @@
 #include "Graphic/Gx.h"
 #include "Storm/Unicode.h"
 #include <cstring>
+#include <Storm/Bytes.h>
 
 
 CSimpleEditBox *CSimpleEditBox::s_currentFocus;

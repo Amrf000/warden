@@ -7,7 +7,7 @@
 #include "NTempest/C2Vector.h"
 #include "CRenderBatch.h"
 #include "Agile/CStatus.h"
-
+#include "Event/CEvent.h"
 
 using namespace NTempest;
 

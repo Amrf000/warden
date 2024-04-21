@@ -255,4 +255,4 @@ public:
     void XformViewport(float &, float &, float &, float &, float &, float &);
 };
 
-
+extern CGxDevice* g_theGxDevicePtr;

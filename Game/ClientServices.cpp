@@ -5,7 +5,7 @@
 #include "Glue/CGlueMgr.h"
 #include "Net/connection/ClientConnection.h"
 #include "Net/login/Login.h"
-#include "CVar.h"
+#include "Storm/CVar.h"
 #include "ClientRealmResponseAdapter.h"
 #include "Net/login/GruntLogin.h"
 #include <new>

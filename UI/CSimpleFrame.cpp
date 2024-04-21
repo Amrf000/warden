@@ -12,6 +12,9 @@
 #include <algorithm>
 #include <Storm/Unicode.h>
 #include "CSimpleRender.h"
+#include "CSimpleTop.h"
+#include "CSimpleTitleRegion.h"
+#include "CBackdropGenerator.h"
 #include <Graphic/Coordinate.h>
 
 

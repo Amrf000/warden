@@ -18,6 +18,8 @@ namespace NTempest {
 
         CRect *Clamp(C2Vector &a2);
 
+        bool Sub4826D0() const;
+
     public:
         float minY;
         float minX;

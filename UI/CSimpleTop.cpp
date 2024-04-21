@@ -1,3 +1,4 @@
+#include "UI/Types.h"
 #include "UI/CSimpleTop.h"
 #include "UI/CSimpleFrame.h"
 #include "UI/CSimpleRender.h"
@@ -9,7 +10,8 @@
 #include "Common/CSimpleSortedArray.h"
 #include "NTempest/CMath.h"
 #include <cstring>
-
+#include <Graphic/Camera.h>
+using namespace NTempest;
 
 CSimpleTop *CSimpleTop::s_instance;
 uint32_t CSimpleTop::m_eventTime;

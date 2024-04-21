@@ -12,6 +12,7 @@
 #include "Common/datastore/CDataStore.h"
 #include <Storm/Thread.h>
 #include <Storm/Crypto.h>
+#include <Storm/HMAC.h>
 
 
 uint64_t WowConnection::s_countTotalBytes;

@@ -11,6 +11,8 @@ namespace Client {
     extern HEVENTCONTEXT g_clientEventContext;
 }
 
+void ClientPostClose(int32_t a1);
+
 int32_t InitializeGlobal();
 
 void WowClientInit();

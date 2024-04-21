@@ -10,10 +10,12 @@ GxDevCreate(EGxApi api, int32_t (*windowProc)(void *window, uint32_t message, ui
     CGxDevice *device;
 
 
-    if (api == GxApi_OpenGl) {
+    if (api == GxApi_GLL) {
+        device = CGxDevice::NewGLL();
+    } else if (api == GxApi_OpenGl) {
         device = CGxDevice::NewOpenGl();
     } else {
-        // Error
+
     }
 
 

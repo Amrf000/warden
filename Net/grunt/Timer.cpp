@@ -1,5 +1,6 @@
 #include "net/grunt/Timer.h"
-#include <common/Time.h>
+#include "Time.h"
+#include <Storm/Time.h>
 
 uint32_t Grunt::Timer::ThreadProc(void *param) {
     auto timer = static_cast<Timer *>(param);
@@ -16,7 +17,7 @@ uint32_t Grunt::Timer::ThreadProc(void *param) {
 }
 
 Grunt::Timer::Timer() {
-    SThread::Create(Grunt::Timer::ThreadProc, this, this->m_thread, "GruntTimerEvt", 0);
+    SThread::Create(Grunt::Timer::ThreadProc, this, this->m_thread, (char*)"GruntTimerEvt", 0);
 }
 
 void Grunt::Timer::Insert(Grunt::Timer::Event &newEvent) {

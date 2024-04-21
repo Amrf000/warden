@@ -1,9 +1,9 @@
 #include "net/connection/WowConnectionNet.h"
 #include "net/connection/WowConnection.h"
-#include <storm/Atomic.hpp>
-#include <storm/Error.hpp>
-#include <storm/String.hpp>
-#include <storm/Thread.hpp>
+#include <Storm/Atomic.h>
+#include <Storm/Error.h>
+#include <Storm/String.h>
+#include <Storm/Thread.h>
 
 uint32_t MainProc(void *param) {
     auto network = static_cast<WowConnectionNet *>(param);

@@ -37,6 +37,8 @@ file(GLOB_RECURSE dir_src
         "UI/*.cpp"
         "Game/*.h"
         "Game/*.cpp"
+        "Sound/*.h"
+        "Sound/*.cpp"
 )
 find_package(OpenGL REQUIRED)
 link_directories(${CMAKE_SOURCE_DIR}/build/Debug/)
@@ -58,8 +60,9 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/externel/expat-2.0.1)
 #        -DGLEW_STATIC
 #)
 message("${CMAKE_SOURCE_DIR}/build/lib/Debug/")
-target_link_libraries(warden ${OPENGL_LIBRARIES})
-target_link_libraries(warden glew32d freetype-2.0)
+target_link_libraries(warden PUBLIC ${OPENGL_LIBRARIES})
+target_link_libraries(warden PUBLIC glew32d freetype-2.0 lua-5.1 ws2_32 wsock32 expat-2.0)
+target_compile_definitions(expat-2.0 PUBLIC -DXML_STATIC)
 set_target_properties(warden PROPERTIES RUNTIME_OUTPUT_DIRECTORY
         ${CMAKE_SOURCE_DIR}/build)
 set_target_properties(freetype-2.0 PROPERTIES LIBRARY_OUTPUT_DIRECTORY

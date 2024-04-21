@@ -1,3 +1,4 @@
+#include "Graphic/Types.h"
 #include "CGxDevice.h"
 #include "Gx.h"
 #include "Shader.h"
@@ -9,6 +10,7 @@
 #include <new>
 #include <storm/Error.h>
 #include <storm/Memory.h>
+#include "gll/CGxDeviceGLL.h"
 
 
 uint32_t CGxDevice::s_alphaRef[] = {
@@ -102,9 +104,8 @@ CGxDevice *CGxDevice::NewGLL() {
 
 CGxDevice *CGxDevice::NewOpenGl() {
     // TODO
-    // auto m = SMemAlloc(sizeof(CGxDeviceOpenGl), __FILE__, __LINE__, 0x0);
-    // return new (m) CGxDeviceOpenGl();
-
+//    auto m = SMemAlloc(sizeof(CGxDeviceOpenGl), __FILE__, __LINE__, 0x0);
+//    return new(m) CGxDeviceOpenGl();
     return nullptr;
 }
 
@@ -756,17 +757,17 @@ void CGxDevice::ScenePresent() {
 void CGxDevice::ShaderConstantsClear() {
     for (int32_t i = 0; i < 256; i++) {
         CGxDevice::s_shadowConstants[0].constants[i] = {
-                std::numeric_limits<float>::max(),
-                std::numeric_limits<float>::max(),
-                std::numeric_limits<float>::max(),
-                std::numeric_limits<float>::max()
+                (std::numeric_limits<float>::max)(),
+                (std::numeric_limits<float>::max)(),
+                (std::numeric_limits<float>::max)(),
+                (std::numeric_limits<float>::max)()
         };
 
         CGxDevice::s_shadowConstants[1].constants[i] = {
-                std::numeric_limits<float>::max(),
-                std::numeric_limits<float>::max(),
-                std::numeric_limits<float>::max(),
-                std::numeric_limits<float>::max()
+                (std::numeric_limits<float>::max)(),
+                (std::numeric_limits<float>::max)(),
+                (std::numeric_limits<float>::max)(),
+                (std::numeric_limits<float>::max)()
         };
     }
 
