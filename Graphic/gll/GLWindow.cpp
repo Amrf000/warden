@@ -1,9 +1,10 @@
-#include "gx/gll/GLWindow.h"
-#include "gx/gll/GLContext.h"
-#include "gx/gll/GLLayerView.h"
-#include "util/Autorelease.h"
+#include "GLWindow.h"
+#include "GLContext.h"
+#include "GLLayerView.h"
+#include "Storm/Autorelease.h"
+#include "Storm/Debug.h"
 #include <cmath>
-#include <bc/Debug.h>
+
 
 GLWindowCallbacks DefaultCallbacks = {
     // TODO
