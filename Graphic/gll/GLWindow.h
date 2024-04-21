@@ -3,9 +3,10 @@
 
 #include "GLAbstractWindow.h"
 #include "CGRect.h"
+#include "GLLayerView.h"
 #include <string>
 
-typedef struct objc_object GLLayerView;
+
 typedef struct objc_object GLFullscreenWindow;
 typedef struct objc_object NSView;
 typedef struct objc_object NSWindow;

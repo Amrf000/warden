@@ -1,7 +1,7 @@
 #include "GLContext.h"
 #include "Storm/Debug.h"
 #include "Storm/Autorelease.h"
-
+#include "Graphic/gll/GLDevice.h"
 
 HGLRC GLContext::s_MainContext;//NSOpenGLContext*
 Blizzard::Thread::TLSSlot GLContext::s_CurrentContext;
@@ -9,6 +9,8 @@ Blizzard::Thread::TLSSlot GLContext::s_CurrentGLContext;
 CFDictionaryRef GLContext::s_DesktopMode;
 
 // https://github.com/bkaradzic/bgfx/blob/932302d8f460e514b933deba8c0e575a00f0bcd6/src/glcontext_wgl.cpp
+// https://github.com/CrossVR/dolphin/blob/90500ed90ee4d0fa7937442f8273314d15d33799/Source/Core/Common/GL/GLInterface/WGL.cpp
+// https://github.com/quyse/inanity/blob/415cc7f45dde03722161cf6bd1e13f5986507699/graphics/GlContext.cpp#L59
 void *Sub2A1E0(void *ptr) {
     HGLRC *ptrptr = new HGLRC; // NSOpenGLContext** NSOpenGLContext*
     *ptrptr = nullptr;
