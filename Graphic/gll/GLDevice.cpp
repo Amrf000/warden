@@ -1730,7 +1730,9 @@ void GLDevice::Init(GLAbstractWindow *a2, const char *a3, uint32_t a4, GLTexture
     if (this->m_Init) {
         return;
     }
-
+    if (glewInit() != GLEW_OK) {
+        return;
+    }
     System_Autorelease::ScopedPool autorelease;
 
     this->m_BatchViewerEnabled = a4 & 0x1;

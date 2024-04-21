@@ -61,7 +61,7 @@ public:
     std::map<uint32_t, GLContext::Context, std::less<uint32_t>, std::allocator<std::pair<const uint32_t, GLContext::Context>>> m_Contexts;
     Context *m_Context;
     GLDevice *m_Device;
-    GLAbstractWindow *m_Window;
+    GLAbstractWindow *m_Window{nullptr};
     bool m_Windowed;
     bool m_MTGLEnabled;
     bool m_VSyncEnabled;
