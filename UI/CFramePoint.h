@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/Types.h"
+#include "UI/Types.h"
 #include <cstdint>
 #include "NTempest/C2Vector.h"
 #include "NTempest/CRect.h"
@@ -9,7 +9,7 @@ using namespace NTempest;
 
 class CLayoutFrame;
 
-
+enum FRAMEPOINT;
 class CFramePoint {
 public:
     // Static variables

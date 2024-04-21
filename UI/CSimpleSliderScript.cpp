@@ -1,5 +1,5 @@
-#include "ui/CSimpleSliderScript.h"
-#include "ui/CSimpleSlider.h"
+#include "UI/CSimpleSliderScript.h"
+#include "UI/CSimpleSlider.h"
 #include "Storm/Unimplemented.h"
 #include "Storm/Luaex.h"
 #include <cstdint>

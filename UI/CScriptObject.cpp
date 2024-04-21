@@ -1,5 +1,5 @@
-#include "ui/CScriptObject.h"
-#include "ui/CScriptObjectScript.h"
+#include "UI/CScriptObject.h"
+#include "UI/CScriptObjectScript.h"
 #include "Storm/Luaex.h"
 #include <cstdint>
 

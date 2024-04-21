@@ -1,15 +1,16 @@
 #pragma once
 
 #include "Graphic/Texture.h"
-#include "ui/CSimpleRegion.h"
-#include "ui/Types.h"
+#include "UI/CSimpleRegion.h"
+#include "UI/Types.h"
 #include "NTempest/CRect.h"
 #include "NTempest/C3Vector.h"
 #include "Graphic/shader/CGxShader.h"
 
 using namespace NTempest;
 
-
+class CSimpleFrame;
+enum TextureImageMode;
 class CSimpleTexture : public CSimpleRegion {
 public:
     // Static variables

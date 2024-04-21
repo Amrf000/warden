@@ -1,16 +1,17 @@
+#include <algorithm>
+#include <cstring>
+#include <new>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <Storm/String.h>
+#include <Storm/Error.h>
 #include "net/connection/WowConnection.h"
 #include "net/connection/WowConnectionNet.h"
 #include "net/connection/WowConnectionResponse.h"
 #include "Storm/Time.h"
-#include <algorithm>
-#include <cstring>
-#include <new>
-
-
-
-
-#include <winsock2.h>
-#include <ws2tcpip.h>
+#include "Common/datastore/CDataStore.h"
+#include <Storm/Thread.h>
+#include <Storm/Crypto.h>
 
 
 uint64_t WowConnection::s_countTotalBytes;
@@ -69,7 +70,7 @@ WowConnection::SENDNODE::SENDNODE(void *data, int32_t size, uint8_t *buf, bool r
     this->offset = 0;
     this->allocsize = 0;
 
-    memcpy(this->header, this->data, std::min(this->size, 8u));
+    memcpy(this->header, this->data, (std::min)(this->size, 8u));
 }
 
 int32_t WowConnection::CreateSocket() {
@@ -89,7 +90,7 @@ WowConnection::InitOsNet(bool (*fcn)(const NETADDR *), void (*threadinit)(), int
         WowConnection::s_verifyAddr = fcn;
         WowConnection::s_destroyed = 0;
 
-        numThreads = std::min(numThreads, 32);
+        numThreads = (std::min)(numThreads, 32);
 
         auto networkMem = SMemAlloc(sizeof(WowConnectionNet), __FILE__, __LINE__, 0x0);
         auto network = new(networkMem) WowConnectionNet(numThreads, threadinit);
@@ -257,7 +258,7 @@ bool WowConnection::Connect(char const *address, int32_t retryMs) {
         this->m_connectPort = SStrToInt(port + 1);
 
         size_t portIndex = port - address + 1;
-        portIndex = std::min(portIndex, sizeof(host));
+        portIndex = (std::min)(portIndex, sizeof(host));
         SStrCopy(host, address, portIndex);
     } else {
         this->m_connectPort = 0;
@@ -413,7 +414,7 @@ void WowConnection::DoMessageReads() {
         }
 
 
-        ssize_t bytesRead;
+        size_t bytesRead;
 
 
         if (bytesToRead <= 0) {
@@ -508,7 +509,7 @@ void WowConnection::DoStreamReads() {
     uint32_t startTime = OsGetAsyncTimeMsPrecise();
     uint8_t buf[4096];
 
-    ssize_t bytesRead;
+    size_t bytesRead;
 
 
     while (1) {
@@ -709,7 +710,7 @@ WC_SEND_RESULT WowConnection::Send(CDataStore *msg, int32_t a3) {
         auto sn = this->NewSendNode(data, msg->Size(), false);
 
         if (this->m_encrypt) {
-            auto bufSize = std::min(sn->size, sn->size + this->uint375 - sn->datasize);
+            auto bufSize = (std::min)(sn->size, sn->size + this->uint375 - sn->datasize);
             SARC4ProcessBuffer(sn->data, bufSize, &this->m_sendKey, &this->m_sendKey);
         }
 
@@ -754,7 +755,7 @@ WC_SEND_RESULT WowConnection::Send(CDataStore *msg, int32_t a3) {
     }
 
     if (this->m_encrypt) {
-        auto bufSize = std::min(sn->size, sn->size + this->uint375 - sn->datasize);
+        auto bufSize = (std::min)(sn->size, sn->size + this->uint375 - sn->datasize);
         SARC4ProcessBuffer(sn->data, bufSize, &this->m_sendKey, &this->m_sendKey);
     }
 

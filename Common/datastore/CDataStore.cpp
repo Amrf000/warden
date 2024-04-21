@@ -305,7 +305,7 @@ CDataStore &CDataStore::PutArray(const uint8_t *val, uint32_t count) {
         this->FetchWrite(this->m_size, bytes, nullptr, 0);
 
         while (count) {
-            bytes = std::max(1u, std::min(bytes, this->m_alloc));
+            bytes = (std::max)(1u, (std::min)(bytes, this->m_alloc));
 
             this->FetchWrite(this->m_size, bytes, nullptr, 0);
 

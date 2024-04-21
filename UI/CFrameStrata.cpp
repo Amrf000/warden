@@ -1,6 +1,6 @@
-#include "ui/CFrameStrata.h"
-#include "ui/CSimpleFrame.h"
-#include "ui/CSimpleRender.h"
+#include "UI/CFrameStrata.h"
+#include "UI/CSimpleFrame.h"
+#include "UI/CSimpleRender.h"
 
 int32_t CFrameStrataNode::BuildBatches() {
     if (!this->batchDirty) {

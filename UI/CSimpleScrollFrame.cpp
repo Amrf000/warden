@@ -6,6 +6,10 @@
 #include "Storm/Luaex.h"
 #include <cmath>
 #include <limits>
+#include <NTempest/C44Matrix.h>
+#include <Graphic/Transform.h>
+#include <Graphic/Camera.h>
+using namespace NTempest;
 
 
 int32_t CSimpleScrollFrame::s_metatable;

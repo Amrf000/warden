@@ -5,6 +5,7 @@
 #include "CSimpleTop.h"
 #include "Storm/SFile.h"
 #include "Storm/xml/XMLTree.h"
+#include <Storm/StringTo.h>
 
 
 int32_t CSimpleHTML::s_metatable;

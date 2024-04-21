@@ -1,5 +1,5 @@
-#include "ui/CSimpleRender.h"
-#include "ui/CRenderBatch.h"
+#include "UI/CSimpleRender.h"
+#include "UI/CRenderBatch.h"
 #include "Graphic/RenderState.h"
 #include "Graphic/Shader.h"
 #include "Graphic/Transform.h"

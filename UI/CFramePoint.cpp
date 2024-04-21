@@ -1,5 +1,5 @@
-#include "ui/CFramePoint.h"
-#include "ui/CLayoutFrame.h"
+#include "UI/CFramePoint.h"
+#include "UI/CLayoutFrame.h"
 
 const float CFramePoint::UNDEFINED = 3.4028237e38;
 

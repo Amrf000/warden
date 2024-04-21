@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/FrameScript.h"
+#include "UI/FrameScript.h"
 
 #define NUM_SIMPLE_TEXTURE_SCRIPT_METHODS 29
 

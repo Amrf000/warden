@@ -1,8 +1,8 @@
-#include "ui/CBackdropGenerator.h"
-#include "ui/CSimpleFrame.h"
-#include "ui/CSimpleTexture.h"
-#include "ui/LoadXML.h"
-#include "ui/Util.h"
+#include "UI/CBackdropGenerator.h"
+#include "UI/CSimpleFrame.h"
+#include "UI/CSimpleTexture.h"
+#include "UI/LoadXML.h"
+#include "UI/Util.h"
 #include "Storm/StringTo.h"
 
 

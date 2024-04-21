@@ -1,5 +1,5 @@
-#include "ui/CSimpleScrollFrameScript.h"
-#include "ui/CSimpleScrollFrame.h"
+#include "UI/CSimpleScrollFrameScript.h"
+#include "UI/CSimpleScrollFrame.h"
 #include "Storm/Unimplemented.h"
 #include "Storm/Luaex.h"
 #include "Graphic/Coordinate.h"

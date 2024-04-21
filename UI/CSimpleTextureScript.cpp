@@ -1,6 +1,6 @@
-#include "ui/CSimpleTextureScript.h"
-#include "ui/CSimpleTexture.h"
-#include "ui/Types.h"
+#include "UI/CSimpleTextureScript.h"
+#include "UI/CSimpleTexture.h"
+#include "UI/Types.h"
 #include "Storm/Unimplemented.h"
 #include "Storm/Luaex.h"
 #include <cstdint>

@@ -3,7 +3,6 @@
 #include "FrameScript_Object.h"
 #include <algorithm>
 #include <cstdint>
-#include "Storm/Luaex.h"
 #include "Agile/CStatus.h"
 #include "Storm/SFile.h"
 #include "LuaMemory.h"
@@ -433,18 +432,18 @@ void FrameScript_Flush() {
 
 void FrameScript_GetColor(lua_State *L, int32_t idx, CImVector &color) {
     float r = lua_tonumber(L, idx + 0);
-    r = std::max(0.0f, std::min(r, 1.0f));
+    r = (std::max)(0.0f, (std::min)(r, 1.0f));
 
     float g = lua_tonumber(L, idx + 1);
-    g = std::max(0.0f, std::min(g, 1.0f));
+    g = (std::max)(0.0f, (std::min)(g, 1.0f));
 
     float b = lua_tonumber(L, idx + 2);
-    b = std::max(0.0f, std::min(b, 1.0f));
+    b = (std::max)(0.0f, (std::min)(b, 1.0f));
 
     float a = 1.0f;
     if (lua_isnumber(L, idx + 3)) {
         a = lua_tonumber(L, idx + 2);
-        a = std::max(0.0f, std::min(a, 1.0f));
+        a = (std::max)(0.0f, (std::min)(a, 1.0f));
     }
 
     color.Set(a, r, g, b);

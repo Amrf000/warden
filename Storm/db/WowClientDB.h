@@ -5,6 +5,7 @@
 #include "WowClientDB_Common.h"
 #include "Storm/SFile.h"
 #include "Storm/Memory.h"
+#include "Storm/Error.h"
 
 template<class T>
 class WowClientDB : public WowClientDB_Common<T>, IDatabase<T> {

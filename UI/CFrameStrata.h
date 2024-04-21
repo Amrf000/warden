@@ -5,7 +5,8 @@
 #include "CSimpleFrame.h"
 #include <cstdint>
 
-
+enum FRAMEPOINT;
+class CSimpleFrame;
 class CFrameStrataNode {
 public:
     // Member variables

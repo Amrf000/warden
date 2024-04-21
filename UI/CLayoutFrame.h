@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ui/Types.h"
-#include "ui/Util.h"
+#include "UI/Types.h"
+#include "UI/Util.h"
 #include <cstdint>
 #include "NTempest/CRect.h"
 #include "Common/TSLink.h"
@@ -13,7 +13,7 @@
 #include "Storm/xml/XMLNode.h"
 
 using namespace NTempest;
-
+enum FRAMEPOINT;
 
 class CLayoutFrame {
 public:

@@ -2,7 +2,7 @@
 
 #include <cmath>
 #include <cstdint>
-#include "Types.h"
+#include "UI/Types.h"
 #include "Common/TSLinkedNode.h"
 #include "Common/TSGetLink.h"
 #include "Common/Hashkey.h"
@@ -11,12 +11,14 @@
 #include "Common/TSFixedArray.h"
 #include "Common/TSHashTable.h"
 #include "Storm/MD5.h"
+#include "Storm/Luaex.h"
 #include "NTempest/CImVector.h"
+#include "Agile/CStatus.h"
 
 using namespace NTempest;
 
 #define NUM_GLUE_SCRIPT_EVENTS 41
-
+class FrameScript_Object;
 
 struct SIMPLEFRAMENODE : TSLinkedNode<SIMPLEFRAMENODE> {
     CSimpleFrame *frame;

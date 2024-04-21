@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/FrameScript.h"
+#include "UI/FrameScript.h"
 
 #define NUM_SIMPLE_FONT_SCRIPT_METHODS 24
 

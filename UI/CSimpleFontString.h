@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Graphic/Font.h"
-#include "ui/CSimpleFontable.h"
-#include "ui/CSimpleRegion.h"
+#include "UI/CSimpleFontable.h"
+#include "UI/CSimpleRegion.h"
 
 
 class CSimpleFontString : public CSimpleRegion, public CSimpleFontable {

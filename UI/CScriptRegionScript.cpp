@@ -1,7 +1,7 @@
-#include "ui/CScriptRegionScript.h"
-#include "ui/FrameScript_Object.h"
-#include "ui/CScriptRegion.h"
-#include "ui/CSimpleTop.h"
+#include "UI/CScriptRegionScript.h"
+#include "UI/FrameScript_Object.h"
+#include "UI/CScriptRegion.h"
+#include "UI/CSimpleTop.h"
 #include <cstdint>
 #include "Storm/Luaex.h"
 #include "Storm/Unimplemented.h"

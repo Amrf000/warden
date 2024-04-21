@@ -1,4 +1,4 @@
-#include "ui/ScriptFunctions.h"
+#include "UI/ScriptFunctions.h"
 #include "Storm/Unimplemented.h"
 #include <cstdint>
 

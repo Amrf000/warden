@@ -1,6 +1,6 @@
-#include "ui/CSimpleFrameScript.h"
-#include "ui/CSimpleFrame.h"
-#include "ui/FrameScript.h"
+#include "UI/CSimpleFrameScript.h"
+#include "UI/CSimpleFrame.h"
+#include "UI/FrameScript.h"
 #include "Storm/Unimplemented.h"
 #include "Storm/Luaex.h"
 #include "Graphic/Coordinate.h"
@@ -29,8 +29,8 @@ int32_t CSimpleFrame_GetBoundsRect(lua_State *L) {
     CSimpleFrame *frame = static_cast<CSimpleFrame *>(FrameScript_GetObjectThis(L, type));
 
     CRect bounds = {
-            std::numeric_limits<float>::max(),
-            std::numeric_limits<float>::max(),
+           (std::numeric_limits<float>::max)(),
+            (std::numeric_limits<float>::max)(),
             0.0f,
             0.0f
     };

@@ -1,6 +1,6 @@
-#include "ui/ScriptFunctions.h"
+#include "UI/ScriptFunctions.h"
 #include "glue/CGlueMgr.h"
-#include "ui/Types.h"
+#include "UI/Types.h"
 #include "Storm/Unimplemented.h"
 #include "Storm/Luaex.h"
 #include "Storm/String.h"

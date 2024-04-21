@@ -1,5 +1,5 @@
-#include "ui/ScriptFunctions.h"
-#include "ui/Types.h"
+#include "UI/ScriptFunctions.h"
+#include "UI/Types.h"
 #include "Storm/Unimplemented.h"
 #include "Storm/Time.h"
 #include "Storm/Luaex.h"

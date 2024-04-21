@@ -1,5 +1,6 @@
-#include "ui/CSimpleFontStringAttributes.h"
-#include "ui/CSimpleFontString.h"
+#include "UI/CSimpleFontStringAttributes.h"
+#include "UI/CSimpleFontString.h"
+#include "Common/math/Utils.h"
 
 
 void CSimpleFontStringAttributes::SetColor(const CImVector &color) {

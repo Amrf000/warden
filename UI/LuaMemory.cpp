@@ -1,5 +1,5 @@
-#include "ui/LuaMemory.h"
-#include "ui/FrameScript.h"
+#include "UI/LuaMemory.h"
+#include "UI/FrameScript.h"
 #include "Storm/mempool/MemPool.h"
 #include <cstring>
 #include <new>

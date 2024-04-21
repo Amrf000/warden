@@ -1,4 +1,4 @@
-#include "ui/CSimpleHyperlinkedFrame.h"
+#include "UI/CSimpleHyperlinkedFrame.h"
 
 CSimpleHyperlinkedFrame::CSimpleHyperlinkedFrame(CSimpleFrame* parent) : CSimpleFrame(parent) {
     // TODO

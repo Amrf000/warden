@@ -1,14 +1,14 @@
-#include "ui/CSimpleFontString.h"
-#include "ui/CFramePoint.h"
-#include "ui/CRenderBatch.h"
-#include "ui/CSimpleFont.h"
-#include "ui/CSimpleFontStringScript.h"
-#include "ui/CSimpleFrame.h"
-#include "ui/CSimpleTop.h"
-#include "ui/FrameXML.h"
-#include "ui/LoadXML.h"
-#include "ui/Types.h"
-#include "ui/Util.h"
+#include "UI/CSimpleFontString.h"
+#include "UI/CFramePoint.h"
+#include "UI/CRenderBatch.h"
+#include "UI/CSimpleFont.h"
+#include "UI/CSimpleFontStringScript.h"
+#include "UI/CSimpleFrame.h"
+#include "UI/CSimpleTop.h"
+#include "UI/FrameXML.h"
+#include "UI/LoadXML.h"
+#include "UI/Types.h"
+#include "UI/Util.h"
 #include "Storm/StringTo.h"
 #include "Graphic/Coordinate.h"
 #include "Common/math/Utils.h"
@@ -173,7 +173,7 @@ const char* CSimpleFontString::GetDisplayText(float width, float height) {
     }
 
     SStrCopy(buffer, text, sizeof(buffer));
-    auto end = std::min(textLen, sizeof(buffer) - 4);
+    auto end = (std::min)(textLen, sizeof(buffer) - 4);
 
     do {
         if (end) {

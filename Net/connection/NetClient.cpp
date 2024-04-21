@@ -1,10 +1,13 @@
 #include "net/connection/NetClient.h"
 #include "net/connection/WowConnection.h"
+#include "Common/datastore/CDataStore.h"
 #include "Storm/String.h"
 #include "Storm/Error.h"
 #include <cstdlib>
 #include <cstring>
 #include <new>
+#include <Storm/Time.h>
+#include <Common/Prop.h>
 
 
 HPROPCONTEXT s_propContext;

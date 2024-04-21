@@ -1,4 +1,4 @@
-#include "ui/CSimpleCheckboxScript.h"
+#include "UI/CSimpleCheckboxScript.h"
 #include "Storm/Unimplemented.h"
 #include <cstdint>
 

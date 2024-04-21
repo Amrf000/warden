@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Graphic/Types.h"
-#include "ui/Types.h"
+#include "UI/Types.h"
 #include <cstdint>
 
 const char *LanguageProcess(const char *string);

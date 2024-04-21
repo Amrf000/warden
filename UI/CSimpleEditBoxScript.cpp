@@ -1,5 +1,5 @@
-#include "ui/CSimpleEditBoxScript.h"
-#include "ui/CSimpleEditBox.h"
+#include "UI/CSimpleEditBoxScript.h"
+#include "UI/CSimpleEditBox.h"
 #include "Storm/Unimplemented.h"
 #include "Storm/Luaex.h"
 #include <cstdint>

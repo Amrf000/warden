@@ -1,7 +1,7 @@
-#include "ui/CLayoutFrame.h"
-#include "ui/CFramePoint.h"
-#include "ui/FrameXML.h"
-#include "ui/LoadXML.h"
+#include "UI/CLayoutFrame.h"
+#include "UI/CFramePoint.h"
+#include "UI/FrameXML.h"
+#include "UI/LoadXML.h"
 #include "Graphic/Coordinate.h"
 #include "Common/math/Utils.h"
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/CSimpleModel.h"
+#include "UI/CSimpleModel.h"
 
 class CSimpleFrame;
 

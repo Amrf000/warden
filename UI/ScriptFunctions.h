@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/Types.h"
+#include "UI/Types.h"
 #include <cstdint>
 
 struct lua_State;

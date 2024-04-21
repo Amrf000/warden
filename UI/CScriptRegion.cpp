@@ -1,7 +1,7 @@
-#include "ui/CScriptRegion.h"
-#include "ui/CScriptObject.h"
-#include "ui/CScriptRegionScript.h"
-#include "ui/CSimpleTop.h"
+#include "UI/CScriptRegion.h"
+#include "UI/CScriptObject.h"
+#include "UI/CScriptRegionScript.h"
+#include "UI/CSimpleTop.h"
 #include "Storm/Luaex.h"
 
 int32_t CScriptRegion::s_objectType;

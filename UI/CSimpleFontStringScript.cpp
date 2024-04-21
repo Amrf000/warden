@@ -1,6 +1,6 @@
-#include "ui/CSimpleFontStringScript.h"
-#include "ui/CSimpleFont.h"
-#include "ui/CSimpleFontString.h"
+#include "UI/CSimpleFontStringScript.h"
+#include "UI/CSimpleFont.h"
+#include "UI/CSimpleFontString.h"
 #include "Storm/Unimplemented.h"
 #include "Storm/Luaex.h"
 #include <cstdint>

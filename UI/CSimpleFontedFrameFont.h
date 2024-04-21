@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/CSimpleFont.h"
+#include "UI/CSimpleFont.h"
 
 class CSimpleFontedFrame;
 

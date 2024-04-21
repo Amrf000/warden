@@ -87,8 +87,8 @@ void PaintText(void *param, const RECTF *rect, const RECTF *visible, float elaps
 }
 
 void ConsoleScreenAnimate(float elapsedSec) {
-    auto finalPos = ConsoleGetActive() ? std::min(1.0f - s_consoleHeight, 1.0f) : 1.0f;
-    finalPos = std::max(finalPos, 0.0f);
+    auto finalPos = ConsoleGetActive() ? (std::min)(1.0f - s_consoleHeight, 1.0f) : 1.0f;
+    finalPos = (std::max)(finalPos, 0.0f);
 
     if (s_rect.bottom == finalPos) {
         return;
@@ -100,7 +100,7 @@ void ConsoleScreenAnimate(float elapsedSec) {
         auto direction = s_rect.bottom <= finalPos ? 1.0f : -1.0f;
 
         currentPos = s_rect.bottom + direction * elapsedSec * 5.0f;
-        currentPos = ConsoleGetActive() ? std::max(currentPos, finalPos) : std::min(currentPos, finalPos);
+        currentPos = ConsoleGetActive() ? (std::max)(currentPos, finalPos) : (std::min)(currentPos, finalPos);
     }
 
     s_rect.bottom = currentPos;

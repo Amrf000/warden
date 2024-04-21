@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/FrameScript.h"
+#include "UI/FrameScript.h"
 
 #define NUM_SCRIPT_REGION_SCRIPT_METHODS 25
 

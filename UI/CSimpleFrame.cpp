@@ -10,6 +10,9 @@
 #include "CSimpleFrameScript.h"
 #include "LoadXML.h"
 #include <algorithm>
+#include <Storm/Unicode.h>
+#include "CSimpleRender.h"
+#include <Graphic/Coordinate.h>
 
 
 int32_t CSimpleFrame::s_metatable;

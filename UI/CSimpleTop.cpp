@@ -1,11 +1,13 @@
-#include "ui/CSimpleTop.h"
-#include "ui/CSimpleFrame.h"
-#include "ui/CSimpleRender.h"
-#include "ui/CSimpleTexture.h"
-#include "ui/CSimpleTitleRegion.h"
+#include "UI/CSimpleTop.h"
+#include "UI/CSimpleFrame.h"
+#include "UI/CSimpleRender.h"
+#include "UI/CSimpleTexture.h"
+#include "UI/CSimpleTitleRegion.h"
 #include "Graphic/Device.h"
 #include "Graphic/Coordinate.h"
 #include "Graphic/Font.h"
+#include "Common/CSimpleSortedArray.h"
+#include "NTempest/CMath.h"
 #include <cstring>
 
 

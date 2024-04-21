@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/CScriptRegion.h"
+#include "UI/CScriptRegion.h"
 
 
 class CRenderBatch;

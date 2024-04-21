@@ -1,6 +1,6 @@
-#include "ui/CSimpleModelFFX.h"
-#include "ui/CRenderBatch.h"
-#include "ui/CSimpleModelFFXScript.h"
+#include "UI/CSimpleModelFFX.h"
+#include "UI/CRenderBatch.h"
+#include "UI/CSimpleModelFFXScript.h"
 #include "Graphic/Draw.h"
 
 

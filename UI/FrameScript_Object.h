@@ -1,8 +1,9 @@
 #pragma once
 
 #include "FrameScript.h"
+#include "Storm/Luaex.h"
 #include <cstdint>
-
+struct FrameScript_Method;
 class FrameScript_Object {
 public:
     // Structs

@@ -1,5 +1,5 @@
-#include "ui/CSimpleHTMLScript.h"
-#include "ui/CSimpleHTML.h"
+#include "UI/CSimpleHTMLScript.h"
+#include "UI/CSimpleHTML.h"
 #include "Storm/Unimplemented.h"
 #include "Storm/Luaex.h"
 #include <cstdint>

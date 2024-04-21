@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/FrameScript_Object.h"
+#include "UI/FrameScript_Object.h"
 #include "Common/RCString.h"
 #include "Storm/xml/XMLNode.h"
 #include <cstdint>

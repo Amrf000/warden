@@ -1,9 +1,9 @@
 #pragma once
 
-#include "event/Event.h"
+#include "Event/Event.h"
+#include "UI/CSimpleFrame.h"
 #include "UI/CFrameStrata.h"
 #include "UI/CLayoutFrame.h"
-#include "UI/CSimpleFrame.h"
 #include "UI/FrameScript.h"
 #include "Common/CSimpleSortedArray.h"
 #include "Graphic/Screen.h"
@@ -15,6 +15,7 @@ enum MOVERESIZE_REASON {
     MOVERESIZE_REASON2 = 2
 };
 
+enum FRAMEPOINT;
 class CSimpleTop : public CLayoutFrame {
 public:
     // Types

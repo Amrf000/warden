@@ -1,5 +1,5 @@
-#include "ui/CSimpleFontable.h"
-#include "ui/CSimpleFont.h"
+#include "UI/CSimpleFontable.h"
+#include "UI/CSimpleFont.h"
 
 CSimpleFontable::~CSimpleFontable() {
     this->SetFontObject(nullptr);

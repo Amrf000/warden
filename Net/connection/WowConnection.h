@@ -7,7 +7,7 @@
 #include "Common/TSList.h"
 #include <cstdint>
 #include <winsock2.h>
-
+#include "Storm/crypto/SARC4Key.h"
 
 class CDataStore;
 class WowConnectionNet;

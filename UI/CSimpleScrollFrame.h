@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/CSimpleFrame.h"
+#include "UI/CSimpleFrame.h"
 
 
 class CRenderBatch;

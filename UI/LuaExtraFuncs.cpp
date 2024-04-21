@@ -1,6 +1,6 @@
-#include "ui/LuaExtraFuncs.h"
-#include "ui/FrameScript.h"
-#include "ui/FrameScriptInternal.h"
+#include "UI/LuaExtraFuncs.h"
+#include "UI/FrameScript.h"
+#include "UI/FrameScriptInternal.h"
 #include "Storm/Unimplemented.h"
 #include <cstdint>
 

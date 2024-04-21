@@ -7,15 +7,14 @@
 #include "NTempest/C2Vector.h"
 #include "CRenderBatch.h"
 #include "Agile/CStatus.h"
-#include "CScriptRegion.h"
-#include "CSimpleRegion.h"
-#include "CSimpleTop.h"
-#include "CSimpleTitleRegion.h"
-#include "CBackdropGenerator.h"
+
 
 using namespace NTempest;
 
-
+enum FRAME_STRATA;
+class CSimpleTop;
+class CSimpleTitleRegion;
+class CBackdropGenerator;
 class CSimpleFrame : public CScriptRegion {
 public:
     // Static members

@@ -1,6 +1,6 @@
-#include "ui/LoadXML.h"
-#include "ui/CSimpleFontString.h"
-#include "ui/CSimpleTexture.h"
+#include "UI/LoadXML.h"
+#include "UI/CSimpleFontString.h"
+#include "UI/CSimpleTexture.h"
 #include "Graphic/Coordinate.h"
 
 

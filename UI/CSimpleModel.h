@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "ui/CSimpleFrame.h"
+#include "UI/CSimpleFrame.h"
 #include "Anim/CM2Light.h"
 #include "Graphic/Camera.h"
 #include "Anim/CM2Lighting.h"

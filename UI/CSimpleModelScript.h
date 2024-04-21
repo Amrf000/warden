@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "ui/FrameScript.h"
+#include "UI/FrameScript.h"
 
 #define NUM_SIMPLE_MODEL_SCRIPT_METHODS 24
 

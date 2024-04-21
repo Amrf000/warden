@@ -1,14 +1,15 @@
-#include "ui/CSimpleTexture.h"
-#include "ui/CFramePoint.h"
-#include "ui/CRenderBatch.h"
-#include "ui/CSimpleFrame.h"
-#include "ui/CSimpleTextureScript.h"
-#include "ui/FrameXML.h"
-#include "ui/LoadXML.h"
-#include "ui/Util.h"
+#include "UI/CSimpleTexture.h"
+#include "UI/CFramePoint.h"
+#include "UI/CRenderBatch.h"
+#include "UI/CSimpleFrame.h"
+#include "UI/CSimpleTextureScript.h"
+#include "UI/FrameXML.h"
+#include "UI/LoadXML.h"
+#include "UI/Util.h"
 #include "Graphic/Coordinate.h"
 #include <algorithm>
 #include <climits>
+#include <Storm/StringTo.h>
 
 
 CGxShader *CSimpleTexture::s_imageModePixelShaders[2] = {};
@@ -445,7 +446,7 @@ void CSimpleTexture::PostLoadXML(XMLNode *node, CStatus *status) {
 
 void CSimpleTexture::SetAlpha(float alpha) {
     // Clamp
-    alpha = (std::max)(0.0f, std::min(alpha, 1.0f));
+    alpha = (std::max)(0.0f, (std::min)(alpha, 1.0f));
 
     CImVector color = {0};
     this->GetVertexColor(color);

@@ -1,6 +1,6 @@
 #include "net/connection/ClientConnection.h"
 #include "net/Login.h"
-#include "ui/FrameScript.h"
+#include "UI/FrameScript.h"
 #include "Game/ClientServices.h"
 
 const char *s_errorCodeTokens[] = {

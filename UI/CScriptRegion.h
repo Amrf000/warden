@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ui/CLayoutFrame.h"
-#include "ui/CScriptObject.h"
+#include "UI/CLayoutFrame.h"
+#include "UI/CScriptObject.h"
 
 #include "NTempest/C2Vector.h"
 #include "Storm/xml/XMLNode.h"

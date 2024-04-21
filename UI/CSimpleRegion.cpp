@@ -1,5 +1,5 @@
-#include "ui/CSimpleRegion.h"
-#include "ui/CSimpleFrame.h"
+#include "UI/CSimpleRegion.h"
+#include "UI/CSimpleFrame.h"
 #include <cstring>
 
 CSimpleRegion::~CSimpleRegion() {

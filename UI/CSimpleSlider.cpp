@@ -108,7 +108,7 @@ void CSimpleSlider::SetValue(float value) {
     }
 
     auto v4 = value;
-    auto v5 = std::max(value, this->m_baseValue);
+    auto v5 = (std::max)(value, this->m_baseValue);
     auto maxValue = this->m_range + this->m_baseValue;
 
     if (maxValue >= v5) {

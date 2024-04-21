@@ -3,6 +3,10 @@
 #include "net/connection/WowConnection.h"
 #include "Storm/thread/SSemaphore.h"
 #include <cstdint>
+#include <Storm/thread/SEvent.h>
+#include <Storm/thread/SThread.h>
+#include "Common/TSExplicitList.h"
+#include "WowConnection.h"
 
 
 class WowConnectionNet {
